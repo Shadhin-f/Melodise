@@ -1,0 +1,58 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Experiment Scroll bar */
+#card-container::-webkit-scrollbar, #artist-card-container::-webkit-scrollbar {
+    display: none;
+}
+#card-container, #artist-card-container{
+    height: fit-content;
+    overflow-x: auto; 
+    overflow-y: hidden; 
+    white-space: nowrap;
+}
+
+/* .card{
+    height: 180px;
+} */
+.themed-btn{
+    color: #1B8673;
+}
+.play-btn{
+    cursor: pointer;
+}
+/*
+.artist-img-circle{
+    background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); 
+    background-color:antiquewhite;
+    background-repeat: no-repeat; 
+    background-size: cover;
+}
+*/
+
+/*  All Music / Top Picks */
+
+/* #section-header{
+    width: 100vw;
+}
+.all-music-container{
+    width: 100vw;
+} */
+/* .music-container{
+    border-top: 1px solid #1B8673;
+}
+.music-element{
+    width: 300px;
+} */
+
+
+
+
+/*  Nav bar design */
+.logo{
+    /* text-transform: capitalize; */
+    font-weight: bolder;
+}
