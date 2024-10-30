@@ -1,5 +1,14 @@
 <?php
+
 session_start();
+
+
+
+// Home Page 
+
+
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     include('connect.php');
     if (isset($_GET['all-music-btn'])) {
@@ -10,6 +19,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     if (isset($_GET['all-artist-btn'])) {
         header('Location: allartist.php');
+    }
+
+
+    //  Search button action (Nav bar)
+
+    
+    // Check if search-btn is set (even if empty)
+    if (isset($_GET['search-btn'])) {
+    
+        // Check if the search key exists and is not empty
+        if (isset($_GET['search-key']) && !empty($_GET['search-key'])) {
+            // Store search key in session
+            $searchKey = $_GET['search-key'];
+            $_SESSION['searchKey'] = $searchKey;
+            
+            // Redirect to searchresult.php
+            header('Location: searchresult.php');
+            exit;  // Stop further script execution
+        } else {
+            // Handle the case where search key is missing or empty
+            echo '<script>
+                        alert("No search keyword!!!");
+                        window.location.href = "index.php";
+                    </script>';
+            
+        }
     }
 }
 
@@ -25,22 +60,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Login actions
 
-    if(isset($_POST['login-button'])){
+    if (isset($_POST['login-button'])) {
         $loginEmail = $_POST['loginEmail'];
         $loginPassword = $_POST['loginPassword'];
-    
+
         $select_user_credentials = "SELECT * FROM `users` WHERE Email = '$loginEmail'";                    // Query to search for login email in data base
         $result_user_credentials = mysqli_query($conn, $select_user_credentials);
-    
+
         if ($result_user_credentials) {
             $user_found = mysqli_num_rows($result_user_credentials);
             if ($user_found > 0) {
                 $user_data = mysqli_fetch_assoc($result_user_credentials);
                 $user_password = $user_data['Password'];
                 if ($loginPassword == $user_password) {
+                    
                     $_SESSION['username'] = $user_data['Name'];
                     $_SESSION['email'] = $user_data['Email'];
+
+
                     header('Location: index.php');
+                    
                 } else {
                     echo '<script>
                             alert("Incorrect Password! Try again!!");
@@ -54,15 +93,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </script>';
             }
         }
-
     }
 
     // registration 
 
-    if(isset($_POST['registration-buttom'])){
+    if (isset($_POST['registration-buttom'])) {
         $regName = $_POST['username'];
         $regEmail = $_POST['email'];
-        
+
         // Password input without hashing
 
         $regPassword = $_POST['password'];
@@ -78,25 +116,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $regDob = $_POST['dob'];
         $regCountry = $_POST['country'];
         // echo "$regName, $regEmail, $regPassword, $regRePassword, $regDob, $regCountry";
-        
+
         // Empty field check
 
-        if ( $regName == '' || $regPassword == '' || $regRePassword == '' || $regDob == '' || $regCountry == ''){
+        if ($regName == '' || $regPassword == '' || $regRePassword == '' || $regDob == '' || $regCountry == '') {
             echo '<script>
                         alert("Please fillout all the necessary field!!!");
                         window.location.href = "login.php";
                     </script>';
-        }
-        else{
+        } else {
 
             // password confirm match check
 
-            if($regPassword != $regRePassword){
+            if ($regPassword != $regRePassword) {
                 echo '<script>
                             alert("Password did not match!!");
                             window.location.href = "login.php";
                         </script>';
-            }else{
+            } else {
 
 
                 // Checking if email is already in use
@@ -110,40 +147,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         echo '<script>
                             alert("Email Already in use!!");
                             window.location.href = "login.php";
-                        </script>';   
+                        </script>';
                     }
 
 
                     // All the cases passed
 
-                    else{
+                    else {
                         $insert_user_credentials = "INSERT INTO `users` (`UserID`, `Name`, `Email`, `Password`, `DateOfBirth`, `Country`) VALUES (NULL, '$regName', '$regEmail', '$regPassword', '$regDob', '$regCountry')";                    // Query to insert user data to database
                         $result_user_credentials = mysqli_query($conn, $insert_user_credentials);
-                        if($result_user_credentials){
+                        if ($result_user_credentials) {
                             echo '<script>
                             alert("Registration successful!!");
                             window.location.href = "login.php";
-                            </script>'; 
+                            </script>';
                         }
                         // echo "$regName, $regEmail, $regPassword, $regRePassword, $regDob, $regCountry";
-                        
+
                     }
-                } 
-                
-                
+                }
             }
-
-
         }
-        
     }
 
 
 
 
     // Guest Button action
-    if(isset($_POST['guest-view-button'])){
+
+
+
+    if (isset($_POST['guest-view-button'])) {
         header('Location: index.php');
         session_destroy();
     }
+
+
+
+
+    
+    
 }

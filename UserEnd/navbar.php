@@ -102,12 +102,15 @@ session_start();
                     </li>
                 </ul>
                 
-                <!-- Form structure to ensure search input and button stay on the same line -->
+                
+
+                <!-- Search bar -->
+
 
                 
-                <form class="d-flex form-inline">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                <form class="d-flex form-inline" action="user-actions.php" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search-key">
+                    <button class="btn btn-outline-success" type="submit" name="search-btn">Search</button>
                 </form>
                 
                 <div class="d-flex justify-content-center align-items-center px-3">

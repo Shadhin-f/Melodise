@@ -39,7 +39,7 @@ include('connect.php')
         <div id="card-container">
             <!-- Fetching Music data from mysql server -->
             <?php 
-                $select_songs = "SELECT * FROM `songs` ORDER BY RAND() LIMIT 10";                                            // query for selecting all songs
+                $select_songs = "SELECT * FROM `songs` ORDER BY RAND() LIMIT 10";                   // query for selecting all songs
                 $result_songs = mysqli_query($conn, $select_songs);
                 
                 // loop to fetch all songs
