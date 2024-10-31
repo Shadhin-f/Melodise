@@ -30,9 +30,6 @@ include('connect.php')
         <!-- Title -->
         <div id="master-control-title-container" class="d-flex flex-row justify-content-between align-items-center ">
             <h1>Master Controls</h1>  
-             <form action="user-actions.php" method="get">
-                 <button type="submit" class="themed-btn bg-transparent border-0" name='all-control-btn'>All Master Control</button>
-             </form>
         </div>
         
         
@@ -80,10 +77,6 @@ include('connect.php')
         <!-- Title -->
         <div id="subscription-control-title-container" class="d-flex flex-row flex-wrap justify-content-between align-items-center">
             <h1>Subscription Controls</h1>  
-            
-             <form action="user-actions.php" method="get">
-                 <button type="submit" class="themed-btn bg-transparent border-0" name='all-control-btn'>All Subscription Control</button>
-             </form>
         </div>
         
         
@@ -121,9 +114,6 @@ include('connect.php')
         <!-- Title -->
         <div id="profile-control-title-container" class="d-flex flex-row justify-content-between flex-wrap align-items-center">
             <h1>Manage Profiles</h1>  
-             <form action="user-actions.php" method="get">
-                 <button type="submit" class="themed-btn bg-transparent border-0" name='all-control-btn'>All Profile Control</button>
-             </form>
         </div>
         
         
