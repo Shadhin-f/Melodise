@@ -96,22 +96,27 @@ session_start();
 
                     
                     <?php 
-                    if(!isset($_SESSION['username'])) {
+                    if(!isset($_SESSION['adminname'])) {
                         echo "
-                            <button class='btn btn-outline-secondary' type='submit'>Login</button>
-                            <button class='btn btn-outline-primary mx-2' type='submit'>Register</button>";
+                            <form action='adminaction.php' method='post'>
+                            <button class='btn btn-outline-secondary' type='submit' name='login-btn'>Login</button>
+                            </form>";
                     } 
                     else {
-                        $firstName = (function($string) { return strtok($string, ' '); })($_SESSION['username']);
-                        echo "
+                        $firstName = (function($string) { return strtok($string, ' '); })($_SESSION['adminname']);
+                        echo " 
+                        <form action='adminaction.php' method='post'>
                         <button class='username-btn'>$firstName <i class='fa-solid fa-user'></i></button>
-                        ";
+                        <button class='btn btn-outline-secondary mx-2' type='submit' name='logout-btn'>Logout</button>
+                        </form>";
                     }
                     ?>
+                    
             </div>
         </div>
     </nav>
 </body>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>

@@ -61,11 +61,7 @@
                         <!-- Login Form -->
 
 
-                        <form id="login-form" action="user-actions.php" method="post">
-                            <div class="mb-3">
-                                <label for="loginID" class="form-label">Admin ID</label>
-                                <input type="text" class="form-control" id="loginID" placeholder="Enter ID" name="loginID">
-                            </div>
+                        <form id="login-form" action="adminaction.php" method="post">
                             <div class="mb-3">
                                 <label for="loginEmail" class="form-label">Email address</label>
                                 <input type="email" class="form-control" id="loginEmail" placeholder="Enter email" name="loginEmail">
@@ -74,7 +70,7 @@
                                 <label for="loginPassword" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="loginPassword" placeholder="Password" name="loginPassword">
                             </div>
-                            <button type="submit" class="btn btn-primary w-100" name="login-button">Login</button>
+                            <button type="submit" class="btn btn-primary w-100" name="admin-login-button">Login</button>
                         </form>
 
                     </div>
