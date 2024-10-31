@@ -51,32 +51,40 @@ session_start();
         /* Style for icon inside the button */
         .username-btn i {
             margin-left: 8px;
-            font-size: 1.2rem; /* Adjust icon size */
+            font-size: 1.2rem;
+            /* Adjust icon size */
         }
 
         /* Media queries for responsive design */
         @media (max-width: 576px) {
+
             /* Adjust search bar width on mobile screens */
             .form-control {
-                width: 150px; /* Smaller width for mobile */
+                width: 150px;
+                /* Smaller width for mobile */
             }
 
             /* Make sure search bar and button stay on the same line */
             .form-inline {
-                flex-direction: row; /* Keep elements in a single row */
-                width: 100%; /* Ensure the form fits within available space */
+                flex-direction: row;
+                /* Keep elements in a single row */
+                width: 100%;
+                /* Ensure the form fits within available space */
             }
 
             /* Collapse username button to a new line on mobile screens */
             .username-btn {
                 display: block;
                 text-align: center;
-                width: 100%; /* Full width to ensure it goes to a new line */
-                margin-top: 10px; /* Add some space between the search bar and username button */
+                width: 100%;
+                /* Full width to ensure it goes to a new line */
+                margin-top: 10px;
+                /* Add some space between the search bar and username button */
             }
 
             .username-btn i {
-                margin-left: 0; /* Align icon with text in center */
+                margin-left: 0;
+                /* Align icon with text in center */
             }
         }
     </style>
@@ -101,32 +109,33 @@ session_start();
                         <a class="nav-link" href="allartist.php">Favourite</a>
                     </li>
                 </ul>
-                
-                
+
+
 
                 <!-- Search bar -->
 
 
-                
+
                 <form class="d-flex form-inline" action="user-actions.php" method="get">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search-key">
                     <button class="btn btn-outline-success" type="submit" name="search-btn">Search</button>
                 </form>
-                
+
                 <div class="d-flex justify-content-center align-items-center px-3">
 
 
                     <!-- Login button or User Profile Button Based on login session -->
 
-                    
-                    <?php 
-                    if(!isset($_SESSION['username'])) {
+
+                    <?php
+                    if (!isset($_SESSION['username'])) {
                         echo "
                             <button class='btn btn-outline-secondary' type='submit'>Login</button>
                             <button class='btn btn-outline-primary mx-2' type='submit'>Register</button>";
-                    } 
-                    else {
-                        $firstName = (function($string) { return strtok($string, ' '); })($_SESSION['username']);
+                    } else {
+                        $firstName = (function ($string) {
+                            return strtok($string, ' ');
+                        })($_SESSION['username']);
                         echo "
                         <button class='username-btn'>$firstName <i class='fa-solid fa-user'></i></button>
                         ";

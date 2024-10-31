@@ -17,8 +17,8 @@ include('connect.php')
 <body>
     <!-- Navigation bar -->
 
-    <?php 
-        include('navbar.php')
+    <?php
+    include('navbar.php')
     ?>
 
     <!-- Main Section -->

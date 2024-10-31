@@ -104,7 +104,7 @@ include('connect.php')
             while ($row_data = mysqli_fetch_assoc($result_artists)) {
                 $artist_name = $row_data['Name'];
                 $artist_img = $row_data['Image'];
-                
+
                 // Artists cards
 
                 echo "
