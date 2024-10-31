@@ -1,4 +1,4 @@
-<?php 
+<?php
 // session_start();
 include('connect.php')
 ?>
@@ -19,8 +19,8 @@ include('connect.php')
 <body>
     <!-- Navigation bar -->
 
-    <?php 
-        include('navbar.php')
+    <?php
+    include('navbar.php')
     ?>
 
     <!-- My Music Section -->
@@ -29,41 +29,49 @@ include('connect.php')
     <section id="my-music" class="p-3">
         <!-- Title -->
         <div id="your-music-title-container" class="d-flex flex-row justify-content-between align-items-center">
-            <h1>Top picks</h1>  
+            <h1>Top picks</h1>
             <!-- <a href="#" class="text-decoration-none themed-btn">All Music</a> -->
-             <form action="user-actions.php" method="get">
-                 <button type="submit" class="themed-btn bg-transparent border-0" name='all-music-btn'>All Music</button>
-             </form>
+            <form action="user-actions.php" method="get">
+                <button type="submit" class="themed-btn bg-transparent border-0" name='all-music-btn'>All Music</button>
+            </form>
         </div>
-        <!-- Music Cards -->
-        <div id="card-container">
-            <!-- Fetching Music data from mysql server -->
-            <?php 
-                $select_songs = "SELECT * FROM `songs` ORDER BY RAND() LIMIT 10";                   // query for selecting all songs
-                $result_songs = mysqli_query($conn, $select_songs);
-                
-                // loop to fetch all songs
-                while($row_data = mysqli_fetch_assoc($result_songs)){
-                    $song_name = $row_data['Title'];                                               // Getting the Song name
-                    $color_code = $row_data['ColorCode'];                                          // Getting the Song name
-                    $artist_id = $row_data['ArtistID'];                                            // Getting artist id
-                    
-                    // echo ($artist_id);                                                          // for testting purpose
-                    $select_artist_name = "SELECT * FROM `artists` WHERE ArtistID = $artist_id";   // query for selecting artist name
-                    $result_artist_name = mysqli_query($conn, $select_artist_name);
-                    $artist_data = mysqli_fetch_assoc($result_artist_name);
-                    $artist_name = $artist_data['Name'];
 
-                    echo "<div class='card mx-3 mt-3 d-inline-block shadow' style='width: 18rem; background-color: $color_code'>
+
+        <!-- Music Cards section -->
+
+
+        <div id="card-container">
+
+
+            <!-- Fetching Music data from mysql server -->
+
+
+            <?php
+            $select_songs = "SELECT * FROM `songs` ORDER BY RAND() LIMIT 10";                   // query for selecting all songs
+            $result_songs = mysqli_query($conn, $select_songs);
+
+            // loop to fetch all songs
+            while ($row_data = mysqli_fetch_assoc($result_songs)) {
+                $song_name = $row_data['Title'];                                               // Getting the Song name
+                $color_code = $row_data['ColorCode'];                                          // Getting the Song name
+                $artist_id = $row_data['ArtistID'];                                            // Getting artist id
+
+                // echo ($artist_id);                                                          // for testting purpose
+                $select_artist_name = "SELECT * FROM `artists` WHERE ArtistID = $artist_id";   // query for selecting artist name
+                $result_artist_name = mysqli_query($conn, $select_artist_name);
+                $artist_data = mysqli_fetch_assoc($result_artist_name);
+                $artist_name = $artist_data['Name'];
+
+                echo "<div class='card mx-3 mt-3 d-inline-block shadow' style='width: 18rem; background-color: $color_code'>
                                 <div class='card-body position-relative p-3'>
                                     <h5 class='card-title mt-4 font-weight-bold'>$song_name</h5>
                                     <p class='card-text font-weight-light'>$artist_name</p>
                                     <p class='play-btn-back position-absolute bottom-0 end-0 rounded-circle bg-dark text-white play-btn'><i class='fa-solid fa-play p-3'></i></p>
                                 </div>
                             </div>";
-                }
-                
-                
+            }
+
+
             ?>
         </div>
     </section>
@@ -74,65 +82,41 @@ include('connect.php')
 
     <section id="top-artist" class="p-3">
         <div id="top-artist-title-container" class="d-flex flex-row justify-content-between align-items-center">
-            <h1>Top Artists</h1>  
-             <form action="user-actions.php" method="get">
-                 <button type="submit" class="themed-btn bg-transparent border-0" name='all-artist-btn'>All Artist</button>
-             </form>
+            <h1>Top Artists</h1>
+            <form action="user-actions.php" method="get">
+                <button type="submit" class="themed-btn bg-transparent border-0" name='all-artist-btn'>All Artist</button>
+            </form>
         </div>
-        <!-- Artist Cards -->
+
+
+        <!-- Artist Cards container div-->
+
         <div id="artist-card-container">
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
-            <div class="artist-card mx-3 mt-3 d-inline-block" style='width: 12rem;'>
-                <div class="artist-img-circle mx-auto rounded-circle mt-2" style="width: 10rem; height: 10rem; background-image: url('../Resources/ArtistImges/Arijit_Singh.jpg'); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;"></div>
-                <p class="d-block text-center artist-name mx-auto mt-2 w-auto">Arijit Singh</p>
-            </div>
+
+            <?php
+
+            //  Fetching artists data from database
+
+
+            $select_artists = "SELECT * FROM `artists` ORDER BY RAND() LIMIT 10";                   // query for selecting all songs
+            $result_artists = mysqli_query($conn, $select_artists);
+
+            while ($row_data = mysqli_fetch_assoc($result_artists)) {
+                $artist_name = $row_data['Name'];
+                $artist_img = $row_data['Image'];
+                
+                // Artists cards
+
+                echo "
+                    <div class='artist-card mx-3 mt-3 d-inline-block' style='width: 12rem;'>
+                        <div class='artist-img-circle mx-auto rounded-circle mt-2' style='width: 10rem; height: 10rem; background-image: url(\"../Resources/ArtistImges/$artist_img\"); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;'></div>
+                        <p class='d-block text-center artist-name mx-auto mt-2 w-auto'>$artist_name</p>
+                    </div>
+                ";
+            }
+
+
+            ?>
         </div>
 
     </section>

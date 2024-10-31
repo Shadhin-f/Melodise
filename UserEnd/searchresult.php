@@ -30,15 +30,15 @@ session_start();
 
 
     <!-- Music Search Result -->
-    <section class="music-search-section">
+    <section class="music-search-section p-3">
         <div id="your-music-title-container" class="d-flex flex-row justify-content-between align-items-center">
-                <h1>Music</h1>  
-                <!-- <a href="#" class="text-decoration-none themed-btn">All Music</a> -->
-                 <form action="user-actions.php" method="get">
-                     <button type="submit" class="themed-btn bg-transparent border-0" name='all-music-btn'>View All</button>
-                 </form>
-            </div>
-    
+            <h1>Music</h1>
+            <!-- <a href="#" class="text-decoration-none themed-btn">All Music</a> -->
+            <form action="user-actions.php" method="get">
+                <button type="submit" class="themed-btn bg-transparent border-0" name='all-music-btn'>View All</button>
+            </form>
+        </div>
+
         <!-- Music Cards -->
 
         <div id="card-container">
@@ -47,7 +47,7 @@ session_start();
                 $searchKey = $_SESSION['searchKey'];
                 $select_songs = "SELECT * FROM `songs` WHERE Title LIKE '%" . $searchKey . "%' LIMIT 8";                   // query for selecting all songs
                 $result_songs = mysqli_query($conn, $select_songs);
-    
+
                 // loop to fetch all songs
                 while ($row_data = mysqli_fetch_assoc($result_songs)) {
                     $song_name = $row_data['Title'];                                               // Getting the Song name
@@ -58,7 +58,7 @@ session_start();
                     $result_artist_name = mysqli_query($conn, $select_artist_name);
                     $artist_data = mysqli_fetch_assoc($result_artist_name);
                     $artist_name = $artist_data['Name'];
-    
+
                     echo "<div class='card mx-3 mt-3 d-inline-block shadow' style='width: 18rem; background-color: $color_code'>
                                     <div class='card-body position-relative p-3'>
                                         <h5 class='card-title mt-4 font-weight-bold'>$song_name</h5>
@@ -72,6 +72,53 @@ session_start();
             }
             ?>
         </div>
+
+    </section>
+
+    <!-- Artist Search Result -->
+
+
+    <section id="artist-search-section" class="p-3">
+
+
+        <!-- Title -->
+
+
+        <div id="top-artist-title-container" class="d-flex flex-row justify-content-between align-items-center">
+            <h1>Artists</h1>
+            <form action="user-actions.php" method="get">
+                <button type="submit" class="themed-btn bg-transparent border-0" name='all-artist-btn'>Show more</button>
+            </form>
+        </div>
+
+
+        <!-- Artist Cards -->
+
+        <div id="card-container">
+            <?php
+            if (isset($_SESSION['searchKey'])) {
+                $searchKey = $_SESSION['searchKey'];
+                $select_artists = "SELECT * FROM `artists` WHERE Name LIKE '%" . $searchKey . "%' LIMIT 8";                   // query for selecting all songs
+                $result_artists = mysqli_query($conn, $select_artists);
+
+                // loop to fetch all artists
+                while ($row_data = mysqli_fetch_assoc($result_artists)) {
+
+                    $artist_name = $row_data['Name'];
+                    $artist_img = $row_data['Image'];
+
+
+                    echo "
+                    <div class='artist-card mx-3 mt-3 d-inline-block' style='width: 12rem;'>
+                        <div class='artist-img-circle mx-auto rounded-circle mt-2' style='width: 10rem; height: 10rem; background-image: url(\"../Resources/ArtistImges/$artist_img\"); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;'></div>
+                        <p class='d-block text-center artist-name mx-auto mt-2 w-auto'>$artist_name</p>
+                    </div>
+                ";
+                }
+            }
+            ?>
+            <div>
+
 
     </section>
 
