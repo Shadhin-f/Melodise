@@ -56,7 +56,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h3 id="form-title" class="text-center mb-4">Login</h3>
+                        <h3 id="form-title" class="text-center mb-4">Admin Login</h3>
 
                         <!-- Login Form -->
 
