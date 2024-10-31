@@ -47,6 +47,7 @@ include('connect.php')
                     $song_name = $row_data['Title'];                                               // Getting the Song name
                     $color_code = $row_data['ColorCode'];                                          // Getting the Song name
                     $artist_id = $row_data['ArtistID'];                                            // Getting artist id
+                    
                     // echo ($artist_id);                                                          // for testting purpose
                     $select_artist_name = "SELECT * FROM `artists` WHERE ArtistID = $artist_id";   // query for selecting artist name
                     $result_artist_name = mysqli_query($conn, $select_artist_name);

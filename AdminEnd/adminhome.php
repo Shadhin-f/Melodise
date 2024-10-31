@@ -37,7 +37,7 @@ include('connect.php')
         
         
         <!-- Master Control Cards -->
-        <div id="control-card-container" class="d-flex flex-row justify-content-start align-items-center gap-5">
+        <div id="control-card-container" class="d-flex flex-row justify-content-start flex-wrap align-items-center gap-5">
             <!-- Update Album Card -->
             <div class="card" style="width: 18rem;">
                 <img class="card-img-top" src="https://images.unsplash.com/photo-1542208998-f6dbbb27a72f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" style="width: 18rem; height: 12rem;" alt="Card image cap">
@@ -78,7 +78,7 @@ include('connect.php')
 
     <section id="subscription-control" class="p-3">
         <!-- Title -->
-        <div id="subscription-control-title-container" class="d-flex flex-row justify-content-between align-items-center">
+        <div id="subscription-control-title-container" class="d-flex flex-row flex-wrap justify-content-between align-items-center">
             <h1>Subscription Controls</h1>  
             
              <form action="user-actions.php" method="get">
@@ -88,7 +88,7 @@ include('connect.php')
         
         
         <!-- Subsription Control Cards -->
-        <div id="control-card-container" class="d-flex flex-row justify-content-start align-items-center gap-5">
+        <div id="control-card-container" class="d-flex flex-row justify-content-start flex-wrap align-items-center gap-5">
             <!-- Update Subsription Card -->
             <div class="card" style="width: 18rem;">
                 <img class="card-img-top" src="https://plus.unsplash.com/premium_photo-1661963515041-661b417c0b45?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" style="width: 18rem; height: 12rem;" alt="Card image cap">
@@ -119,7 +119,7 @@ include('connect.php')
 
     <section id="profile-control" class="p-3">
         <!-- Title -->
-        <div id="profile-control-title-container" class="d-flex flex-row justify-content-between align-items-center">
+        <div id="profile-control-title-container" class="d-flex flex-row justify-content-between flex-wrap align-items-center">
             <h1>Manage Profiles</h1>  
              <form action="user-actions.php" method="get">
                  <button type="submit" class="themed-btn bg-transparent border-0" name='all-control-btn'>All Profile Control</button>
@@ -128,7 +128,7 @@ include('connect.php')
         
         
         <!-- Manage Profiles Cards -->
-        <div id="control-card-container" class="d-flex flex-row justify-content-start align-items-center gap-5">
+        <div id="control-card-container" class="d-flex flex-row justify-content-start flex-wrap align-items-center gap-5">
             <!-- Update User Info Card -->
             <div class="card" style="width: 18rem;">
                 <img class="card-img-top" src="https://images.unsplash.com/photo-1483032469466-b937c425697b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" style="width: 18rem; height: 12rem;" alt="Card image cap">
