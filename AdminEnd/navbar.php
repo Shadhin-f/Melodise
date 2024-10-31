@@ -90,30 +90,6 @@ session_start();
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse my-3" id="navbarScroll">
-                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 150px;">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="allmusic.php">Explore</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="allartist.php">Favourite</a>
-                    </li>
-                </ul>
-                
-                
-
-                <!-- Search bar -->
-
-
-                
-                <form class="d-flex form-inline" action="user-actions.php" method="get">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search-key">
-                    <button class="btn btn-outline-success" type="submit" name="search-btn">Search</button>
-                </form>
-                
-                <div class="d-flex justify-content-center align-items-center px-3">
 
 
                     <!-- Login button or User Profile Button Based on login session -->
@@ -132,7 +108,6 @@ session_start();
                         ";
                     }
                     ?>
-                </div>
             </div>
         </div>
     </nav>
