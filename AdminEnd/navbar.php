@@ -83,13 +83,15 @@ session_start();
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light px-5 py-3">
-        <div class="container-fluid">
-            <a class="navbar-brand logo" href="index.php">MELODISE</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse my-3" id="navbarScroll">
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-5 py-3">
+    <div class="container-fluid d-flex justify-content-between">
+        <a class="navbar-brand logo" href="index.php">MELODISE</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarScroll">
+            <div class="ml-auto ms-auto">
 
 
                     <!-- Login button or User Profile Button Based on login session -->
@@ -105,7 +107,7 @@ session_start();
                     else {
                         $firstName = (function($string) { return strtok($string, ' '); })($_SESSION['adminname']);
                         echo " 
-                        <form action='adminaction.php' method='post'>
+                        <form action='adminaction.php' method='post' class='d-flex align-items-center'>
                         <button class='username-btn'>$firstName <i class='fa-solid fa-user'></i></button>
                         <button class='btn btn-outline-secondary mx-2' type='submit' name='logout-btn'>Logout</button>
                         </form>";
