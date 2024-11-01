@@ -53,7 +53,7 @@ include('connect.php')
             // loop to fetch all songs
             while ($row_data = mysqli_fetch_assoc($result_songs)) {
                 $song_name = $row_data['Title'];                                               // Getting the Song name
-                $color_code = $row_data['ColorCode'];                                          // Getting the Song name
+                $color_code = $row_data['ColorCode'];                                          // Getting the color code
                 $artist_id = $row_data['ArtistID'];                                            // Getting artist id
 
                 // echo ($artist_id);                                                          // for testting purpose
