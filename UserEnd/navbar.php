@@ -130,18 +130,22 @@ session_start();
                     <?php
                     if (!isset($_SESSION['username'])) {
                         echo "
-                            <button class='btn btn-outline-secondary' type='submit'>Login</button>
-                            <button class='btn btn-outline-primary mx-2' type='submit'>Register</button>";
-                    } else {
+                            <form action='user-actions.php' method='post'>
+                                <button class='btn btn-outline-secondary' type='submit' name='user-login-btn'>Login</button>
+                                <button class='btn btn-outline-primary mx-2' type='submit' name='user-register-btn'>Register</button>
+                            </form>";
+                        } else {
                         $firstName = (function ($string) {
                             return strtok($string, ' ');
                         })($_SESSION['username']);
                         echo "
-                        <button class='username-btn'>$firstName <i class='fa-solid fa-user'></i></button>
-                        ";
+                        <form action='user-actions.php' method='post'>
+                            <button class='username-btn' name='user-profile-btn'>$firstName <i class='fa-solid fa-user'></i></button>
+                        </form>";
                     }
                     ?>
                 </div>
+                
             </div>
         </div>
     </nav>

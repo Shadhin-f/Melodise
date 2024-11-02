@@ -71,11 +71,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $user_found = mysqli_num_rows($result_user_credentials);
             if ($user_found > 0) {
                 $user_data = mysqli_fetch_assoc($result_user_credentials);
+                $userID = $user_data['UserID'];
                 $user_password = $user_data['Password'];
+                // $UserID = 8;
                 if ($loginPassword == $user_password) {
+
+                    // Checking Free or premium user
+
+                    $userType = 1; // 1 For free users
+
+                    // fetching subsiption data
+                    $select_user_subs_info = "SELECT * FROM `subscription_records` WHERE UserID = '$userID' AND EndDate > CURDATE() AND SubscriptionType <> 1";                    // Query to search for login email in data base
+                    $result_user_subs_info = mysqli_query($conn, $select_user_subs_info);
+
+                    if($result_user_subs_info){
+                        $subscriptin_found = mysqli_num_rows($result_user_subs_info);
+                        if($subscriptin_found > 0){
+                            $subs_data = mysqli_fetch_assoc($result_user_subs_info);
+                            $userType = $subs_data['SubscriptionType'];      // Storing subscription type
+                        }
+                    }
+
+                    // Session Start for the logged in user
                     
                     $_SESSION['username'] = $user_data['Name'];
                     $_SESSION['email'] = $user_data['Email'];
+                    $_SESSION['usertype'] = $userType; 
 
 
                     header('Location: index.php');
@@ -182,8 +203,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         session_destroy();
     }
 
+    // Navigation bar actions
+
+    if (isset($_POST['user-profile-btn'])){
+        header('Location: userprofile.php');
+    }
 
 
+    // Login / registration button / if not logged in
+
+    if (isset($_POST['user-login-btn']) || isset($_POST['user-register-btn'])){
+        header('Location: login.php');
+    }
+
+
+    //  Log out btn action
+
+    if(isset($_POST['logout-btn'])){
+        header('Location: login.php');
+        session_unset();
+        session_destroy();
+    }
 
     
     
