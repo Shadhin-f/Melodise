@@ -108,7 +108,57 @@ include('connect.php')
 
     <!-- Badhon -->
 
+        <!-- Your Albums Section -->
 
+        <section id='master-control' class='p-3'>
+
+
+        <!-- Title -->
+
+        <div id='master-control-title-container' class='d-flex flex-row justify-content-between align-items-center '>
+            <h1>Your Albums</h1>
+
+            <!-- <a href="#" class="text-decoration-none themed-btn">Add New Album</a> -->
+            <form action="user-actions.php" method="get">
+                <button type="submit" class="themed-btn bg-transparent border-0" name='all-music-btn'>Add New Album</button>
+            </form>
+        </div>
+
+
+        <!-- Your Releases Cards -->
+
+                <div id='control-card-container' class='d-flex flex-row justify-content-start flex-wrap align-items-center gap-5'>
+
+
+            <!-- Update Music Card -->
+
+            <div class='card' style='width: 15rem; '>
+                <img class='card-img-top' src='https://upload.wikimedia.org/wikipedia/en/f/ff/Tum_Hi_Ho_cover.jpeg'  style='width: 15rem; height: 15rem;' alt='Card image cap'>
+                <div class='card-body'>
+                    <h5 class='card-title'> <a href='#' class='btn btn-primary'>Tum Hi Ho</a> </h5>
+                    <p class='card-text'>Arijit Singh</p>
+                </div>
+            </div>
+
+            <!-- Update Music Card -->
+
+            <div class='card' style='width: 15rem; '>
+                <img class='card-img-top' src='https://img.freepik.com/free-photo/vinyl-record-cassette-tape-design-resource_53876-105921.jpg?t=st=1730348087~exp=1730351687~hmac=6bda3f0924ff3161c42e359fbfe85beed3e78fccd83404824898ad19262ca2e4&w=996'  style='width: 15rem; height: 15rem;' alt='Card image cap'>
+                <div class='card-body'>
+                    <h5 class='card-title'><a href='#' class='btn btn-primary'>Channa Mereya</a></h5>
+                    <p class='card-text'>Arijit Singh</p>
+                </div>
+            </div>
+
+            <!-- Update Music Card -->
+
+            <div class='card' style='width: 15rem; '>
+                <img class='card-img-top' src='https://upload.wikimedia.org/wikipedia/en/8/89/Gerua_cover.jpg'  style='width: 15rem; height: 15rem;' alt='Card image cap'>
+                <div class='card-body'>
+                    <h5 class='card-title'><a href='#' class='btn btn-primary'>Gerua</a></h5>
+                    <p class='card-text'>Arijit Singh</p>
+                </div>
+            </div>
 
 
 </body>
