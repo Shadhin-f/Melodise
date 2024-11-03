@@ -89,8 +89,8 @@ session_start();
                     <h4 class='mb-2'>$userName</h4>
                     <p class='text-muted mb-4'>$user_country <span class='mx-2'>|</span> $userEmail </p>
 
-                    <form class='d-flex flex-column justify-content-center align-items-center mt-5 mb-2'>
-                        <button type='submit' data-mdb-button-init data-mdb-ripple-init  class='btn btn-primary btn-rounded btn-md d-block w-75 mb-3 custom-btn'>Edit Profile</button>";
+                    <form action='user-actions.php' method='post' class='d-flex flex-column justify-content-center align-items-center mt-5 mb-2'>
+                        <button type='submit' data-mdb-button-init data-mdb-ripple-init  class='btn btn-primary btn-rounded btn-md d-block w-75 mb-3 custom-btn' name='profile-edit-btn'>Edit Profile</button>";
         if ($userType == 1) {
             // Subscription buy button active if the user is free
             echo "

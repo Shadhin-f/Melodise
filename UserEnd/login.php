@@ -94,13 +94,23 @@
                 <input type="email" class="form-control" id="regEmail" placeholder="Enter email" name="email">
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control" id="regPassword" placeholder="Password" name="password">
-            </div>
-            <div class="mb-3">
-                <input type="password" class="form-control" id="re-regPassword" placeholder="Confirm Password" name="re-password">
-            </div>
-            <div class="mb-3">
                 <input type="date" class="form-control" id="regDob" placeholder="Enter Date of Birth" name="dob">
+            </div>
+            <!-- Gender radio buttons -->
+            <div class="mb-3 text-start">
+                <label class="form-label">Gender</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="genderMale" name="gender" value="Male"  required>
+                    <label class="form-check-label" for="genderMale">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="genderFemale" name="gender" value="Female"  required>
+                    <label class="form-check-label" for="genderFemale">Female</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="genderOther" name="gender" value="Others"  required>
+                    <label class="form-check-label" for="genderOther">Other</label>
+                </div>
             </div>
             <div class="mb-3">
                 <select id="regCountry" class="form-select form-control" name="country">
@@ -113,6 +123,14 @@
                     <option value="Bangladesh">Bangladesh</option>
                 </select>
             </div>
+
+            <div class="mb-3">
+                <input type="password" class="form-control" id="regPassword" placeholder="Password" name="password">
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" id="re-regPassword" placeholder="Confirm Password" name="re-password">
+            </div>
+            
             <button type="submit" class="btn btn-custom btn-login w-100" name="registration-button">Register</button>
         </form>
 

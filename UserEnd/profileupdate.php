@@ -82,7 +82,10 @@ session_start();                 // Start session
     <?php
     // Session check
     if (!isset($_SESSION['username'])) {
-        echo "Log in to edit your profile";
+        echo '<script>
+                alert("Login to access this page!!");
+                window.location.href = "login.php";
+            </script>';
     } else {
         // Get the user's email from session
         $userEmail = $_SESSION['email'];
@@ -133,7 +136,7 @@ session_start();                 // Start session
                     <label class="form-check-label" for="genderFemale">Female</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="genderOther" name="updated-gender" value="Other" <?php if ($userGender == 'Others') echo 'checked'; ?> required>
+                    <input class="form-check-input" type="radio" id="genderOther" name="updated-gender" value="Others" <?php if ($userGender == 'Others') echo 'checked'; ?> required>
                     <label class="form-check-label" for="genderOther">Other</label>
                 </div>
             </div>
@@ -159,7 +162,7 @@ session_start();                 // Start session
 
             <!-- Buttons -->
             <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-custom btn-cancel" onclick="window.location.href='profile.php'">Cancel</button>
+                <button type="button" class="btn btn-custom btn-cancel" onclick="window.location.href='userprofile.php'">Cancel</button>
                 <button type="submit" class="btn btn-custom btn-update" name='profile-update-btn'>Update</button>
             </div>
         </form>

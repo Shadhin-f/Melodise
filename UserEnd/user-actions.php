@@ -116,9 +116,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // registration 
 
-    if (isset($_POST['registration-buttom'])) {
+    if (isset($_POST['registration-button'])) {
         $regName = $_POST['username'];
         $regEmail = $_POST['email'];
+        $gender = $_POST['gender'];
 
         // Password input without hashing
 
@@ -138,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Empty field check
 
-        if ($regName == '' || $regPassword == '' || $regRePassword == '' || $regDob == '' || $regCountry == '') {
+        if ($regName == '' || $regPassword == '' || $regRePassword == '' || $regDob == '' || $regCountry == '' || $gender == '') {
             echo '<script>
                         alert("Please fillout all the necessary field!!!");
                         window.location.href = "login.php";
@@ -173,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     // All the cases passed
 
                     else {
-                        $insert_user_credentials = "INSERT INTO `users` (`UserID`, `Name`, `Email`, `Password`, `DateOfBirth`, `Country`) VALUES (NULL, '$regName', '$regEmail', '$regPassword', '$regDob', '$regCountry')";                    // Query to insert user data to database
+                        $insert_user_credentials = "INSERT INTO `users` (`UserID`, `Name`, `Email`, `Password`, `DateOfBirth`,`Gender`, `Country`, `Image`) VALUES (NULL, '$regName', '$regEmail', '$regPassword', '$regDob', '$gender','$regCountry', 'unknown.jpg')";                    // Query to insert user data to database
                         $result_user_credentials = mysqli_query($conn, $insert_user_credentials);
                         if ($result_user_credentials) {
                             echo '<script>
@@ -214,6 +215,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: login.php');
     }
 
+    // profile edit btn
+
+    if (isset($_POST['profile-edit-btn'])) {
+        header('Location: profileupdate.php');
+    }
 
     //  Log out btn action
 
