@@ -29,23 +29,23 @@ session_start();
             background-color: #1B8673;
             color: #ffffff;
         }
-        .p-card-background{
-            background: rgb(213,249,139);
-background: linear-gradient(207deg, rgba(213,249,139,1) 0%, rgba(207,243,255,1) 100%);
+
+        .p-card-background {
+            background: rgb(213, 249, 139);
+            background: linear-gradient(207deg, rgba(213, 249, 139, 1) 0%, rgba(207, 243, 255, 1) 100%);
         }
     </style>
 </head>
 
 <body>
 
-<?php 
-    if (!isset($_SESSION['username'])){
+    <?php
+    if (!isset($_SESSION['username'])) {
         echo '<script>
                 alert("Login to view your profile!!");
                 window.location.href = "login.php";
             </script>';
-    }
-    else{
+    } else {
 
 
         // $_SESSION['username'] = $user_data['Name'];
@@ -54,9 +54,9 @@ background: linear-gradient(207deg, rgba(213,249,139,1) 0%, rgba(207,243,255,1) 
 
 
 
-        $userEmail = $_SESSION['email'];    // Key for user
+        $userEmail = $_SESSION['email'];                        // Key for user
         $userName = $_SESSION['username'];
-        $userType = $_SESSION['usertype'];
+        $userType = $_SESSION['usertype'];                      // store the subscriotin type number 
 
 
         // Fetching user information from the server
@@ -89,14 +89,14 @@ background: linear-gradient(207deg, rgba(213,249,139,1) 0%, rgba(207,243,255,1) 
                     <h4 class='mb-2'>$userName</h4>
                     <p class='text-muted mb-4'>$user_country <span class='mx-2'>|</span> $userEmail </p>
 
-                    <form action='user-actions.php' method='post' class='d-flex flex-column justify-content-center align-items-center mt-5 mb-2'>
-                        <button type='submit' data-mdb-button-init data-mdb-ripple-init class='btn btn-primary btn-rounded btn-md d-block w-75 mb-3 custom-btn'>Edit Profile</button>";
-                        if($userType == 1){ 
-                            // Subscription buy button active if the user is free
-                            echo "
+                    <form class='d-flex flex-column justify-content-center align-items-center mt-5 mb-2'>
+                        <button type='submit' data-mdb-button-init data-mdb-ripple-init  class='btn btn-primary btn-rounded btn-md d-block w-75 mb-3 custom-btn'>Edit Profile</button>";
+        if ($userType == 1) {
+            // Subscription buy button active if the user is free
+            echo "
                             <button type='submit' data-mdb-button-init data-mdb-ripple-init class='btn btn-primary btn-rounded btn-md d-block w-75 mb-3 custom-btn'>Buy Melodise+</button>";
-                            }
-                        echo"
+        }
+        echo "
                         <button type='submit' data-mdb-button-init data-mdb-ripple-init class='btn btn-primary btn-rounded btn-md d-block w-75 custom-btn' name='logout-btn'>Log out</button>
                     </form>
                     <div class='d-flex justify-content-around text-center mt-5 mb-2'>
@@ -128,13 +128,24 @@ background: linear-gradient(207deg, rgba(213,249,139,1) 0%, rgba(207,243,255,1) 
         ";
     }
 
-?>
-<!-- <form action='user-actions.php' method='post'></form> -->
-    
+    ?>
+
+
+    <!-- Modal overlay to update user info -->
+
+
+    <!-- Modal -->
 
 
 
-<!-- Social icon Saved for later use cases -->
+
+
+    <!-- <form action='user-actions.php' method='post'></form> -->
+
+
+
+
+    <!-- Social icon Saved for later use cases -->
 
 
 
@@ -153,5 +164,4 @@ background: linear-gradient(207deg, rgba(213,249,139,1) 0%, rgba(207,243,255,1) 
 
 </body>
 <script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>
-
 </html>
