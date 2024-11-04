@@ -70,7 +70,7 @@
 
         .toggle-btn {
             cursor: pointer;
-            font-weight:500 ;
+            font-weight: 500;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
@@ -129,12 +129,12 @@
             <div class="mb-3">
                 <select id="regCountry" class="form-select form-control" name="country">
                     <option value="Bangladesh">Select Country</option>
-                    <option value="USA" >United States</option>
-                    <option value="Canada" >Canada</option>
-                    <option value="UK" >United Kingdom</option>
-                    <option value="Australia" >Australia</option>
-                    <option value="India" >India</option>
-                    <option value="Bangladesh" >Bangladesh</option>
+                    <option value="USA">United States</option>
+                    <option value="Canada">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="Australia">Australia</option>
+                    <option value="India">India</option>
+                    <option value="Bangladesh">Bangladesh</option>
                 </select>
             </div>
 
