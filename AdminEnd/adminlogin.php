@@ -3,87 +3,110 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to MELODISE</title>
-    
-    <!-- Bootsttrap -->
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom Styling -->
-
     <style>
-        .form-container {
-            margin-top: 50px;
+        /* Background image for the whole page */
+        body {
+            background-image: url('../Resources/DesignElements/admin-login-img.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
+
+        /* Centered form card style */
+        .form-card {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 10px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Logo and title styling */
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1B8673;
+        }
+
+        /* Input field styling */
+        .form-control {
+            border: none;
+            border-bottom: 2px solid #1B8673;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #1B8673;
+        }
+
+        /* Button styling */
+        .btn-custom {
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .btn-login {
+            background-color: #1B8673;
+            color: white;
+        }
+
+        .btn-login:hover {
+            background-color: #145a50;
+        }
+
         .toggle-btn {
             cursor: pointer;
-            color: #007bff;
+            font-weight:500 ;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+
         .toggle-btn:hover {
-            text-decoration: underline;
-        }
-        .toggle-btn:focus {
-            outline: none;
-        }
-        .header {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .header h1 {
-            font-size: 2rem;
-            color: #007bff;
-        }
-        .header p {
-            font-size: 1rem;
-            color: #6c757d;
+            /* Change to desired hover background color */
+            color: #1B8673;
+            /* Change to desired hover text color */
         }
     </style>
 </head>
+
 <body>
 
-    <!-- Header Section -->
+    <div class="form-card text-center">
+        <div class="logo mb-3">MELODISE</div>
+        <h2 id="form-title" class="mb-4">Login</h2>
 
-
-    <div class="header">
-        <h1>Welcome to MELODISE</h1>
-        <p>Your personal music streaming platform</p>
-    </div>
-
-    <div class="container form-container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 id="form-title" class="text-center mb-4">Admin Login</h3>
-
-                        <!-- Login Form -->
-
-
-                        <form id="login-form" action="adminaction.php" method="post">
-                            <div class="mb-3">
-                                <label for="loginEmail" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="loginEmail" placeholder="Enter email" name="loginEmail">
-                            </div>
-                            <div class="mb-3">
-                                <label for="loginPassword" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="loginPassword" placeholder="Password" name="loginPassword">
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100" name="admin-login-button">Login</button>
-                        </form>
-
-                    </div>
-                </div>
+        <!-- Login Form -->
+        <form id="login-form" action="adminaction.php" method="post">
+            <div class="mb-3">
+                <input type="email" class="form-control" id="loginEmail" placeholder="Enter email" name="loginEmail" required>
             </div>
-        </div>
-    </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" id="loginPassword" placeholder="Password" name="loginPassword" required>
+            </div>
+            <button type="submit" class="btn btn-custom btn-login w-100" name="admin-login-button">Login</button>
+        </form>
 
-    <!-- Bootstrap 5 JS and Popper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybXTdE6jSHH4LlbA6b1CZCEN57TZzS0uT1GFqsZV5ZCfl2TO5" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-qWz6jrpIpLwS05XX39A6/pQUjjfC9uOO+V52PUvF+MUCf/UFAfIPAOIMSOFprRIp" crossorigin="anonymous"></script>
+        
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Custom JS -->
+    <!-- Javascript to toggle register and login btn -->
     <script>
         document.getElementById('toggle-btn').addEventListener('click', function() {
             const loginForm = document.getElementById('login-form');
@@ -91,25 +114,15 @@
             const formTitle = document.getElementById('form-title');
             const toggleText = document.getElementById('toggle-text');
             const toggleBtn = document.getElementById('toggle-btn');
-            
+
             if (loginForm.classList.contains('d-none')) {
-                // Switch to Login Form
                 loginForm.classList.remove('d-none');
                 regForm.classList.add('d-none');
                 formTitle.textContent = 'Login';
-                toggleText.textContent = "Don't have an account? ";
-                toggleBtn.textContent = 'Register';
-            } else {
-                // Switch to Registration Form
-                loginForm.classList.add('d-none');
-                regForm.classList.remove('d-none');
-                formTitle.textContent = 'Register';
-                toggleText.textContent = 'Already have an account? ';
-                toggleBtn.textContent = 'Login';
-            }
+                
+            } 
         });
-
     </script>
-
 </body>
+
 </html>

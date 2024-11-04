@@ -6,6 +6,54 @@ include('connect.php')
 <!doctype html>
 <html lang="en">
 
+<style>
+.access {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            min-height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            border: 2px solid #1B8673;
+            border-radius: 10px;
+            padding: 2rem;
+            max-width: 400px; /* Set maximum width */
+            width: 100%; /* Full width up to max */
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+            text-align: center; /* Center text */
+        }
+
+        /* Title styling */
+        .container h1 {
+            color: #1B8673; /* Change this to your desired color */
+            margin-bottom: 1rem; /* Space below title */
+            font-size: 2rem; /* Adjust font size */
+        }
+
+        /* Error message styling */
+        .container h4 {
+            color: #1B8673; /* Match your code's primary color */
+            margin: 1rem 0; /* Space above and below */
+        }
+
+        /* Button styling */
+        .btn-custom {
+            background-color: #1B8673;
+            color: white;
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            margin-top: 1rem; /* Space above button */
+        }
+
+        .btn-custom:hover {
+            background-color: #145a50; /* Darker shade on hover */
+        }
+
+
+</style>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,6 +117,30 @@ include('connect.php')
                     <a href='#' class='btn btn-primary'>Update Genre</a>
                 </div>
             </div>
+
+            <!-- Update Genre Card -->
+            <div class='card' style='width: 18rem;'>
+                <img class='card-img-top' src='https://images.unsplash.com/photo-1587731556938-38755b4803a6?q=80&w=1778&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' style='width: 18rem; height: 12rem;' alt='Card image cap'>
+                <div class='card-body'>
+                    <h5 class='card-title'>Update Genre</h5>
+                    <p class='card-text'>Manage music genres for better categorization.</p>
+                    <a href='#' class='btn btn-primary'>Update Genre</a>
+                </div>
+            </div>
+            
+            <!-- Update Genre Card -->
+            <div class='card' style='width: 18rem;'>
+                <img class='card-img-top' src='https://images.unsplash.com/photo-1587731556938-38755b4803a6?q=80&w=1778&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' style='width: 18rem; height: 12rem;' alt='Card image cap'>
+                <div class='card-body'>
+                    <h5 class='card-title'>Update Genre</h5>
+                    <p class='card-text'>Manage music genres for better categorization.</p>
+                    <a href='#' class='btn btn-primary'>Update Genre</a>
+                </div>
+            </div>
+            
+            
+
+
             
         </div>
         
@@ -154,7 +226,16 @@ include('connect.php')
     } 
     else {
         echo " 
-         <p>you have to login</p>
+        <section class='access'>
+        <div class='container'>
+        <h1 class='w3-jumbo w3-animate-top'>Access Denied</h1>
+        <hr class='w3-border-white' style='margin:auto;width:50%'>
+        <h2 class='w3-center w3-animate-right'>You don't have permission to view this site.</h3>
+        <h3 class='w3-center w3-animate-zoom'>🚫🚫🚫🚫</h3>
+        <h4 class='w3-center w3-animate-zoom'>Error code: 403 forbidden</h6>
+        
+        </div>
+        </section>
         ";
     }
     ?>
