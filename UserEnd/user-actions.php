@@ -261,6 +261,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($result_user_credentials) {
                 $user_found = mysqli_num_rows($result_user_credentials);
+
+
+                // Collecting the image name from the database ##
+                $user_data = mysqli_fetch_assoc($result_user_credentials);
+                $userImage = $user_data['Image'];
+
+
                 if ($user_found > 0 && $upEmail != $userEmail) {
                     echo '<script>
                             alert("Email Already in use!!");
@@ -271,16 +278,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // All the cases passed
 
                 else {
-                    $update_user_credentials = "UPDATE `users` SET `Name` = '$upName', `Email` = '$upEmail', `DateOfBirth` = '$upDOB', `Gender` = '$upGender', `Country` = '$upCountry' WHERE `users`.`Email` = '$userEmail';";                    // Query to insert user data to database
+
+                    // checking if profile image is selected or not ##
+                    if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] != 4) {
+
+                        // Getting the file extension of the uploaded file
+                        $originalExtension = pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION);
+
+                        $uploadDirectory = 'C:/xampp/htdocs/website/Melodise/Resources/UserImages/';
+                        $oldImagePath = $uploadDirectory . $userImage;
+                        $newImageName = $upEmail . $originalExtension;                                                   // New image name
+                        $newImagePath = $uploadDirectory . $newImageName;
+
+                        // Delete the old image 
+                        if (file_exists($oldImagePath)) {
+                            unlink($oldImagePath);
+                        }
+
+
+                        // Moving file to the resources folder
+                        if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $newImagePath)) {
+                            
+                            
+                            // Update query with image
+                            $update_user_credentials = "UPDATE `users` SET `Name` = '$upName', `Email` = '$upEmail', `DateOfBirth` = '$upDOB', `Gender` = '$upGender', `Country` = '$upCountry', `Image` = '$newImageName' WHERE `users`.`Email` = '$userEmail';";
+                        }
+                    }else{
+
+
+                        // update query without image
+                        $update_user_credentials = "UPDATE `users` SET `Name` = '$upName', `Email` = '$upEmail', `DateOfBirth` = '$upDOB', `Gender` = '$upGender', `Country` = '$upCountry' WHERE `users`.`Email` = '$userEmail';";                   
+                    
+                    }
+
                     $result_user_credentials = mysqli_query($conn, $update_user_credentials);
                     if ($result_user_credentials) {
                         echo '<script>
-                            alert("Profile Updated. Login to view updated profile!");
-                            window.location.href = "login.php";
-                            </script>';
+                                alert("Profile Updated. Login to view updated profile!");
+                                window.location.href = "login.php";
+                                </script>';
                     }
-                    // echo "$regName, $regEmail, $regPassword, $regRePassword, $regDob, $regCountry";
-
                 }
             }
         }
