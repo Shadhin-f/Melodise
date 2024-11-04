@@ -156,7 +156,7 @@ session_start();                 // Start session
 
             <!-- Image input -->
             <div class="mb-3">
-                <label class="form-label">Profile Image</label>
+                <label class="form-label">Profile Image (Optional)</label>
                 <input type="file" class="form-control" id="profileImage" name="profileImage" accept="image/*">
             </div>
 
