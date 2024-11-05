@@ -9,49 +9,33 @@ include('connect.php')
 <style>
 .access {
             display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
         }
-
         .container {
             background: rgba(255, 255, 255, 0.85);
             border: 2px solid #1B8673;
             border-radius: 10px;
             padding: 2rem;
-            max-width: 400px; /* Set maximum width */
-            width: 100%; /* Full width up to max */
+            max-width: 300px;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-            text-align: center; /* Center text */
+            text-align: center;
         }
-
-        /* Title styling */
-        .container h1 {
-            color: #1B8673; /* Change this to your desired color */
-            margin-bottom: 1rem; /* Space below title */
-            font-size: 2rem; /* Adjust font size */
+        .container h1{
+            color: red;
         }
-
-        /* Error message styling */
-        .container h4 {
-            color: #1B8673; /* Match your code's primary color */
-            margin: 1rem 0; /* Space above and below */
+        .text-primary-custom {
+            color: #1B8673;
         }
-
-        /* Button styling */
         .btn-custom {
             background-color: #1B8673;
             color: white;
             border-radius: 50px;
-            padding: 0.5rem 1.5rem;
-            margin-top: 1rem; /* Space above button */
         }
-
         .btn-custom:hover {
-            background-color: #145a50; /* Darker shade on hover */
+            background-color: #145a50;
         }
-
-
 </style>
 
 <head>
@@ -71,11 +55,140 @@ include('connect.php')
         include('navbar.php')
     ?>
 
+
+
+
+
 <!-- Admin Session Check-->
 <?php 
     if(isset($_SESSION['adminname'])) {
+
+        // query for counting total users 
+        $select_users_count = "SELECT count(*) as user_count FROM `users`";                   
+        $result_users_count = mysqli_query($conn, $select_users_count);
+        $user_count = mysqli_fetch_assoc($result_users_count);
+
+        
+        // query for counting premium users
+        
+        $select_premium_user_count = "SELECT count(*) as premium_count FROM `subscription_records` where CURDATE()<= EndDate";                   // query for selecting all songs
+        $result_premiumusers_count = mysqli_query($conn, $select_premium_user_count);
+        $premium_count = mysqli_fetch_assoc($result_premiumusers_count);
+        
+        // query for counting free users
+        $count_free_users = $user_count['user_count'] - $premium_count['premium_count'];
+
+        // query for finding revenue
+        // query for counting total music released
+        $select_song_count = "SELECT count(*) as songs_count FROM `songs`";                   
+        $result_song_count = mysqli_query($conn, $select_song_count);
+        $song_count = mysqli_fetch_assoc($result_song_count);
+
+        // query for counting total artists
+        $select_artist_count = "SELECT count(*) as artist_count FROM `artists`";                   
+        $result_artist_count = mysqli_query($conn, $select_artist_count);
+        $artist_count = mysqli_fetch_assoc($result_artist_count);
+
+        // query for counting total playlists created
+        $select_playlist_count = "SELECT count(*) as playlist_count FROM `playlists`";                   
+        $result_playlist_count = mysqli_query($conn, $select_playlist_count);
+        $playlist_count = mysqli_fetch_assoc($result_playlist_count);
+
+        // query for counting total albums released
+        $select_albums_count = "SELECT count(*) as albums_count FROM `albums`";                   
+        $result_albums_count = mysqli_query($conn, $select_albums_count);
+        $albums_count = mysqli_fetch_assoc($result_albums_count);
+
+
         echo "
-            <section>
+        <section>
+
+        <!-- Analysis Cards -->
+        <div class='container mt-5'>
+            <div class='row'>
+                <!-- Card 1 -->
+                <div class='col-md-3 col-sm-6 mb-4'>
+                    <div class='card'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>Total Users</h5>
+                            <p class='card-text'>{$user_count['user_count']}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class='col-md-3 col-sm-6 mb-4'>
+                    <div class='card'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>Free Users</h5>
+                            <p class='card-text'>$count_free_users</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class='col-md-3 col-sm-6 mb-4'>
+                    <div class='card'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>Premium Users</h5>
+                            <p class='card-text'>{$premium_count['premium_count']}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class='col-md-3 col-sm-6 mb-4'>
+                    <div class='card'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>Revenue</h5>
+                            <p class='card-text'>900</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class='col-md-3 col-sm-6 mb-4'>
+                    <div class='card'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>Music Released</h5>
+                            <p class='card-text'>{$song_count['songs_count']}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class='col-md-3 col-sm-6 mb-4'>
+                    <div class='card'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>Total Artists</h5>
+                            <p class='card-text'>{$artist_count['artist_count']}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 7 -->
+                <div class='col-md-3 col-sm-6 mb-4'>
+                    <div class='card'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>Playlists Created</h5>
+                            <p class='card-text'>{$playlist_count['playlist_count']}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 8 -->
+                <div class='col-md-3 col-sm-6 mb-4'>
+                    <div class='card'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>Albums</h5>
+                            <p class='card-text'>{$albums_count['albums_count']}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
 
     <!-- Master Control Section -->
 
@@ -227,13 +340,12 @@ include('connect.php')
     else {
         echo " 
         <section class='access'>
-        <div class='container'>
-        <h1 class='w3-jumbo w3-animate-top'>Access Denied</h1>
-        <hr class='w3-border-white' style='margin:auto;width:50%'>
-        <h2 class='w3-center w3-animate-right'>You don't have permission to view this site.</h3>
-        <h3 class='w3-center w3-animate-zoom'>🚫🚫🚫🚫</h3>
-        <h4 class='w3-center w3-animate-zoom'>Error code: 403 forbidden</h6>
-        
+        <div class='container container-custom'>
+        <h1 class='display-4 text-primary-custom'>Access Denied</h1>
+        <hr class='bg-white' style='width: 100%;'>
+        <h2 class='text-primary-custom'>You don't have permission to view this site.</h2>
+        <h3 class='text-primary-custom'>🚫🚫🚫🚫</h3>
+        <h4 class='text-primary-custom'>Error code: 403 forbidden</h4>
         </div>
         </section>
         ";
