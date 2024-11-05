@@ -287,11 +287,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         $uploadDirectory = 'C:/xampp/htdocs/website/Melodise/Resources/UserImages/';
                         $oldImagePath = $uploadDirectory . $userImage;
-                        $newImageName = $upEmail . $originalExtension;                                                   // New image name
+                        $newImageName = $upEmail . '.'. $originalExtension;                                                   // New image name
                         $newImagePath = $uploadDirectory . $newImageName;
 
                         // Delete the old image 
-                        if (file_exists($oldImagePath)) {
+                        if (file_exists($oldImagePath) && $userImage != 'unknown.jpg') {
                             unlink($oldImagePath);
                         }
 

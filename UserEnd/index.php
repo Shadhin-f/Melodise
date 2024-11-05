@@ -19,56 +19,61 @@ include('connect.php')
         /* Music plyer customise */
 
         .custom-player-card {
-            background-color: #e9ecef;
-            /* Slightly darker gray for better contrast */
-            border-top: 2px solid #198754;
-            /* Accent color border */
-            border-radius: 12px 12px 0 0;
-            /* Rounded top corners */
-            box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #198754;
+            color: white;
+            padding: 10px 15px;
+            height: 60px;
         }
 
-        .custom-player-card h6 {
-            color: #343a40;
-            /* Darker text for visibility */
-            font-weight: bold;
+        .album-art {
+            width: 50px;
+            height: 50px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
         }
 
-        .custom-player-card p {
-            color: #6c757d;
-            /* Secondary dark color */
+        .song-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 10px;
         }
 
-        .custom-progress {
-            height: 6px;
+        .song-title {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .song-artist {
+            font-size: 0.75rem;
+            margin: 0;
+            color: #d4d4d4;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 5px;
+            background-color: #d4d4d4;
             border-radius: 3px;
-            background-color: #ced4da;
-            /* Light gray for empty progress */
-            margin: 0 10px;
+            overflow: hidden;
         }
 
         .custom-progress-bar {
-            background-color: #198754;
-            /* Accent color for the progress bar */
+            height: 100%;
+            background-color: #fff;
         }
 
-        .btn-icon {
-            background: none;
-            border: none;
-            color: #198754;
-            /* Accent color for icons */
-            font-size: 1.2rem;
-            padding: 0.5rem;
-        }
-
-        .btn-icon:hover {
-            color: #145c3a;
-            /* Darker shade on hover */
-        }
-
-        .btn-icon:focus {
-            outline: none;
-            box-shadow: none;
+        .volume-control {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
@@ -182,23 +187,28 @@ include('connect.php')
     <!-- Music PLayer -->
 
 
-    <div class="card fixed-bottom text-center p-3 custom-player-card">
-        <div class="row align-items-center">
-            <div class="col-2 text-center">
-                <img src="path_to_album_art" alt="Album Art" class="img-fluid rounded-circle shadow-sm" width="50">
+    <div class="card fixed-bottom custom-player-card d-flex align-items-center">
+        <div class="d-flex align-items-center w-100">
+            <!-- Album art with background image -->
+            <div class="album-art" style="background-image: url('https://images.unsplash.com/photo-1730688213382-b62363b93824?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyMHx8fGVufDB8fHx8fA%3D%3D');"></div>
+
+            <!-- Song information -->
+            <div class="song-info">
+                <p class="song-title mb-0" id="songTitle">Hello</p>
+                <p class="song-artist mb-0" id="songArtist">Mona Lisa</p>
             </div>
-            <div class="col-8">
-                <h6 id="songTitle" class="mb-1 text-dark">Hello</h6>
-                <p id="songArtist" class="small text-secondary">Shadhin</p>
-                <div class="d-flex align-items-center justify-content-center">
-                    <button id="playPauseBtn" class="btn btn-icon me-2"><i class="fas fa-play"></i></button>
-                    <div class="progress custom-progress flex-grow-1">
-                        <div id="songProgress" class="progress-bar custom-progress-bar" role="progressbar"></div>
-                    </div>
+
+            <!-- Controls: play/pause button and progress bar -->
+            <div class="d-flex flex-grow-1 align-items-center justify-content-center">
+                <button id="playPauseBtn" class="btn btn-sm text-black me-2"><i class="fas fa-play"></i></button>
+                <div class="progress-container">
+                    <div id="songProgress" class="progress-bar custom-progress-bar"></div>
                 </div>
             </div>
-            <div class="col-2 d-flex justify-content-center">
-                <button id="volumeBtn" class="btn btn-icon"><i class="fas fa-volume-up"></i></button>
+
+            <!-- Volume control -->
+            <div class="volume-control ms-2">
+                <button id="volumeBtn" class="btn btn-sm text-black"><i class="fas fa-volume-up"></i></button>
             </div>
         </div>
     </div>
@@ -207,7 +217,7 @@ include('connect.php')
 </body>
 <script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>
 <script>
-    let audio = new Audio('path_to_song_file');
+    const audio = new Audio('Downloads/Forever_Young.mp3');
     let isPlaying = false;
 
     document.getElementById('playPauseBtn').addEventListener('click', () => {
