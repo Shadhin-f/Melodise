@@ -93,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     // Session Start for the logged in user
 
+                    $_SESSION['userid'] = $user_data['UserID'];
                     $_SESSION['username'] = $user_data['Name'];
                     $_SESSION['email'] = $user_data['Email'];
                     $_SESSION['usertype'] = $userType;
@@ -242,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //Confirm Update profile button
 
     if (isset($_POST['profile-update-btn'])) {
-        session_start();
+        // session_start();
 
         $userEmail = $_SESSION['email'];
 
@@ -328,6 +329,78 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
                 }
             }
+        }
+    }
+
+    
+
+    // Button forward to payment page
+
+    if (isset($_POST['payment-btn'])) {
+        header('Location: payment.php');
+    }
+
+
+
+    //  Confirm Purchase btn
+
+
+
+
+    if (isset($_POST['confirm-purchase-btn'])) {
+
+        // Storing information
+
+        $userID = $_SESSION['userid'];
+        $paymentAmount = $_POST['price-box'];
+        $password = $_POST['password'];
+
+
+        $select_user_pass = "SELECT * FROM `users` WHERE UserID = '$userID'";                    // Query to search for login email in data base
+        $result_user_pass = mysqli_query($conn, $select_user_pass);
+        $user_pass = mysqli_fetch_assoc($result_user_pass);
+        $userPassword = $user_pass['Password'];
+
+        // Checking if the password is correct
+        if ($userPassword == $password) {
+            // Query to find package id
+            $select_package = "SELECT * FROM `subscription_types` WHERE Price = '$paymentAmount'";                    // Query to search for login email in data base
+            $result_select_package = mysqli_query($conn, $select_package);
+            if ($result_select_package) {
+                $packageData = mysqli_fetch_assoc($result_select_package);
+                // Getting the appropriate package code
+                $packageCode = $packageData['PackageCode'];
+                // Geeting the package duration in months
+                $packageDuration = $packageData['Duration'];
+                $currentDate = new DateTime();
+                if ($packageDuration < 12) {
+                    $currentDate->modify("+{$packageDuration} months");
+                } else {
+                    // Duration convert to year
+                    $packageDuration = $packageDuration / 12;
+                    $currentDate->modify("+{$packageDuration} years");
+                }
+                // Formatted date for mysql query
+                $futureDate = $currentDate->format('Y-m-d');
+
+                // updating the subscription records
+                $update_subscription = "INSERT INTO `subscription_records` (`SubscriptionID`, `SubscriptionType`, `UserID`, `StartDate`, `EndDate`) VALUES (NULL, '$packageCode', '$userID', current_timestamp(), '$futureDate');";
+                $result_select_package = mysqli_query($conn, $update_subscription);
+
+                if ($result_select_package) {
+                    $_SESSION['usertype'] = $packageCode;
+                    echo '<script>
+                                alert("Subscription Purchased Enjoy Unlimited Music!!");
+                                window.location.href = "userprofile.php";
+                            </script>';
+                }
+            } else {
+                echo "There was a problem!!!";
+            }
+        } else {
+            echo '<script>
+                    alert("Password is incorrect!!");
+                </script>';
         }
     }
 }
