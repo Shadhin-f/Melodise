@@ -215,13 +215,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: login.php');
     }
 
-    // profile edit btn
+    // profile edit btn (user profile)
+
+    if (isset($_POST['subscription-buy-btn'])) {
+        header('Location: subscription-purchase.php');
+    }
+
+
+    // Subscription buy btn (user profile)
 
     if (isset($_POST['profile-edit-btn'])) {
         header('Location: profileupdate.php');
     }
 
-    //  Log out btn action
+
+
+    //  Log out btn action (user profile)
 
     if (isset($_POST['logout-btn'])) {
         header('Location: login.php');
@@ -287,7 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         $uploadDirectory = 'C:/xampp/htdocs/website/Melodise/Resources/UserImages/';
                         $oldImagePath = $uploadDirectory . $userImage;
-                        $newImageName = $upEmail . '.'. $originalExtension;                                                   // New image name
+                        $newImageName = $upEmail . '.' . $originalExtension;                                                   // New image name
                         $newImagePath = $uploadDirectory . $newImageName;
 
                         // Delete the old image 
@@ -298,17 +307,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         // Moving file to the resources folder
                         if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $newImagePath)) {
-                            
-                            
+
+
                             // Update query with image
                             $update_user_credentials = "UPDATE `users` SET `Name` = '$upName', `Email` = '$upEmail', `DateOfBirth` = '$upDOB', `Gender` = '$upGender', `Country` = '$upCountry', `Image` = '$newImageName' WHERE `users`.`Email` = '$userEmail';";
                         }
-                    }else{
+                    } else {
 
 
                         // update query without image
-                        $update_user_credentials = "UPDATE `users` SET `Name` = '$upName', `Email` = '$upEmail', `DateOfBirth` = '$upDOB', `Gender` = '$upGender', `Country` = '$upCountry' WHERE `users`.`Email` = '$userEmail';";                   
-                    
+                        $update_user_credentials = "UPDATE `users` SET `Name` = '$upName', `Email` = '$upEmail', `DateOfBirth` = '$upDOB', `Gender` = '$upGender', `Country` = '$upCountry' WHERE `users`.`Email` = '$userEmail';";
                     }
 
                     $result_user_credentials = mysqli_query($conn, $update_user_credentials);

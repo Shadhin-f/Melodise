@@ -94,7 +94,7 @@ session_start();
         if ($userType == 1) {
             // Subscription buy button active if the user is free
             echo "
-                            <button type='submit' data-mdb-button-init data-mdb-ripple-init class='btn btn-primary btn-rounded btn-md d-block w-75 mb-3 custom-btn'>Buy Melodise+</button>";
+                            <button type='submit' data-mdb-button-init data-mdb-ripple-init class='btn btn-primary btn-rounded btn-md d-block w-75 mb-3 custom-btn' name='subscription-buy-btn'>Buy Melodise+</button>";
         }
         echo "
                         <button type='submit' data-mdb-button-init data-mdb-ripple-init class='btn btn-primary btn-rounded btn-md d-block w-75 custom-btn' name='logout-btn'>Log out</button>
@@ -131,17 +131,6 @@ session_start();
     ?>
 
 
-    <!-- Modal overlay to update user info -->
-
-
-    <!-- Modal -->
-
-
-
-
-
-    <!-- <form action='user-actions.php' method='post'></form> -->
-
 
 
 
@@ -164,4 +153,5 @@ session_start();
 
 </body>
 <script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>
+
 </html>
