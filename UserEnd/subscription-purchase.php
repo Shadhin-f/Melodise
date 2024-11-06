@@ -260,7 +260,7 @@ session_start();
 
                 <!-- Back Button -->
                 <div class="d-flex justify-content-center">
-                    <button onclick="window.location.href='index.php'" class="btn btn-back"> Explore MELODISE</button>
+                    <button onclick="window.location.href='melodise/userend/index.php'" class="btn btn-back"> Explore MELODISE</button>
                 </div>
             </div>
         </div>

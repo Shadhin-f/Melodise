@@ -293,11 +293,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] != 4) {
 
                         // Getting the file extension of the uploaded file
-                        $originalExtension = pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION);
+                        // $originalExtension = pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION);
 
                         $uploadDirectory = 'C:/xampp/htdocs/website/Melodise/Resources/UserImages/';
                         $oldImagePath = $uploadDirectory . $userImage;
-                        $newImageName = $upEmail . '.' . $originalExtension;                                                   // New image name
+                        // $newImageName = $upEmail . '.' . $originalExtension;                                                   // New image name
+                        $newImageName = $upEmail;                                              // New image name
                         $newImagePath = $uploadDirectory . $newImageName;
 
                         // Delete the old image 
@@ -332,7 +333,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    
+
 
     // Button forward to payment page
 
