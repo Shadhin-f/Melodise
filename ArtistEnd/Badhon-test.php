@@ -105,6 +105,10 @@
                     <option value="Hip-Hop">Hip-Hop</option>
                 </select>
             </div>
+            <div class="mb-3">
+                    <label for="mp3File" class="form-label">Upload MP3 File</label>
+                    <input type="file" class="form-control" id="mp3File" accept=".mp3" required>
+            </div>
             <div class="mb-3 text-start">
                 <label for="colorCode" class="form-label">Color Code</label>
                 <input type="color" class="form-control form-control-color" id="colorCode" value="#1B8673" required>

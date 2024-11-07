@@ -108,12 +108,15 @@ include('connect.php')
 
     <!-- Badhon -->
 
+
         <!-- Your Albums Section -->
+
 
         <section id='master-control' class='p-3'>
 
 
         <!-- Title -->
+
 
         <div id='master-control-title-container' class='d-flex flex-row justify-content-between align-items-center '>
             <h1>Your Albums</h1>
@@ -127,10 +130,12 @@ include('connect.php')
 
         <!-- Your Releases Cards -->
 
+
                 <div id='control-card-container' class='d-flex flex-row justify-content-start flex-wrap align-items-center gap-5'>
 
 
             <!-- Update Music Card -->
+
 
             <div class='card' style='width: 15rem; '>
                 <img class='card-img-top' src='https://upload.wikimedia.org/wikipedia/en/f/ff/Tum_Hi_Ho_cover.jpeg'  style='width: 15rem; height: 15rem;' alt='Card image cap'>
@@ -142,6 +147,7 @@ include('connect.php')
 
             <!-- Update Music Card -->
 
+
             <div class='card' style='width: 15rem; '>
                 <img class='card-img-top' src='https://img.freepik.com/free-photo/vinyl-record-cassette-tape-design-resource_53876-105921.jpg?t=st=1730348087~exp=1730351687~hmac=6bda3f0924ff3161c42e359fbfe85beed3e78fccd83404824898ad19262ca2e4&w=996'  style='width: 15rem; height: 15rem;' alt='Card image cap'>
                 <div class='card-body'>
@@ -151,6 +157,7 @@ include('connect.php')
             </div>
 
             <!-- Update Music Card -->
+
 
             <div class='card' style='width: 15rem; '>
                 <img class='card-img-top' src='https://upload.wikimedia.org/wikipedia/en/8/89/Gerua_cover.jpg'  style='width: 15rem; height: 15rem;' alt='Card image cap'>
