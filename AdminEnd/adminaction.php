@@ -1,6 +1,7 @@
 <?php 
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        session_start();
         include('connect.php');
         // Login actions
 
@@ -52,6 +53,18 @@
             header('Location: adminlogin.php');
 
         }
+
+        // user Search Button action
+
+
+        if (isset($_POST['user-search-btn'])){
+            $user_search_key = $_POST['user-search-key'];
+            // echo $user_search_key;
+            $_SESSION['user-search-key'] = $user_search_key;
+            header('Location: user-update.php');
+            exit();
+        }
+
 
     }
 ?>

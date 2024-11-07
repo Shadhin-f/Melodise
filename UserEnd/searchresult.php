@@ -48,7 +48,7 @@ session_start();
                 $select_songs = "SELECT * FROM `songs` WHERE Title LIKE '%" . $searchKey . "%' LIMIT 8";                   // query for selecting all songs
                 $result_songs = mysqli_query($conn, $select_songs);
 
-                // loop to fetch all songs
+                // loop to fetch all songs  
                 while ($row_data = mysqli_fetch_assoc($result_songs)) {
                     $song_name = $row_data['Title'];                                               // Getting the Song name
                     $color_code = $row_data['ColorCode'];                                          // Getting the Song name

@@ -11,7 +11,7 @@ include('connect.php')
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Home Page</title>
     <!-- Bootstrap Link -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- CSS File Link -->
     <link rel="stylesheet" href="style.css">
 
@@ -131,45 +131,6 @@ include('connect.php')
 
 
         echo "
-        <!-- tableeeeeeeeeeeeeeeee -->
-
-
-<section>
-<div class='container my-5 table-container'>
-    <h2 class='text-center mb-4 text-primary-custom'>Subscription Details</h2>
-    <table class='table table-bordered table-hover table-custom'>
-        <thead>
-            <tr>
-                <th scope='col'>Username</th>
-                <th scope='col'>Transaction ID</th>
-                <th scope='col'>Package Name</th>
-                <th scope='col'>Subscription Ends</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>john_doe</td>
-                <td>TX12345</td>
-                <td>Premium</td>
-                <td>2024-11-05</td>
-            </tr>
-            <tr>
-                <td>jane_smith</td>
-                <td>TX12346</td>
-                <td>Basic</td>
-                <td>2024-10-30</td>
-            </tr>
-            <tr>
-                <td>alex_jones</td>
-                <td>TX12347</td>
-                <td>Standard</td>
-                <td>2024-12-15</td>
-            </tr>
-            <!-- Add more rows as needed -->
-        </tbody>
-    </table>
-</div>
-</section>
 
         <section>
 
@@ -258,6 +219,44 @@ include('connect.php')
 
             </div>
         </div>
+
+        <!-- tableeeeeeeee -->
+    <section>
+<div class='container my-5 table-container'>
+    <h2 class='text-center mb-4 text-primary-custom'>Subscription Details</h2>
+    <table class='table table-bordered table-hover table-custom'>
+        <thead>
+            <tr>
+                <th scope='col'>Username</th>
+                <th scope='col'>Transaction ID</th>
+                <th scope='col'>Package Name</th>
+                <th scope='col'>Subscription Ends</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>john_doe</td>
+                <td>TX12345</td>
+                <td>Premium</td>
+                <td>2024-11-05</td>
+            </tr>
+            <tr>
+                <td>jane_smith</td>
+                <td>TX12346</td>
+                <td>Basic</td>
+                <td>2024-10-30</td>
+            </tr>
+            <tr>
+                <td>alex_jones</td>
+                <td>TX12347</td>
+                <td>Standard</td>
+                <td>2024-12-15</td>
+            </tr>
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+</div>
+</section>
 
 
     <!-- Master Control Section -->
