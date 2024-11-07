@@ -140,7 +140,9 @@ session_start();
                             <?php
                             if (!isset($_SESSION['username'])) {
                                 echo "
-                                <button class='btn btn-success mt-auto' name='free-continue-btn'>Continue Free</button>
+                                 <form action='user-actions.php' method='post'>
+                                <button type='submmit' class='btn btn-success mt-auto' name='free-continue-btn'>Continue Free</button>
+                                </form>
                                 ";
                             } else if ($_SESSION['usertype'] == 1) {
                                 echo "
@@ -171,15 +173,17 @@ session_start();
                             <?php
                             if (!isset($_SESSION['username']) || $_SESSION['usertype'] == 1) {
                                 echo "
-                                <button class='btn btn-success mt-auto' name='free-continue-btn'>60tk/month</button>
+                                <form action='user-actions.php' method='post'>
+                                <button type='submmit' class='btn btn-success mt-auto'  name='payment-btn'>60tk/month</button>
+                                </form>
                                 ";
                             } else if ($_SESSION['usertype'] == 2) {
                                 echo "
-                                <button class='btn btn-success mt-auto' name='free-continue-btn' disabled>Current Plan</button>
+                                <button class='btn btn-success mt-auto'  disabled>Current Plan</button>
                                 ";
                             } else {
                                 echo "
-                                <button class='btn btn-success mt-auto' name='free-continue-btn' disabled>60tk/month</button>
+                                <button class='btn btn-success mt-auto'  disabled>60tk/month</button>
                                 ";
                             }
 
@@ -202,15 +206,17 @@ session_start();
                             <?php
                             if (!isset($_SESSION['username'])  || $_SESSION['usertype'] == 1) {
                                 echo "
-                                <button class='btn btn-success mt-auto' name='free-continue-btn'>100tk/month</button>
+                                <form action='user-actions.php' method='post'>
+                                <button type='submmit' class='btn btn-success mt-auto' name='payment-btn'>100tk/month</button>
+                                </form>
                                 ";
                             } else if ($_SESSION['usertype'] == 3) {
                                 echo "
-                                <button class='btn btn-success mt-auto' name='free-continue-btn' disabled>Current Plan</button>
+                                <button class='btn btn-success mt-auto'  disabled>Current Plan</button>
                                 ";
                             } else {
                                 echo "
-                                <button class='btn btn-success mt-auto' name='free-continue-btn' disabled>100tk/month</button>
+                                <button class='btn btn-success mt-auto'  disabled>100tk/month</button>
                                 ";
                             }
 
@@ -233,26 +239,28 @@ session_start();
                             <?php
                             if (!isset($_SESSION['username'])  || $_SESSION['usertype'] == 1) {
                                 echo "
-                                <button class='btn btn-success mt-auto' name='free-continue-btn'>600/year</button>
+                                <form action='user-actions.php' method='post'>
+                                <button class='btn btn-success mt-auto' name='payment-btn'>600/year</button>
+                                </form>
                                 ";
                             } else if ($_SESSION['usertype'] == 4) {
                                 echo "
-                                <button class='btn btn-success mt-auto' name='free-continue-btn' disabled>Current Plan</button>
+                                <button class='btn btn-success mt-auto'  disabled>Current Plan</button>
                                 ";
                             } else {
                                 echo "
-                                <button class='btn btn-success mt-auto' name='free-continue-btn' disabled>600/year</button>
+                                <button class='btn btn-success mt-auto'  disabled>600/year</button>
                                 ";
                             }
-
                             ?>
+
                         </div>
                     </div>
                 </div>
 
                 <!-- Back Button -->
                 <div class="d-flex justify-content-center">
-                    <button onclick="history.back()" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Previous Page</button>
+                    <button onclick="window.location.href='melodise/userend/index.php'" class="btn btn-back"> Explore MELODISE</button>
                 </div>
             </div>
         </div>
