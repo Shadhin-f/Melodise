@@ -74,7 +74,9 @@ session_start();
                 <tbody>
                 ";
 
-                $select_users = "SELECT * FROM `users` WHERE Email LIKE '%" . $searchKey . "%'";                   
+                // Query to search user using name or Email
+
+                $select_users = "SELECT * FROM `users` WHERE Email LIKE '%" . $searchKey . "%' OR Name LIKE '%" . $searchKey . "%'";                   
                 $result_users = mysqli_query($conn, $select_users);
 
 

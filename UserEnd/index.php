@@ -216,6 +216,13 @@ include('connect.php')
 
 </body>
 <script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>
+
+
+
+<!-- SCript to play music (Not functional) -->
+
+
+
 <script>
     const audio = new Audio('Downloads/Forever_Young.mp3');
     let isPlaying = false;
