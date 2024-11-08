@@ -109,7 +109,7 @@ include('connect.php')
 
 
             <?php
-            $select_songs = "SELECT * FROM `songs` ORDER BY RAND() LIMIT 10";                   // query for selecting all songs
+            $select_songs = "SELECT * FROM `songs` LIMIT 10";                   // query for selecting all songs
             $result_songs = mysqli_query($conn, $select_songs);
 
             // loop to fetch all songs
@@ -117,6 +117,7 @@ include('connect.php')
                 $song_name = $row_data['Title'];                                               // Getting the Song name
                 $color_code = $row_data['ColorCode'];                                          // Getting the color code
                 $artist_id = $row_data['ArtistID'];                                            // Getting artist id
+                $audio = $row_data['Audio'];                                                    // Getting audio file name
 
                 // echo ($artist_id);                                                          // for testting purpose
                 $select_artist_name = "SELECT * FROM `artists` WHERE ArtistID = $artist_id";   // query for selecting artist name
@@ -124,7 +125,11 @@ include('connect.php')
                 $artist_data = mysqli_fetch_assoc($result_artist_name);
                 $artist_name = $artist_data['Name'];
 
-                echo "<div class='card mx-3 mt-3 px-2 d-inline-block shadow' style='width: 18rem; background-color: $color_code'>
+                echo "<div class='card mx-3 mt-3 px-2 d-inline-block shadow play-card' style='width: 18rem; background-color: $color_code'
+                        data-song-name='$song_name' 
+                        data-artist-name='$artist_name' 
+                        data-song-url='../Resources/Songs/$audio.mp3' 
+                        data-album-art='../Resources/DesignElements/ProfileBack.jpg'>
                                 <div class='card-body position-relative p-3'>
                                     <h5 class='card-title mt-4 font-weight-bold'>$song_name</h5>
                                     <p class='card-text font-weight-light'>$artist_name</p>
@@ -299,31 +304,9 @@ include('connect.php')
     <!-- Music PLayer (Not functional)-->
 
 
-    <div class="card fixed-bottom custom-player-card d-flex align-items-center">
-        <div class="d-flex align-items-center w-100">
-            <!-- Album art with background image -->
-            <div class="album-art" style="background-image: url('https://images.unsplash.com/photo-1730688213382-b62363b93824?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyMHx8fGVufDB8fHx8fA%3D%3D');"></div>
-
-            <!-- Song information -->
-            <div class="song-info">
-                <p class="song-title mb-0" id="songTitle">Hello</p>
-                <p class="song-artist mb-0" id="songArtist">Mona Lisa</p>
-            </div>
-
-            <!-- Controls: play/pause button and progress bar -->
-            <div class="d-flex flex-grow-1 align-items-center justify-content-center">
-                <button id="playPauseBtn" class="btn btn-sm text-black me-2"><i class="fas fa-play"></i></button>
-                <div class="progress-container">
-                    <div id="songProgress" class="progress-bar custom-progress-bar"></div>
-                </div>
-            </div>
-
-            <!-- Volume control -->
-            <div class="volume-control ms-2">
-                <button id="volumeBtn" class="btn btn-sm text-black"><i class="fas fa-volume-up"></i></button>
-            </div>
-        </div>
-    </div>
+    <?php
+    include('music-player.php')
+    ?>
 
 
 </body>
@@ -332,35 +315,34 @@ include('connect.php')
 <!-- Bootstrap to handle modal -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-
-
-
-<!-- SCript to play music (Not functional) -->
-
-
-
 <script>
-    const audio = new Audio('Downloads/Forever_Young.mp3');
-    let isPlaying = false;
+    // Select all play-card elements
+    document.querySelectorAll('.play-card').forEach(card => {
+        card.addEventListener('click', () => {
+            // Get song details from the data attributes
+            const songName = card.getAttribute('data-song-name');
+            const artistName = card.getAttribute('data-artist-name');
+            const songUrl = card.getAttribute('data-song-url');
+            const albumArt = card.getAttribute('data-album-art');
 
-    document.getElementById('playPauseBtn').addEventListener('click', () => {
-        const playPauseIcon = document.getElementById('playPauseBtn').querySelector('i');
-        if (isPlaying) {
-            audio.pause();
-            playPauseIcon.classList.remove('fa-pause');
-            playPauseIcon.classList.add('fa-play');
-        } else {
+            // Update the music player card
+            document.getElementById('songTitle').textContent = songName;
+            document.getElementById('songArtist').textContent = artistName;
+            document.querySelector('.album-art').style.backgroundImage = `url(${albumArt})`;
+
+            // Load the new song
+            audio.src = songUrl;
             audio.play();
+
+            // Update play/pause button icon
+            const playPauseIcon = document.getElementById('playPauseBtn').querySelector('i');
             playPauseIcon.classList.remove('fa-play');
             playPauseIcon.classList.add('fa-pause');
-        }
-        isPlaying = !isPlaying;
+        });
     });
-
-    audio.ontimeupdate = () => {
-        const progress = (audio.currentTime / audio.duration) * 100;
-        document.getElementById('songProgress').style.width = progress + '%';
-    };
 </script>
+
+
+
 
 </html>
