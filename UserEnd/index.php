@@ -124,7 +124,7 @@ include('connect.php')
                 $artist_data = mysqli_fetch_assoc($result_artist_name);
                 $artist_name = $artist_data['Name'];
 
-                echo "<div class='card mx-3 mt-3 d-inline-block shadow' style='width: 18rem; background-color: $color_code'>
+                echo "<div class='card mx-3 mt-3 px-2 d-inline-block shadow' style='width: 18rem; background-color: $color_code'>
                                 <div class='card-body position-relative p-3'>
                                     <h5 class='card-title mt-4 font-weight-bold'>$song_name</h5>
                                     <p class='card-text font-weight-light'>$artist_name</p>
@@ -184,7 +184,119 @@ include('connect.php')
     </section>
 
 
-    <!-- Music PLayer -->
+
+    <!-- User Play lists section -->
+    <!-- Premium users can access -->
+    <?php
+    if (isset($_SESSION['userid'])) {
+
+        $userID = $_SESSION['userid'];
+        $userType = $_SESSION['usertype'];
+
+
+        if ($userType != 1) {
+
+
+
+            echo "
+
+
+            <section id='user-playlist' class='p-3 mb-5'>
+               <!-- Title for playlist -->
+               <!-- Title include button to add new playlist -->
+               <!-- Title include button to view all playlist -->
+
+               <div id='user-playlists-title-container' class='d-flex flex-row justify-content-between align-items-center'>
+                   <div class='d-flex align-items-center'>
+                       <h1 class='me-3'>Your playlists</h1>
+                       <!-- Create Playlist Button -->
+                       <!-- Existing 'Create Playlist' Button -->
+                        <button class='btn themed-btn d-flex align-items-center' data-bs-toggle='modal' data-bs-target='#createPlaylistModal'>
+                            <i class='fas fa-plus me-2'></i> <!-- Font Awesome plus icon -->
+                            Create Playlist
+                        </button>
+
+                   </div>
+
+                   <form action='user-actions.php' method='get'>
+                       <button type='submit' class='themed-btn bg-transparent border-0' name='all-playlist-btn'>All Playlists</button>
+                   </form>
+               </div>
+
+               <!-- Section to display playlists created by user -->
+
+               <!-- Playlist Cards Section -->
+               <div id='card-container' class='mb-5'>";
+
+
+            $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' GROUP BY playlists.PlaylistID LIMIT 6";
+            $result_user_playlists = mysqli_query($conn, $select_user_playlists);
+
+            // while ($row_data = mysqli_fetch_assoc($result_artists)) {
+            //     $artist_name = $row_data['Name'];
+            //     $artist_img = $row_data['Image'];
+
+            while ($row_data = mysqli_fetch_assoc($result_user_playlists)) {
+                $playlistName = $row_data['Name'];
+                $playlistID = $row_data['PlaylistID'];
+                $numOfSongs = $row_data['NumOFSongs'];
+
+                echo "
+
+
+                    <!-- Playlist Card -->
+
+
+                <form action='user-actions.php' method='post' class='d-inline'>
+                    <input type='hidden' name='playlistID' value='$playlistID'>
+                    <input type='hidden' name='playlistName' value='$playlistName'>
+                    <div class='card mx-3 mt-3 p-2 d-inline-block shadow' style='width: 18rem; background-color: #f7f7f7;'>
+                        <div class='card-body position-relative p-3'>
+                            <h5 class='card-title mt-4 font-weight-bold'>$playlistName</h5>
+                            <p class='card-text font-weight-light'>$numOfSongs Songs</p>
+                            <button type='submit' class='position-absolute bottom-0 end-0 rounded-circle bg-dark text-white play-btn border-0' name='view-playlist-btn'>
+                                <i class='fa-solid fa-bars p-3'></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                ";
+            }
+        }
+    }
+
+    ?>
+
+    <!-- Modal for playlist creation -->
+
+    <div class="modal fade" id="createPlaylistModal" tabindex="-1" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createPlaylistModalLabel">Create Playlist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="user-actions.php" method="post">
+                        <div class="mb-3">
+                            <label for="playlistName" class="form-label">Playlist Name</label>
+                            <input type="text" class="form-control" id="playlistName" name="playlistName" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" name='create-playlist-confirm-btn'>Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Music PLayer (Not functional)-->
 
 
     <div class="card fixed-bottom custom-player-card d-flex align-items-center">
@@ -216,6 +328,10 @@ include('connect.php')
 
 </body>
 <script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>
+
+<!-- Bootstrap to handle modal -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
 
 

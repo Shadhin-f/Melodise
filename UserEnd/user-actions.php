@@ -216,6 +216,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: login.php');
     }
 
+
+    // Play list veiew button (Index.php)
+
+    if (isset($_POST['view-playlist-btn'])) {
+        $playlistID = $_POST['playlistID'];
+        $playlistName = $_POST['playlistName'];
+
+        $_SESSION['playlistid'] = $playlistID;
+        $_SESSION['playlistname'] = $playlistName;
+
+        header('Location: view-playlist.php');
+    }
+
+    // Create Playlist confirm button (index.php)
+
+    if (isset($_POST['create-playlist-confirm-btn'])) {
+        $userID = $_SESSION['userid'];
+        $playlistName = $_POST['playlistName'];
+
+
+        // Query to insert new playlist to database
+
+        $insert_new_playlist = "INSERT INTO `playlists` (`PlaylistID`, `Name`, `UserID`, `CreatedDate`) VALUES (NULL, '$playlistName', '$userID', current_timestamp());";
+        $result_new_playlist = mysqli_query($conn, $insert_new_playlist);
+        if ($result_new_playlist) {
+            header('Location: index.php');
+        }
+    }
+
+    // Delete Playlist button (view playlist page)
+
+    if (isset($_POST['delete-playlist-btn'])) {
+
+        $playlistID = $_SESSION['playlistid'];
+
+        $delete_playlist_query = "DELETE FROM playlists WHERE `playlists`.`PlaylistID` = '$playlistID'";
+        $result_delete_playlist = mysqli_query($conn, $delete_playlist_query);
+        if ($result_delete_playlist) {
+            echo '<script>
+                            alert("Playlist Deleted");
+                            window.location.href = "index.php";
+                            </script>';
+        }
+    }
+
+
     // profile edit btn (user profile)
 
     if (isset($_POST['subscription-buy-btn'])) {
