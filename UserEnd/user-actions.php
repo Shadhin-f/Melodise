@@ -28,14 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Check if search-btn is set (even if empty)
     if (isset($_GET['search-btn'])) {
 
-        // Check if the search key exists and is not empty
-        if (isset($_GET['search-key']) && !empty($_GET['search-key'])) {
+        // Check if the search key exists
+        if (isset($_GET['search-key'])) {
             // Store search key in session
             $searchKey = $_GET['search-key'];
             $_SESSION['searchKey'] = $searchKey;
 
             // Redirect to searchresult.php
-            header('Location: searchresult.php');
+            header('Location: index.php');
             exit;  // Stop further script execution
         } else {
             // Handle the case where search key is missing or empty
@@ -244,6 +244,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: index.php');
         }
     }
+
+    //  Add to play list button
+
+
+    if (isset($_POST['add-to-playlist-btn'])) {
+        $songID = $_POST['songID'];
+        $playlistID = $_POST['playlistID'];
+
+        // Query to add song to playlist
+        try{
+
+            $insert_song_to_playlist = "INSERT INTO `playlist_songs` (`PlaylistID`, `SongID`, `AddDate`) VALUES ('$playlistID', '$songID', current_timestamp())" ;
+            $result_insert_song_to_playlist = mysqli_query($conn,$insert_song_to_playlist );
+    
+            if($result_insert_song_to_playlist){
+                // echo '<script>alert("Song Added to playlist!!");</script>';
+                header('Location: index.php');
+            }
+        }
+        catch (Exception $e){
+            // echo '<script>alert("Could not add!!");</script>';
+            header('Location: index.php');
+        }
+    }
+
+
+    // Remove Song From Playlist button
+
+    if (isset($_POST['songID']) && isset($_POST['remove-song-btn'])){
+        $songID = $_POST['songID'];
+        $playlistID = $_SESSION['playlistid'];
+
+        // Query to remove song from playlist
+        try{
+            $remove_song_from_playlist = "DELETE FROM playlist_songs WHERE SongID = '$songID' AND PlaylistID = '$playlistID'";
+            $result_remove_song_from_playlist = mysqli_query($conn, $remove_song_from_playlist);
+            if($result_remove_song_from_playlist){
+                header('Location: view-playlist.php');
+            }
+        }catch(Exception $e){
+                header('Location: view-playlist.php');
+        }
+    }
+
+
 
     // Delete Playlist button (view playlist page)
 

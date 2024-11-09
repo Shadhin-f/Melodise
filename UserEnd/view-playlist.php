@@ -14,6 +14,7 @@ session_start();
     <!-- Add Bootstrap CSS link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
         /* Custom CSS */
         .header-btn {
@@ -75,6 +76,12 @@ session_start();
 
 <body class="bg-light">
 
+    <!-- Navigation bar -->
+
+    <?php
+    include('navbar.php')
+    ?>
+
     <?php
     if (!isset($_SESSION['userid'])) {
         echo '<script>
@@ -127,7 +134,7 @@ session_start();
                     <?php
                     $playlistID = $_SESSION['playlistid'];
                     // $playlistID = $_SESSION['playlistID'];
-                    $select_playlist_songs = "SELECT songs.Title, artists.Name
+                    $select_playlist_songs = "SELECT songs.SongID, songs.Title, artists.Name
                                                   FROM playlist_songs
                                                   LEFT JOIN songs ON playlist_songs.SongID = songs.SongID
                                                   LEFT JOIN artists ON songs.ArtistID = artists.ArtistID
@@ -135,6 +142,7 @@ session_start();
                     $result_playlist_songs = mysqli_query($conn, $select_playlist_songs);
                     $serialNumber = 1;
                     while ($row_data = mysqli_fetch_assoc($result_playlist_songs)) {
+                        $songID = $row_data['SongID'];
                         $songName = $row_data['Title'];
                         $artistName = $row_data['Name'];
                         echo "
@@ -147,9 +155,12 @@ session_start();
                                     </td>
                                     <td>$artistName</td>
                                     <td>
-                                        <button class='remove-btn me-2'>
+                                    <form action='user-actions.php' method='POST'>
+                                        <input type='hidden' name='songID' value='$songID'>
+                                        <button type='submit' class='remove-btn me-2' name='remove-song-btn'>
                                             <i class='fa-solid fa-minus'></i>
-                                        </button> 
+                                        </button>
+                                    </form>
                                     </td>
                                 </tr>
                             ";
@@ -161,7 +172,9 @@ session_start();
             </table>
         </div>
     </div>
-
+    <?php
+    include('music-player.php')
+    ?>
 
 
 

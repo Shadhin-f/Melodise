@@ -13,6 +13,66 @@ include('connect.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
+        /* Music plyer customise */
+
+        .custom-player-card {
+            background-color: #bdbcbb;
+            color: white;
+            padding: 10px 15px;
+            height: 60px;
+        }
+
+        .album-art {
+            width: 50px;
+            height: 50px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+        }
+
+        .song-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 10px;
+        }
+
+        .song-title {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .song-artist {
+            font-size: 0.75rem;
+            margin: 0;
+            color: #e3e2e1;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 5px;
+            background-color: #d4d4d4;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .custom-progress-bar {
+            height: 100%;
+            background-color: #fff;
+        }
+
+        .volume-control {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .active-heart {
             color: #1B8673;
         }
@@ -28,6 +88,7 @@ include('connect.php');
 
             <!-- Song information -->
             <div class="song-info">
+                <input type="hidden" id="songID">     <!-- Passing song ID using js -->
                 <p class="song-title mb-0" id="songTitle">No track</p>
                 <p class="song-artist mb-0" id="songArtist">Unknown</p>
             </div>
@@ -50,12 +111,60 @@ include('connect.php');
                 <button id="addToFavoriteBtn" class="btn btn-sm text-black"><i class="fas fa-heart"></i></button>
             </div>
 
-            <!-- Add to Playlist button -->
-            <div class="ms-2">
-                <button id="addToPlaylistBtn" class="btn btn-sm text-black"><i class="fas fa-list-ul"></i></button>
+            <!-- Add to Playlist button in the music player -->
+            <button id="addToPlaylistBtn" class="btn btn-sm text-black" data-bs-toggle="modal" data-bs-target="#addToPlaylistModal">
+                <i class="fas fa-list-ul"></i>
+            </button>
+
+        </div>
+    </div>
+
+
+
+    <!-- Modal to add playlist -->
+
+
+    <!-- Add to Playlist Modal -->
+    <div class="modal fade" id="addToPlaylistModal" tabindex="-1" aria-labelledby="addToPlaylistModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered"> <!-- Add modal-dialog-centered class -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addToPlaylistModalLabel">Add to Playlist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="user-actions.php" method="post">
+                        <!-- Hidden input to store the song info -->
+                        <input type="hidden" id="songid" name="songID">
+                        <input type="hidden" id="songName" name="songName">
+                        <input type="hidden" id="artistName" name="artistName">
+                        <!-- Dropdown for selecting the playlist -->
+                        <div class="mb-3">
+                            <label for="playlistSelect" class="form-label">Choose Playlist</label>
+                            <select class="form-select" id="playlistSelect" name="playlistID">
+                                <!-- Playlist options will be dynamically populated -->
+                                <?php
+                                $userID = $_SESSION['userid'];
+                                $query = "SELECT * FROM playlists WHERE UserID = '$userID'";
+                                $result = mysqli_query($conn, $query);
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo "<option value='" . $row['PlaylistID'] . "'>" . $row['Name'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" name="add-to-playlist-btn">Add to Playlist</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
+
+
 </body>
 
 <script>
@@ -104,6 +213,21 @@ include('connect.php');
         const progress = (audio.currentTime / audio.duration) * 100;
         document.getElementById('songProgress').style.width = progress + '%';
     };
+
+    // script to pass the song info
+
+    document.getElementById('addToPlaylistBtn').addEventListener('click', () => {
+    // Get the current song details from your player
+    const songName = document.getElementById('songTitle').textContent;
+    const artistName = document.getElementById('songArtist').textContent;
+    const songID = document.getElementById('songID').getAttribute('value');
+
+    // Set the values in the modal's hidden inputs
+    document.getElementById('songName').value = songName;
+    document.getElementById('artistName').value = artistName;
+    document.getElementById('songid').value = songID;
+});
+
 </script>
 
 </html>
