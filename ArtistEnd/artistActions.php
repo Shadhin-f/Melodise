@@ -10,7 +10,7 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     include('connect.php');
     if (isset($_GET['view-all-btn'])) {
-        header('Location: tanveer-viewAll.php');
+        header('Location: viewAll.php');
     }
     if (isset($_GET['back-to-artistHome-btn'])) {
         header('Location: artistHome.php');
