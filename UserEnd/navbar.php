@@ -20,8 +20,11 @@ if (session_status() === PHP_SESSION_NONE) {
     <style>
         /* Larger logo */
         .navbar-brand {
-            font-size: 2rem;
+            font-size: 2rem !important;
             font-weight: bold;
+        }
+        .navbar-brand:hover{
+            color: #1B8673 !important;
         }
 
         /* Larger nav items */
@@ -95,7 +98,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light px-5 py-3">
         <div class="container-fluid">
-            <a class="navbar-brand logo" href="index.php">MELODISE</a>
+            <a class="navbar-brand logo" href="index.php?unset_session=true">MELODISE</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

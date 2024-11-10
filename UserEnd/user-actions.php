@@ -21,6 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Location: allartist.php');
     }
 
+    // View artist profile btn
+
+    if (isset($_GET['view-artist-profile-btn'])){
+        $artistID = $_GET['artist_id'];
+        $_SESSION['artistid'] = $artistID;
+        header('Location: artist.php');
+    }
+
+
 
     //  Search button action (Nav bar)
 
@@ -215,6 +224,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['user-login-btn']) || isset($_POST['user-register-btn'])) {
         header('Location: login.php');
     }
+
+
+
+    //  ------------------------------Artist page --------------------------------
+    
+    
+    // artist page follow action
+    
+    if (isset($_POST['follow-artist-btn'])){
+        $userID = $_SESSION['userid'];
+        $artistID = $_SESSION['artistid'];
+        $follow_artist_query = "INSERT INTO `artist_followers` (`UserID`, `ArtistID`, `FollowedTime`) VALUES ('$userID', '$artistID', current_timestamp());";
+        $result_follow_artist_query = mysqli_query($conn, $follow_artist_query);
+        if($result_follow_artist_query){
+            header('Location: artist.php');
+        }
+    }
+    // artist page unfollow action
+    
+    if (isset($_POST['unfollow-artist-btn'])){
+        $userID = $_SESSION['userid'];
+        $artistID = $_SESSION['artistid'];
+        $unfollow_artist_query = "DELETE FROM `artist_followers` WHERE UserID = '$userID' AND ArtistID = '$artistID';";
+        $result_unfollow_artist_query = mysqli_query($conn, $unfollow_artist_query);
+        if($result_unfollow_artist_query){
+            header('Location: artist.php');
+        }
+    }
+
+
 
 
     // Play list veiew button (Index.php)

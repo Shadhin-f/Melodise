@@ -14,25 +14,21 @@ session_start();
     <!-- CSS File Link -->
     <link rel="stylesheet" href="style.css">
     <style>
-        /* .bg-image { */
-        /* Add the blur effect */
-        /* filter: blur(8px); */
-        /* -webkit-filter: blur(8px); */
-        /* } */
         .custom-btn {
-            color: #1B8673;
-            border-color: #1B8673;
+            color: #fff;
+            border-color: #fff;
             background-color: transparent;
         }
 
         .custom-btn:hover {
-            background-color: #1B8673;
-            color: #ffffff;
+            background-color: #fff;
+            color: #000;
         }
 
         .p-card-background {
-            background: rgb(213, 249, 139);
-            background: linear-gradient(207deg, rgba(213, 249, 139, 1) 0%, rgba(207, 243, 255, 1) 100%);
+            background: rgb(43, 244, 187);
+            background: linear-gradient(151deg, rgba(43, 244, 187, 1) 0%, rgba(4, 86, 70, 1) 100%);
+
         }
     </style>
 </head>
@@ -55,6 +51,7 @@ session_start();
 
 
         $userEmail = $_SESSION['email'];                        // Key for user
+        $userID = $_SESSION['userid'];                        
         $userName = $_SESSION['username'];
         $userType = $_SESSION['usertype'];                      // store the subscriotin type number 
 
@@ -86,10 +83,10 @@ session_start();
                                             <div class=' artist-img-circle mx-auto rounded-circle mt-2' style='width: 10rem; height: 10rem; background-image: url(\"../Resources/UserImages/$user_image\"); background-color:antiquewhite; background-repeat: no-repeat; background-size: cover;'>
                     </div>
                     </div>
-                    <h4 class='mb-2'>$userName</h4>
-                    <p class='text-muted mb-4'>$user_country <span class='mx-2'>|</span> $userEmail </p>
+                    <h3 class='mb-2'>$userName</h3>
+                    <p class='text-muted mb-4'>$user_country<span class='mx-2'>|</span>$userEmail </p>
 
-                    <form action='user-actions.php' method='post' class='d-flex flex-column justify-content-center align-items-center mt-5 mb-2'>
+                    <form action='user-actions.php' method='post' class='d-flex flex-column justify-content-center align-items-center mt-5 mb-1'>
                         <button type='submit' data-mdb-button-init data-mdb-ripple-init  class='btn btn-primary btn-rounded btn-md d-block w-75 mb-3 custom-btn' name='profile-edit-btn'>Edit Profile</button>";
         if ($userType == 1) {
             // Subscription buy button active if the user is free
@@ -99,17 +96,28 @@ session_start();
         echo "
                         <button type='submit' data-mdb-button-init data-mdb-ripple-init class='btn btn-primary btn-rounded btn-md d-block w-75 custom-btn' name='logout-btn'>Log out</button>
                     </form>
-                    <div class='d-flex justify-content-around text-center mt-5 mb-2'>
+                    <div class='d-flex justify-content-around text-center mt-3 mb-3'>
+                        <!--     
                         <div>
                             <p class='mb-2 h5'>8471</p>
                             <p class='text-muted mb-0'>Followers</p>
                         </div>
-                        <!-- <div class='px-3'>
+                        <div class='px-3'>
                             <p class='mb-2 h5'>8512</p>
                             <p class='text-muted mb-0'>Income amounts</p>
-                          </div> -->
+                          </div> -->";
+
+
+                            // Query to count playlist created count
+                            $select_playlist_count = "SELECT COUNT(PlaylistID) as TotalPlaylists
+                                        FROM `playlists` 
+                                        WHERE UserID = $userID;";
+                            $result_select_playlist_count = mysqli_query($conn, $select_playlist_count);
+                            $playlist_count_data = mysqli_fetch_assoc($result_select_playlist_count);
+                            $totalPlaylist = $playlist_count_data['TotalPlaylists'];
+                    echo "
                         <div>
-                            <p class='mb-2 h5'>30</p>
+                            <p class='mb-2 h5'>$totalPlaylist</p>
                             <p class='text-muted mb-0'>Playlists Created</p>
                         </div>
                     </div>

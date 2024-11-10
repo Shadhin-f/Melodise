@@ -74,7 +74,7 @@ session_start();
     </style>
 </head>
 
-<body class="bg-light">
+<body>
 
     <!-- Navigation bar -->
 
