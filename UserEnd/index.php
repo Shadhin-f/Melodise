@@ -46,22 +46,21 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
         <!-- Title -->
         <div id="your-music-title-container" class="d-flex flex-row justify-content-between align-items-center">
             <h1><?php
-                    if(isset($_SESSION['searchKey'])){
-                        $searchKey = $_SESSION['searchKey'];
-                        if($searchKey != ''){
-                            // search key session with search key
-                            echo "Music";
-                        }
-                        else{
-                            // Search key session active but no input
-                            echo "Trending";
-                        }
-                    }else{
-                        // Search key not set case
-                        echo "Trending";                                 
+                if (isset($_SESSION['searchKey'])) {
+                    $searchKey = $_SESSION['searchKey'];
+                    if ($searchKey != '') {
+                        // search key session with search key
+                        echo "Music";
+                    } else {
+                        // Search key session active but no input
+                        echo "Trending";
                     }
-             ?>
-                
+                } else {
+                    // Search key not set case
+                    echo "Trending";
+                }
+                ?>
+
             </h1>
             <!-- <a href="#" class="text-decoration-none themed-btn">All Music</a> -->
             <form action="user-actions.php" method="get">
@@ -85,17 +84,16 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
             // If search key is set music qith the search key will be fetched
             // or Top played songs will be displayed
 
-            if(isset($_SESSION['searchKey'])){
+            if (isset($_SESSION['searchKey'])) {
                 $searchKey = $_SESSION['searchKey'];
-                if($searchKey != ''){
+                if ($searchKey != '') {
                     // search key session with search key
                     $select_songs = "SELECT * FROM `songs` WHERE Title LIKE '%" . $searchKey . "%' LIMIT 10";
-                }
-                else{
+                } else {
                     // Search key session active but no input
-                    $select_songs = "SELECT * FROM `songs` LIMIT 10"; 
+                    $select_songs = "SELECT * FROM `songs` LIMIT 10";
                 }
-            }else{
+            } else {
                 // Search key not set case
                 $select_songs = "SELECT * FROM `songs` LIMIT 10";                                  // query for selecting all songs
             }
@@ -140,36 +138,36 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
 
 
     <section id="top-artist" class="p-3">
-    <div id="top-artist-title-container" class="d-flex flex-row justify-content-between align-items-center">
-        <h1>
-            <?php 
+        <div id="top-artist-title-container" class="d-flex flex-row justify-content-between align-items-center">
+            <h1>
+                <?php
                 if (isset($_SESSION['searchKey'])) {
                     $searchKey = $_SESSION['searchKey'];
                     echo $searchKey !== '' ? "Artists" : "Top Artists";
                 } else {
                     echo "Top Artists";
                 }
-            ?>
-        </h1>
-        <form action="user-actions.php" method="get">
-            <button type="submit" class="themed-btn bg-transparent border-0" name='all-artist-btn'>All Artist</button>
-        </form>
-    </div>
+                ?>
+            </h1>
+            <form action="user-actions.php" method="get">
+                <button type="submit" class="themed-btn bg-transparent border-0" name='all-artist-btn'>All Artist</button>
+            </form>
+        </div>
 
-    <!-- Artist Cards container div -->
-    <div id="artist-card-container">
-        <?php
-        // Fetching artists data from the database
-        $select_artists = "SELECT * FROM `artists` WHERE Name LIKE '%" . (isset($_SESSION['searchKey']) && $_SESSION['searchKey'] !== '' ? $_SESSION['searchKey'] : '') . "%' LIMIT 10";
-        $result_artists = mysqli_query($conn, $select_artists);
+        <!-- Artist Cards container div -->
+        <div id="artist-card-container">
+            <?php
+            // Fetching artists data from the database
+            $select_artists = "SELECT * FROM `artists` WHERE Name LIKE '%" . (isset($_SESSION['searchKey']) && $_SESSION['searchKey'] !== '' ? $_SESSION['searchKey'] : '') . "%' LIMIT 10";
+            $result_artists = mysqli_query($conn, $select_artists);
 
-        while ($row_data = mysqli_fetch_assoc($result_artists)) {
-            $artist_id = $row_data['ArtistID']; // Assuming your artist table has an 'ID' column
-            $artist_name = $row_data['Name'];
-            $artist_img = $row_data['Image'];
+            while ($row_data = mysqli_fetch_assoc($result_artists)) {
+                $artist_id = $row_data['ArtistID']; // Assuming your artist table has an 'ID' column
+                $artist_name = $row_data['Name'];
+                $artist_img = $row_data['Image'];
 
-            // Artist cards with a form for each artist
-            echo "
+                // Artist cards with a form for each artist
+                echo "
                 <form action='user-actions.php' method='get' class='d-inline-block'>
                     <input type='hidden' name='artist_id' value='$artist_id'>
                     <button type='submit' class='artist-card-btn bg-transparent border-0 p-0' name='view-artist-profile-btn'>
@@ -180,10 +178,10 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                     </button>
                 </form>
             ";
-        }
-        ?>
-    </div>
-</section>
+            }
+            ?>
+        </div>
+    </section>
 
 
 
@@ -233,26 +231,20 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
 
 
 
-            // Session check for search key
-            // If search key is set music qith the search key will be fetched
-            // or Top played songs will be displayed
 
-            if(isset($_SESSION['searchKey'])){
+            if (isset($_SESSION['searchKey'])) {
                 $searchKey = $_SESSION['searchKey'];
-                if($searchKey != ''){
+                if ($searchKey != '') {
                     // search key session with search key
-                    
+
                     $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' AND playlists.Name LIKE '%" . $searchKey . "%' GROUP BY playlists.PlaylistID LIMIT 6";
-                }
-                else{
+                } else {
                     // Search key session active but no input
                     $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' GROUP BY playlists.PlaylistID LIMIT 6";
-                   
                 }
-            }else{
+            } else {
                 // Search key not set case
                 $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' GROUP BY playlists.PlaylistID LIMIT 6";
-                                              
             }
 
             $result_user_playlists = mysqli_query($conn, $select_user_playlists);
@@ -318,49 +310,51 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
     </div>
 
 
+    <!-- ------------------ Footer sections-------------------------------- -->
+    <?php
+    // include('footer.php');
+    ?>
 
-
-
-    <!-- Music PLayer (Not functional)-->
+    <!-- Music PLayer-->
 
 
     <?php
     include('music-player.php')
     ?>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>
 
 
-<script>
-    // Select all play-card elements
-    document.querySelectorAll('.play-card').forEach(card => {
-        card.addEventListener('click', () => {
-            // Get song details from the data attributes
-            const songID = card.getAttribute('data-song-id');
-            const songName = card.getAttribute('data-song-name');
-            const artistName = card.getAttribute('data-artist-name');
-            const songUrl = card.getAttribute('data-song-url');
-            const albumArt = card.getAttribute('data-album-art');
+    <script>
+        // Select all play-card elements
+        document.querySelectorAll('.play-card').forEach(card => {
+            card.addEventListener('click', () => {
+                // Get song details from the data attributes
+                const songID = card.getAttribute('data-song-id');
+                const songName = card.getAttribute('data-song-name');
+                const artistName = card.getAttribute('data-artist-name');
+                const songUrl = card.getAttribute('data-song-url');
+                const albumArt = card.getAttribute('data-album-art');
 
-            // Update the music player card
-            document.getElementById('songID').value = songID;
-            document.getElementById('songTitle').textContent = songName;
-            document.getElementById('songArtist').textContent = artistName;
-            document.querySelector('.album-art').style.backgroundImage = `url(${albumArt})`;
+                // Update the music player card
+                document.getElementById('songID').value = songID;
+                document.getElementById('songTitle').textContent = songName;
+                document.getElementById('songArtist').textContent = artistName;
+                document.querySelector('.album-art').style.backgroundImage = `url(${albumArt})`;
 
-            // Load the new song
-            audio.src = songUrl;
-            audio.play();
+                // Load the new song
+                audio.src = songUrl;
+                audio.play();
 
-            // Update play/pause button icon
-            const playPauseIcon = document.getElementById('playPauseBtn').querySelector('i');
-            playPauseIcon.classList.remove('fa-play');
-            playPauseIcon.classList.add('fa-pause');
+                // Update play/pause button icon
+                const playPauseIcon = document.getElementById('playPauseBtn').querySelector('i');
+                playPauseIcon.classList.remove('fa-play');
+                playPauseIcon.classList.add('fa-pause');
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 

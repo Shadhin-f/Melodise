@@ -1,28 +1,29 @@
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 /* Experiment Scroll bar */
-#card-container::-webkit-scrollbar, #artist-card-container::-webkit-scrollbar {
-    display: none;
+#card-container::-webkit-scrollbar,
+#artist-card-container::-webkit-scrollbar {
+  display: none;
 }
-#card-container, #artist-card-container{
-    height: fit-content;
-    overflow-x: auto; 
-    overflow-y: hidden; 
-    white-space: nowrap;
+#card-container,
+#artist-card-container {
+  height: fit-content;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
 /* .card{
     height: 180px;
 } */
-.themed-btn{
-    color: #1B8673;
+.themed-btn {
+  color: #1b8673;
 }
-.play-btn{
-    cursor: pointer;
+.play-btn {
+  cursor: pointer;
 }
 /*
 .artist-img-circle{
@@ -47,9 +48,6 @@
 .music-element{
     width: 300px;
 } */
-
-
-
 
 /*  Nav bar design */
 /* .logo{

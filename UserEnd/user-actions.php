@@ -4,12 +4,11 @@ session_start();
 
 
 
-// Home Page 
-
-
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+
+    //  -------------  Home page  --------------
     include('connect.php');
     if (isset($_GET['all-music-btn'])) {
         header('Location: allmusic.php');
@@ -23,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     // View artist profile btn
 
-    if (isset($_GET['view-artist-profile-btn'])){
+    if (isset($_GET['view-artist-profile-btn'])) {
         $artistID = $_GET['artist_id'];
         $_SESSION['artistid'] = $artistID;
         header('Location: artist.php');
@@ -58,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 
 
-//  Login Registration
+//  ----------------------------- Login Registration --------------------------------
 
 
 
@@ -124,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // registration 
+    //------------------------------ registration ---------------------------------
 
     if (isset($_POST['registration-button'])) {
         $regName = $_POST['username'];
@@ -212,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         session_destroy();
     }
 
-    // Navigation bar actions
+    // -----------------------------Navigation bar actions------------------------------
 
     if (isset($_POST['user-profile-btn'])) {
         header('Location: userprofile.php');
@@ -228,27 +227,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     //  ------------------------------Artist page --------------------------------
-    
-    
+
+
     // artist page follow action
-    
-    if (isset($_POST['follow-artist-btn'])){
+
+    if (isset($_POST['follow-artist-btn'])) {
         $userID = $_SESSION['userid'];
         $artistID = $_SESSION['artistid'];
         $follow_artist_query = "INSERT INTO `artist_followers` (`UserID`, `ArtistID`, `FollowedTime`) VALUES ('$userID', '$artistID', current_timestamp());";
         $result_follow_artist_query = mysqli_query($conn, $follow_artist_query);
-        if($result_follow_artist_query){
+        if ($result_follow_artist_query) {
             header('Location: artist.php');
         }
     }
     // artist page unfollow action
-    
-    if (isset($_POST['unfollow-artist-btn'])){
+
+    if (isset($_POST['unfollow-artist-btn'])) {
         $userID = $_SESSION['userid'];
         $artistID = $_SESSION['artistid'];
         $unfollow_artist_query = "DELETE FROM `artist_followers` WHERE UserID = '$userID' AND ArtistID = '$artistID';";
         $result_unfollow_artist_query = mysqli_query($conn, $unfollow_artist_query);
-        if($result_unfollow_artist_query){
+        if ($result_unfollow_artist_query) {
             header('Location: artist.php');
         }
     }
@@ -256,7 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 
-    // Play list veiew button (Index.php)
+    //-------------------------- Play list veiew button (Index.php)------------------------------
 
     if (isset($_POST['view-playlist-btn'])) {
         $playlistID = $_POST['playlistID'];
@@ -292,17 +291,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $playlistID = $_POST['playlistID'];
 
         // Query to add song to playlist
-        try{
+        try {
 
-            $insert_song_to_playlist = "INSERT INTO `playlist_songs` (`PlaylistID`, `SongID`, `AddDate`) VALUES ('$playlistID', '$songID', current_timestamp())" ;
-            $result_insert_song_to_playlist = mysqli_query($conn,$insert_song_to_playlist );
-    
-            if($result_insert_song_to_playlist){
+            $insert_song_to_playlist = "INSERT INTO `playlist_songs` (`PlaylistID`, `SongID`, `AddDate`) VALUES ('$playlistID', '$songID', current_timestamp())";
+            $result_insert_song_to_playlist = mysqli_query($conn, $insert_song_to_playlist);
+
+            if ($result_insert_song_to_playlist) {
                 // echo '<script>alert("Song Added to playlist!!");</script>';
                 header('Location: index.php');
             }
-        }
-        catch (Exception $e){
+        } catch (Exception $e) {
             // echo '<script>alert("Could not add!!");</script>';
             header('Location: index.php');
         }
@@ -311,19 +309,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Remove Song From Playlist button
 
-    if (isset($_POST['songID']) && isset($_POST['remove-song-btn'])){
+    if (isset($_POST['songID']) && isset($_POST['remove-song-btn'])) {
         $songID = $_POST['songID'];
         $playlistID = $_SESSION['playlistid'];
 
         // Query to remove song from playlist
-        try{
+        try {
             $remove_song_from_playlist = "DELETE FROM playlist_songs WHERE SongID = '$songID' AND PlaylistID = '$playlistID'";
             $result_remove_song_from_playlist = mysqli_query($conn, $remove_song_from_playlist);
-            if($result_remove_song_from_playlist){
+            if ($result_remove_song_from_playlist) {
                 header('Location: view-playlist.php');
             }
-        }catch(Exception $e){
-                header('Location: view-playlist.php');
+        } catch (Exception $e) {
+            header('Location: view-playlist.php');
         }
     }
 
@@ -353,7 +351,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
 
-    // Subscription buy btn (user profile)
+    //------------------------------------ Subscription buy btn (user profile)------------------------------
 
     if (isset($_POST['profile-edit-btn'])) {
         header('Location: profileupdate.php');
