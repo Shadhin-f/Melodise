@@ -56,7 +56,7 @@ include('connect.php')
 
             <?php
             // Assuming $artist_name is the name of the artist that you want to fetch the songs for
-            $artist_name = 'Billie Eilish';  // Replace with dynamic value (for example, fetched from session or user input)
+            $artist_name = $_SESSION['artistname'];  // Replace with dynamic value (for example, fetched from session or user input)
 
             // Query to get the ArtistID for the artist (Billie Eilish in this case)
             $select_artist = "SELECT * FROM `artists` WHERE `Name` = '$artist_name'";
