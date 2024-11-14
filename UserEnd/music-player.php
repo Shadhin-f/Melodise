@@ -93,7 +93,7 @@ include('connect.php');
                 <p class="song-artist mb-0" id="songArtist">Unknown</p>
             </div>
 
-            <!-- Controls: play/pause button and progress bar -->
+            <!-- play/pause button and progress bar -->
             <div class="d-flex flex-grow-1 align-items-center justify-content-center">
                 <button id="playPauseBtn" class="btn btn-sm text-black me-2"><i class="fas fa-play"></i></button>
                 <div class="progress-container">
