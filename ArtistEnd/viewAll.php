@@ -42,15 +42,18 @@ include('connect.php');
             <tbody>
                 <?php
                 // Query to find Billie Eilish's ArtistID
-                $artist_name_query = "SELECT ArtistID FROM `artists` WHERE Name = 'Billie Eilish'";
+                $artistID= $_SESSION['artistid'];
+                $artist_name = $_SESSION['artistname'];
+
+                $artist_name_query = "SELECT ArtistID FROM `artists` WHERE ArtistID='$artistID'";
                 $artist_name_result = mysqli_query($conn, $artist_name_query);
 
                 if ($artist_name_result && mysqli_num_rows($artist_name_result) > 0) {
                     $artist_row = mysqli_fetch_assoc($artist_name_result);
-                    $billie_artist_id = $artist_row['ArtistID'];
+                    $artist_id = $artist_row['ArtistID'];
 
                     // Query to fetch all songs by Billie Eilish
-                    $select_songs = "SELECT * FROM `songs` WHERE `ArtistID` = $billie_artist_id ORDER BY Title";
+                    $select_songs = "SELECT * FROM `songs` WHERE `ArtistID` = $artist_id ORDER BY Title";
                     $result_songs = mysqli_query($conn, $select_songs);
 
                     if ($result_songs && mysqli_num_rows($result_songs) > 0) {
@@ -70,7 +73,7 @@ include('connect.php');
                             echo "
                             <tr>
                                 <td>$song_name</td>
-                                <td>Billie Eilish</td>
+                                <td>$artist_name</td>
                                 <td>$genre_title</td>
                                 <td><a href='../Resources/Songs/$audio.mp3' target='_blank'><i class='fa-solid fa-play' style='color: $color_code;'></i></a></td>
                             </tr>
