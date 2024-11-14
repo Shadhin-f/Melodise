@@ -58,18 +58,15 @@ session_start();
 
         .page-container {
             padding: 1rem 3rem;
-            /* p-3 around the page */
         }
 
         .table {
             width: 100%;
-            /* Full width table */
         }
 
         .table th,
         .table td {
             border-top: none;
-            /* Remove table borders for a minimal look */
         }
     </style>
 </head>
@@ -172,6 +169,16 @@ session_start();
             </table>
         </div>
     </div>
+
+
+    <!-- ------------------ Footer sections-------------------------------- -->
+    <?php
+    // include('footer.php');
+    ?>
+
+
+
+
     <?php
     include('music-player.php')
     ?>

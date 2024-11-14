@@ -13,7 +13,13 @@
 
 
     <style>
-        /* Footer Links */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
         .footer-link {
             color: #1B8673;
             text-decoration: none;
@@ -22,7 +28,7 @@
 
         .footer-link:hover {
             color: #14594F;
-            /* Subtle darker shade on hover */
+
         }
 
         /* Social Media Icons */
@@ -34,20 +40,20 @@
 
         .footer-icon:hover {
             color: #14594F;
-            /* Subtle darker shade on hover */
+
         }
     </style>
 </head>
 
 <body>
-    <!-- Minimal Footer Section -->
-    <footer class="bg-light py-4">
+    <!--  Footer Section -->
+    <footer class="bg-light py-4 mt-5">
         <div class="container">
             <div class="row">
                 <!-- Logo and Brief Description -->
                 <div class="col-md-4 mb-3">
                     <h4 class="logo mb-2">MELODISE</h4>
-                    <p class="small text-muted">Discover and enjoy your favorite music with ease.</p>
+                    <p class="small text-muted">Melody of the paradise</p>
                 </div>
 
                 <!-- Quick Links -->
@@ -55,9 +61,9 @@
                     <h5 class="mb-2">Quick Links</h5>
                     <ul class="list-unstyled">
                         <li><a href="index.php?unset_session=true" class="footer-link">Home</a></li>
-                        <li><a href="allmusic.php" class="footer-link">Explore</a></li>
-                        <li><a href="allartist.php" class="footer-link">Favorite Artists</a></li>
-                        <li><a href="contact.php" class="footer-link">Contact Us</a></li>
+                        <li><a href="#" class="footer-link">Explore</a></li>
+                        <li><a href="#" class="footer-link">Favorite Artists</a></li>
+                        <li><a href="#" class="footer-link">Contact Us</a></li>
                     </ul>
                 </div>
 

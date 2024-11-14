@@ -74,6 +74,17 @@ include('connect.php')
             color: #1B8673;
         }
 
+        .btn-light-custom {
+            background-color: #B6E5D6; 
+            color: #1B8673; 
+            border-radius: 50px;
+            padding: 0.4rem 1.2rem;
+        }
+        .btn-light-custom:hover {
+            background-color: #A2D7C3; 
+            color: white;
+        }
+
     </style>
 
 </head>
@@ -128,6 +139,8 @@ include('connect.php')
         $select_albums_count = "SELECT count(*) as albums_count FROM `albums`";                   
         $result_albums_count = mysqli_query($conn, $select_albums_count);
         $albums_count = mysqli_fetch_assoc($result_albums_count);
+
+            
 
 
         echo "
@@ -213,52 +226,84 @@ include('connect.php')
                         <div class='card-body'>
                             <h5 class='card-title'>Albums</h5>
                             <p class='card-text'>{$albums_count['albums_count']}</p>
-                        </div>
+                    </div>
                     </div>
                 </div>
 
             </div>
         </div>
+        <section/>  ";
+    
+    }
+    ?>
 
-        <!-- tableeeeeeeee -->
+<?php
+    if(isset($_SESSION['adminname'])){
+
+    //tableeeeeeeee
+
+    echo'
     <section>
-<div class='container my-5 table-container'>
-    <h2 class='text-center mb-4 text-primary-custom'>Subscription Details</h2>
-    <table class='table table-bordered table-hover table-custom'>
+    <div class="container my-5 table-container">
+    <h2 class="text-center mb-4 text-primary-custom">Subscription Details</h2>
+    <table class="table table-bordered table-hover table-custom">
         <thead>
             <tr>
-                <th scope='col'>Username</th>
-                <th scope='col'>Transaction ID</th>
-                <th scope='col'>Package Name</th>
-                <th scope='col'>Subscription Ends</th>
+                <th scope="col">Name</th>
+                <th scope="col">Subscription ID</th>
+                <th scope="col">Package Name</th>
+                <th scope="col">Subscription Ends</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody>';
+
+        
+        $select_subscriped_users = "SELECT u.Name, u.UserID, s.SubscriptionID, s.SubscriptionType, t.PackageName, s.EndDate 
+                                    FROM subscription_records s inner join subscription_types t on s.SubscriptionType = t.PackageCode 
+                                    inner join users u on u.UserID = s.userID ORDER BY s.StartDate desc";                                            // query for selecting all songs
+        $result_subscriped_users = mysqli_query($conn, $select_subscriped_users);
+        while ($row_data = mysqli_fetch_assoc($result_subscriped_users)) {                              // loop to fetch all subscribed users
+            $user_name = $row_data['Name'];
+            $subscription_id = $row_data['SubscriptionID'];  
+            $user_id = $row_data['UserID'];                                            // Getting the user id
+            $subscription_type = $row_data['SubscriptionType'];   
+            $package_name = $row_data['PackageName'];                                          // Getting the package name
+            $end_date = $row_data['EndDate'];                                            // Getting subscription end date
+            /* User information */
+            $select_user_name = "SELECT * FROM `users` WHERE UserID = $user_id";   // query for selecting user name
+            $result_user_name = mysqli_query($conn, $select_user_name);
+            $user_data = mysqli_fetch_assoc($result_user_name);
+            $User_Name = $user_data['Name'];
+
+            /* subscription information */
+            $select_packageCode = "SELECT * FROM `subscription_types` WHERE PackageCode = $subscription_type";            
+            $result_packageCode = mysqli_query($conn, $select_packageCode);
+            $package_data = mysqli_fetch_assoc($result_packageCode);
+            $Package_Name = $package_data['PackageName'];
+            echo"
             <tr>
-                <td>john_doe</td>
-                <td>TX12345</td>
-                <td>Premium</td>
-                <td>2024-11-05</td>
+                <td>$User_Name</td>
+                <td>$subscription_id</td>
+                <td>$Package_Name</td>
+                <td>$end_date</td>
             </tr>
-            <tr>
-                <td>jane_smith</td>
-                <td>TX12346</td>
-                <td>Basic</td>
-                <td>2024-10-30</td>
-            </tr>
-            <tr>
-                <td>alex_jones</td>
-                <td>TX12347</td>
-                <td>Standard</td>
-                <td>2024-12-15</td>
-            </tr>
-            <!-- Add more rows as needed -->
+            
+            ";
+        }
+        
+        echo'
         </tbody>
     </table>
 </div>
 </section>
+';
+    }
+?>
 
+<?php 
+if(isset($_SESSION['adminname'])) {
 
+    echo"
     <!-- Master Control Section -->
 
     <section id='master-control' class='p-3'>
@@ -276,7 +321,9 @@ include('connect.php')
                 <div class='card-body'>
                     <h5 class='card-title'>Update Album</h5>
                     <p class='card-text'>Modify album details, upload cover images, and manage song lists.</p>
-                    <a href='#' class='btn btn-primary'>Update album</a>
+                    <form action='adminaction.php' method='post'>
+                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-album-btn' >Update album</button>
+                    </form>
                 </div>
             </div>
 
@@ -286,7 +333,9 @@ include('connect.php')
                 <div class='card-body'>
                     <h5 class='card-title'>Update Music</h5>
                     <p class='card-text'>Add, remove, or edit individual tracks and details.</p>
-                    <a href='#' class='btn btn-primary'>Update Music</a>
+                    <form action='adminaction.php' method='post'>
+                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-music-btn' >Update Music</button>
+                    </form>
                 </div>
             </div>
 
@@ -296,32 +345,11 @@ include('connect.php')
                 <div class='card-body'>
                     <h5 class='card-title'>Update Genre</h5>
                     <p class='card-text'>Manage music genres for better categorization.</p>
-                    <a href='#' class='btn btn-primary'>Update Genre</a>
+                    <form action='adminaction.php' method='post'>
+                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-genre-btn'>Update Genre</button>
+                    </form>
                 </div>
             </div>
-
-            <!-- Update Genre Card -->
-            <div class='card' style='width: 18rem;'>
-                <img class='card-img-top' src='https://images.unsplash.com/photo-1587731556938-38755b4803a6?q=80&w=1778&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' style='width: 18rem; height: 12rem;' alt='Card image cap'>
-                <div class='card-body'>
-                    <h5 class='card-title'>Update Genre</h5>
-                    <p class='card-text'>Manage music genres for better categorization.</p>
-                    <a href='#' class='btn btn-primary'>Update Genre</a>
-                </div>
-            </div>
-            
-            <!-- Update Genre Card -->
-            <div class='card' style='width: 18rem;'>
-                <img class='card-img-top' src='https://images.unsplash.com/photo-1587731556938-38755b4803a6?q=80&w=1778&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' style='width: 18rem; height: 12rem;' alt='Card image cap'>
-                <div class='card-body'>
-                    <h5 class='card-title'>Update Genre</h5>
-                    <p class='card-text'>Manage music genres for better categorization.</p>
-                    <a href='#' class='btn btn-primary'>Update Genre</a>
-                </div>
-            </div>
-            
-            
-
 
             
         </div>
@@ -347,7 +375,9 @@ include('connect.php')
                 <div class='card-body'>
                     <h5 class='card-title'>Update Subsription</h5>
                     <p class='card-text'>Adjust subscription plans, pricing, and benefits.</p>
-                    <a href='#' class='btn btn-primary'>Update Subsription</a>
+                    <form action='adminaction.php' method='post'>
+                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-subscription-btn'>Update Subscription</button>
+                    </form>
                 </div>
             </div>
 
@@ -357,7 +387,9 @@ include('connect.php')
                 <div class='card-body'>
                     <h5 class='card-title'>Subsription Analytics</h5>
                     <p class='card-text'>View detailed insights on subscription metrics and trends.</p>
-                    <a href='#' class='btn btn-primary'>Analyze</a>
+                    <form action='adminaction.php' method='post'>
+                        <button type='submit' class='themed-btn btn btn-light border-0' name='analyze-btn'>Analyze</button>
+                    </form>
                 </div>
             </div>
             
@@ -384,7 +416,9 @@ include('connect.php')
                 <div class='card-body'>
                     <h5 class='card-title'>Update User Info</h5>
                     <p class='card-text'>Modify user details, access settings, and preferences.</p>
-                    <a href='#' class='btn btn-primary'>Update</a>
+                    <form action='adminaction.php' method='post'>
+                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-userInfo-btn'>Update</button>
+                    </form>
                 </div>
             </div>
 
@@ -394,7 +428,23 @@ include('connect.php')
                 <div class='card-body'>
                     <h5 class='card-title'>Update Artist Info</h5>
                     <p class='card-text'>Edit artist profiles, bios, and featured content.</p>
-                    <a href='#' class='btn btn-primary'>Update</a>
+                    <form action='adminaction.php' method='post'>
+                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-artistInfo-btn'>Update</button>
+                    </form>
+                    
+                </div>
+            </div>
+
+            <!-- Track of Artist Followers Card -->
+            <div class='card' style='width: 18rem;'>
+                <img class='card-img-top' src='https://img.freepik.com/free-photo/youth-group-with-pop-inspired-background_23-2151494787.jpg?t=st=1730347228~exp=1730350828~hmac=71391efa595cd178e4c77bae9e7c3fd8f49a7a80d200498605ddb229652ffe5a&w=1060' style='width: 18rem; height: 12rem;' alt='Card image cap'>
+                <div class='card-body'>
+                    <h5 class='card-title'>Artist Followers</h5>
+                    <p class='card-text'>Keep track of the total followers of all artists.</p>
+                    <form action='adminaction.php' method='post'>
+                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-artistFollower-btn'>Check</button>
+                    </form>
+                    
                 </div>
             </div>
             
@@ -403,10 +453,10 @@ include('connect.php')
     </section>
 
     <!-- Session Check Ends here -->
-</section>
+    </section>
         ";
-    } 
-    else {
+    
+}else {
         echo " 
         <section class='access'>
         <div class='container container-custom'>
@@ -419,7 +469,7 @@ include('connect.php')
         </section>
         ";
     }
-    ?>
+?>
 
 
 </body>
