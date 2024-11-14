@@ -66,13 +66,16 @@
         }
 
 
-        //admin-update buttons
+        //admin user profile update button
 
         if (isset($_POST['update-userInfo-btn'])) {
             header('Location: user-update.php');
         }
 
-
+        //admin artist followers tracking button
+        if (isset($_POST['update-artistFollower-btn'])) {
+            header('Location: artist-followers.php');
+        }
 
 
         //Confirm Update profile button

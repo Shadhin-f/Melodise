@@ -434,6 +434,19 @@ if(isset($_SESSION['adminname'])) {
                     
                 </div>
             </div>
+
+            <!-- Track of Artist Followers Card -->
+            <div class='card' style='width: 18rem;'>
+                <img class='card-img-top' src='https://img.freepik.com/free-photo/youth-group-with-pop-inspired-background_23-2151494787.jpg?t=st=1730347228~exp=1730350828~hmac=71391efa595cd178e4c77bae9e7c3fd8f49a7a80d200498605ddb229652ffe5a&w=1060' style='width: 18rem; height: 12rem;' alt='Card image cap'>
+                <div class='card-body'>
+                    <h5 class='card-title'>Artist Followers</h5>
+                    <p class='card-text'>Keep track of the total followers of all artists.</p>
+                    <form action='adminaction.php' method='post'>
+                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-artistFollower-btn'>Check</button>
+                    </form>
+                    
+                </div>
+            </div>
             
         </div>
         
