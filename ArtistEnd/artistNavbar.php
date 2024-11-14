@@ -109,7 +109,7 @@ session_start();
 
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <?php if (isset($_SESSION['username'])): ?>
+                    <?php if (isset($_SESSION['artistname'])): ?>
                         <li class="nav-item">
                             <a class="nav-link custom-nav-link" href="artistHome.php">Home</a>
                         </li>
@@ -142,14 +142,14 @@ session_start();
                     <!-- User Profile or Login/Register Buttons -->
 
 
-                    <?php if (!isset($_SESSION['username'])): ?>
+                    <?php if (!isset($_SESSION['artistname'])): ?>
                         <a href="login.php" class="btn btn-outline-secondary mx-2">Login</a>
                         <a href="register.php" class="btn btn-outline-primary mx-2">Register</a>
                     <?php else: ?>
-                        <?php $firstName = strtok($_SESSION['username'], ' '); ?>
+                        <?php $firstName = strtok($_SESSION['artistname'], ' '); ?>
                         <button class="username-btn mx-2"><?php echo $firstName; ?> <i class="fa-solid fa-user"></i></button>
-                        <form action="logout.php" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-outline-danger mx-2">Logout</button>
+                        <form action="artistActions.php" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-danger mx-2" name="artist-logout-btn">Logout</button>
                         </form>
                     <?php endif; ?>
                 </div>

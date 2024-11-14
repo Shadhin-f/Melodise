@@ -89,7 +89,7 @@
         <h2 id="form-title" class="mb-4">Login</h2>
 
         <!-- Login Form -->
-        <form id="login-form" action="Artist-Actions.php" method="post">
+        <form id="login-form" action="artistActions.php" method="post">
             <div class="mb-3">
                 <input type="email" class="form-control" id="loginEmail" placeholder="Enter email" name="loginEmail" required>
             </div>
@@ -100,7 +100,7 @@
         </form>
 
         <!-- Registration Form -->
-        <form id="registration-form" class="d-none" action="Artist-Actions.php" method="post">
+        <form id="registration-form" class="d-none" action="artistActions.php" method="post">
             <div class="mb-3">
                 <input type="text" class="form-control" id="regName" placeholder="Enter full name" name="username" required>
             </div>
