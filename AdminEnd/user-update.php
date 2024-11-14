@@ -2,6 +2,7 @@
 include('connect.php');
 session_start();
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -41,6 +42,8 @@ session_start();
 </head>
 
 <body>
+
+    
     <!-- Main Search Section -->
     <section class="container container-custom">
         <h2 class="text-primary-custom mb-4">Search Users</h2>
@@ -90,7 +93,10 @@ session_start();
                         <td>$userID</td>
                         <td>$userName</td>
                         <td>$userEmail</td>
-                        <td><a href='edit_user.html?id=1' class='btn btn-custom'>Edit</a></td>
+                        <form action='adminaction.php' method='get'>
+                            <input type='hidden' name='user_email' value='$userEmail'>
+                            <td><button type='submit' class='btn btn-custom' name='user-profile-edit-btn'>Edit</button></td>
+                        </form>
                     </tr>
                     ";
 
