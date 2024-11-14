@@ -54,56 +54,53 @@ session_start();
     
     <!-- Main Search Section -->
     <section class="container container-custom">
-        <h2 class="text-primary-custom mb-4">Search Users</h2>
+        <h2 class="text-primary-custom mb-4">Search Artist</h2>
         
         <!-- Search Form -->
         <form action="adminaction.php" method="post">
             <div class="input-group mb-4">
-                <input type="text" class="form-control" placeholder="Enter username or email" aria-label="Search" name='user-search-key' required>
-                <button class="btn btn-custom" type="submit" name='user-search-btn'>
+                <input type="text" class="form-control" placeholder="Enter artist name" aria-label="Search" name='artist-search-key' required>
+                <button class="btn btn-custom" type="submit" name='artist-search-btn'>
                     <i class="fas fa-search"></i> Search
                 </button>
             </div>
         </form>
 
-        <!-- User List Table -->
+        <!-- Artist List Table -->
 
         <?php 
-            if(isset($_SESSION['user-search-key'])){
-                $searchKey = $_SESSION['user-search-key'];
+            if(isset($_SESSION['artist-search-key'])){
+                $searchKey = $_SESSION['artist-search-key'];
                 echo "
                   <div class='table-responsive'>
                 <table class='table table-bordered align-middle'>
                     <thead class='table-light'>
                     <tr>
-                        <th scope='col'>User ID</th>
-                        <th scope='col'>User Name</th>
-                        <th scope='col'>User Email</th>
+                        <th scope='col'>Artist ID</th>
+                        <th scope='col'>Artist Name</th>
                         <th scope='col'>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                 ";
 
-                // Query to search user using name or Email
+                // Query to search artist using name 
 
-                $select_users = "SELECT * FROM `users` WHERE Email LIKE '%" . $searchKey . "%' OR Name LIKE '%" . $searchKey . "%'";                   
-                $result_users = mysqli_query($conn, $select_users);
+                $select_artists = "SELECT * FROM `artists` WHERE Name LIKE '%" . $searchKey . "%' ";                   
+                $result_artists = mysqli_query($conn, $select_artists);
 
 
-                while ($row_data = mysqli_fetch_assoc($result_users)){
-                    $userID = $row_data['UserID'];
-                    $userName = $row_data['Name'];
-                    $userEmail = $row_data['Email'];
+                while ($row_data = mysqli_fetch_assoc($result_artists)){
+                    $artistID = $row_data['ArtistID'];
+                    $artistName = $row_data['Name'];
 
                     echo "
                     <tr>
-                        <td>$userID</td>
-                        <td>$userName</td>
-                        <td>$userEmail</td>
+                        <td>$artistID</td>
+                        <td>$artistName</td>
                         <form action='adminaction.php' method='get'>
-                            <input type='hidden' name='user_email' value='$userEmail'>
-                            <td><button type='submit' class='btn edit-btn-custom' name='user-profile-edit-btn'>Edit</button></td>
+                            <input type='hidden' name='artist_name' value='$artistName'>
+                            <td><button type='submit' class='btn edit-btn-custom' name='artist-profile-edit-btn'>Edit</button></td>
                         </form>
                     </tr>
                     ";

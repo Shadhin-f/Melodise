@@ -56,12 +56,20 @@
 
         // user Search Button action
 
-
         if (isset($_POST['user-search-btn'])){
             $user_search_key = $_POST['user-search-key'];
             // echo $user_search_key;
             $_SESSION['user-search-key'] = $user_search_key;
             header('Location: user-update.php');
+            exit();
+        }
+
+        // artist Search Button action
+
+        if (isset($_POST['artist-search-btn'])){
+            $artist_search_key = $_POST['artist-search-key'];
+            $_SESSION['artist-search-key'] = $artist_search_key;
+            header('Location: update-artist-info.php');
             exit();
         }
 
@@ -75,6 +83,11 @@
         //admin artist followers tracking button
         if (isset($_POST['update-artistFollower-btn'])) {
             header('Location: artist-followers.php');
+        }
+
+        //admin artist info update button
+        if (isset($_POST['update-artistInfo-btn'])) {
+            header('Location: update-artist-info.php');
         }
 
 

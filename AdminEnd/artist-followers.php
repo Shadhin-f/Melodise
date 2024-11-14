@@ -84,8 +84,8 @@ const artistChart = new Chart(ctx, {
         datasets: [{
             label: 'Number of Followers',
             data: Followers,
-            backgroundColor: 'rgba(124, 210, 183, 0.5)', // Lighter blue
-            borderColor: '#1B8673', // Darker blue
+            backgroundColor: 'rgba(124, 210, 183, 0.5)', 
+            borderColor: '#1B8673', 
             borderWidth: 1
         }]
     },
