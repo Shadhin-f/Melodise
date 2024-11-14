@@ -36,7 +36,10 @@ session_start();
 <body>
 
     <?php
-    if (!isset($_SESSION['username'])) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    if (!isset($_SESSION['email'])) {
         echo '<script>
                 alert("Login to view your profile!!");
                 window.location.href = "login.php";

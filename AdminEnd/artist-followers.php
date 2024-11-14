@@ -1,5 +1,8 @@
 <?php
 include('connect.php');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +18,8 @@ include('connect.php');
             width: 70%; 
             margin: 0 auto;
             margin-top: 50px;
-            border: 2px solid #D1D1D1; 
+            border: 2px solid #1B8673 ; 
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
             padding: 10px;
             border-radius: 10px; 
             background-color: #f9f9f9; 
@@ -34,7 +38,7 @@ include('connect.php');
 <!-- Navigation bar -->
 
 <?php 
-    include('navbar.php')
+    // include('navbar.php')
 ?>
 
 <?php

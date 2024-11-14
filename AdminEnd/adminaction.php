@@ -184,6 +184,14 @@
         }
     }
 
+    //user-profile-edit-btn
+    if (isset($_POST['user-profile-edit-btn'])){
+        $userEmail = $_POST['user_email'];
+        $_SESSION['email'] = $userEmail;
+        
+        header('Location: ..\UserEnd\profileupdate.php');
+    }
+
 
     }
 
@@ -191,12 +199,7 @@
         include('connect.php');
 
 
-        //user-profile-edit-btn
-        if (isset($_GET['user-profile-edit-btn'])){
-            $userEmail = $_GET['user_email'];
-            $_SESSION['email'] = $userEmail;
-            header('Location: Melodise\UserEnd\profileupdate.php');
-        }
+        
 
         
     }
