@@ -168,7 +168,7 @@ if (!isset($_SESSION['artistid'])) {
             /* Spans 1.5 columns */
         }
 
-        .insights-card {
+        .upcoming-events-card {
             grid-column: span 1;
             /* Spans 1 column */
         }
@@ -208,38 +208,6 @@ if (!isset($_SESSION['artistid'])) {
             color: #1B8673;
             cursor: pointer;
             align-self: flex-start;
-        }
-
-        /* Centered Upcoming Events Card */
-        .dashboard-container2 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            /* Three columns */
-            gap: 20px;
-        }
-
-
-        /* Section Card Styling */
-        .section-card {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .empty1-card {
-            grid-column: span 1;
-            /* Spans 1 column */
-        }
-
-        .upcoming-events-card {
-            grid-column: span 3;
-            /* Spans 2 columns */
-        }
-
-        .empty2-card {
-            grid-column: span 1;
-            /* Spans 1 column */
         }
 
         /* tanveer Section Your song Card Styling */
@@ -433,19 +401,7 @@ if (!isset($_SESSION['artistid'])) {
             </div>
         </div>
 
-
-
-        <!-- Performance Insights Section -->
-        <div class="section-card insights-card">
-            <div class="section-title">Performance Insights</div>
-            <div class="card-body">
-                <p>Track your performance and analytics here.</p>
-            </div>
-        </div>
-
-        <!-- Empty -->
-        <div class="section-card .empty1-card">
-        </div>
+       
 
         <!-- Upcoming Events -->
         <div class="section-card .upcoming-events-card">
