@@ -205,13 +205,13 @@ if (isset($_POST['artist-login-btn']) || isset($_POST['artist-register-btn'])) {
 }
 
 
-// Dashboard--Your songs --- view all btn action
-if (isset($_GET['view-all-btn'])) {
-    // Perform any actions needed before redirecting
-    header("Location: viewAll.php");
-    exit;
-}
+// Redirect to viewAllMusic.php if view-all-music-btn is clicked
 
+if (isset($_GET['view-all-music-btn'])) {
+    
+    header("Location: viewAllMusic.php");
+    exit();
+}
 
 
 // Redirect to dashboard.php if back-to-dashboard-btn is clicked

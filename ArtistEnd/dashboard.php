@@ -365,8 +365,9 @@ if (!isset($_SESSION['artistid'])) {
                 </div>
                 <!-- <a href="#" class="text-decoration-none themed-btn">View All</a> -->
                 <form action="artistActions.php" method="get">
-                    <button type="submit" class="btn btn-primary btn-lg shadow-lg px-4 py-1" name="view-all-btn">View All</button>
-                </form>
+    <button type="submit" class="btn btn-primary btn-lg shadow-lg px-4 py-1" name="view-all-music-btn">View All</button>
+</form>
+
             </div>
         </div>
 
