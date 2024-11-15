@@ -41,7 +41,7 @@ if (!isset($_SESSION['artistid'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artist Dashboard</title>
-     <!-- Bootstrap Link -->
+    <!-- Bootstrap Link -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome (for Play Icon) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -142,17 +142,20 @@ if (!isset($_SESSION['artistid'])) {
 
         /* Section Card Styling */
         .section-card {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease; /* Adds smooth transition */
-}
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            /* Adds smooth transition */
+        }
 
-.section-card:hover {
-    transform: translateY(-5px); /* Moves the card up by 5px when hovered */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Increases shadow on hover */
-}
+        .section-card:hover {
+            transform: translateY(-5px);
+            /* Moves the card up by 5px when hovered */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            /* Increases shadow on hover */
+        }
 
         /* Your Song and Your Album span more columns */
         .song-card {
@@ -297,6 +300,12 @@ if (!isset($_SESSION['artistid'])) {
             color: #0056b3;
         }
 
+
+        .album-title {
+            font-size: 1.1em;
+            color: #333;
+            font-weight: 500;
+        }
     </style>
 
     </styl>
@@ -328,7 +337,7 @@ if (!isset($_SESSION['artistid'])) {
 
     <!-- Dashboard Grid -->
     <div class="dashboard-container mx-5">
-        
+
 
         <!-- Your Songs Section -->
         <div class="section-card song-card">
@@ -365,8 +374,8 @@ if (!isset($_SESSION['artistid'])) {
                 </div>
                 <!-- <a href="#" class="text-decoration-none themed-btn">View All</a> -->
                 <form action="artistActions.php" method="get">
-    <button type="submit" class="btn btn-primary btn-lg shadow-lg px-4 py-1" name="view-all-music-btn">View All</button>
-</form>
+                    <button type="submit" class="btn btn-primary btn-lg shadow-lg px-4 py-1" name="view-all-music-btn">View All</button>
+                </form>
 
             </div>
         </div>
@@ -377,60 +386,52 @@ if (!isset($_SESSION['artistid'])) {
 
 
         <!-- Your Album Section -->
-        <!-- <div class="section-card album-card">
-            <div class="section-title">Your Album</div>
-            <div class="card-body">
-                <div class="plus-btn">+</div>
-                <p>Your album details and releases go here.</p>
-                <a href="#" class="view-all-btn">View All</a>
-            </div>
-        </div> -->
 
 
         <div class="section-card album-card">
-    <div class="section-title">Your Albums</div>
-    <div class="card-body">
-        <div class="album-list">
-            <?php
-            // Fetch the artist ID from the session
-            $artistID = $_SESSION['artistid'];
+            <div class="section-title">Your Albums</div>
+            <div class="card-body">
+                <div class="album-list">
+                    <?php
+                    // Fetch the artist ID from the session
+                    $artistID = $_SESSION['artistid'];
 
-            // Fetch up to 4 albums by the artist
-            $select_albums = "SELECT Title FROM `albums` WHERE `ArtistID` = '$artistID' ORDER BY Title LIMIT 4";
-            $result_albums = mysqli_query($conn, $select_albums);
+                    // Fetch up to 4 albums by the artist
+                    $select_albums = "SELECT Title FROM `albums` WHERE `ArtistID` = '$artistID' ORDER BY Title LIMIT 4";
+                    $result_albums = mysqli_query($conn, $select_albums);
 
-            if ($result_albums && mysqli_num_rows($result_albums) > 0) {
-                while ($row_data = mysqli_fetch_assoc($result_albums)) {
-                    $album_name = htmlspecialchars($row_data['Title']); // Sanitize output
+                    if ($result_albums && mysqli_num_rows($result_albums) > 0) {
+                        while ($row_data = mysqli_fetch_assoc($result_albums)) {
+                            $album_name = htmlspecialchars($row_data['Title']); // Sanitize output
 
-                    echo "
+                            echo "
                         <div class='album-item'>
                             <span class='album-title'>$album_name</span>
                         </div>
                     ";
-                }
-            } else {
-                echo "<div class='album-item'>No albums found.</div>";
-            }
-            ?>
+                        }
+                    } else {
+                        echo "<div class='album-item'>No albums found.</div>";
+                    }
+                    ?>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-group">
+                    <form action="artistActions.php" method="get" class="d-inline-block">
+                        <button type="submit" class="btn btn-primary btn-lg shadow-lg px-2 py-1" name="view-all-album-btn">View All</button>
+                    </form>
+
+                    <form action="addAlbum.php" method="get" class="d-inline-block">
+                        <button type="submit" class="btn btn-success btn-lg shadow-lg px-4 py-1" name="add-album-btn">Add Album</button>
+                    </form>
+
+                    <form action="deleteAlbum.php" method="get" class="d-inline-block">
+                        <button type="submit" class="btn btn-danger btn-lg shadow-lg px-4 py-1" name="delete-album-btn">Delete Album</button>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <!-- Buttons -->
-        <div class="button-group">
-            <form action="artistActions.php" method="get" class="d-inline-block">
-                <button type="submit" class="btn btn-primary btn-lg shadow-lg px-2 py-1" name="view-all-album-btn">View All</button>
-            </form>
-
-            <form action="addAlbum.php" method="get" class="d-inline-block">
-                <button type="submit" class="btn btn-success btn-lg shadow-lg px-4 py-1" name="add-album-btn">Add Album</button>
-            </form>
-
-            <form action="deleteAlbum.php" method="get" class="d-inline-block">
-                <button type="submit" class="btn btn-danger btn-lg shadow-lg px-4 py-1" name="delete-album-btn">Delete Album</button>
-            </form>
-        </div>
-    </div>
-</div>
 
 
 

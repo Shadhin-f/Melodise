@@ -35,6 +35,7 @@ include('connect.php');
     </section>
 
     <!-- Artist Releases Cards Section -->
+     <section>
     <div id="card-container" class="d-flex flex-wrap gap-3 mt-4 px-3 mx-auto justify-content-center">
         <?php
         // Fetch the artist's name from the session
@@ -84,7 +85,7 @@ include('connect.php');
         }
         ?>
     </div>
-
+    </section>
 </body>
 
 <script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>
