@@ -108,51 +108,24 @@ session_start();
                 <!-- Navigation links for logged-in users -->
 
 
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <?php if (isset($_SESSION['artistname'])): ?>
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link" href="artistHome.php">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link" href="tanveer-dashboard.php">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link" href="settings.php">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link" href="feedback.php">Feedback</a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
+
 
 
                 <div class="ms-auto d-flex align-items-center">
-
-
-                    <!-- Search bar -->
-
-
-                    <!-- <form class="d-flex" action="user-actions.php" method="get">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search-key">
-                        <button class="btn btn-outline-success" type="submit" name="search-btn">Search</button>
-                    </form> -->
-
-
-
-                    <!-- User Profile or Login/Register Buttons -->
-
-
-                    <?php if (!isset($_SESSION['artistname'])): ?>
+                    <?php if (!isset($_SESSION['artistid'])): ?>
+                        <!-- If artist is not logged in, show login and register buttons -->
                         <a href="login.php" class="btn btn-outline-secondary mx-2">Login</a>
                         <a href="register.php" class="btn btn-outline-primary mx-2">Register</a>
                     <?php else: ?>
-                        <?php $firstName = strtok($_SESSION['artistname'], ' '); ?>
-                        <button class="username-btn mx-2"><?php echo $firstName; ?> <i class="fa-solid fa-user"></i></button>
-                        <form action="artistActions.php" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-outline-danger mx-2" name="artist-logout-btn">Logout</button>
-                        </form>
+                        <?php
+                        // Fetch artist first name from session (assuming artist name is stored in $_SESSION['artistname'])
+                        $firstName = strtok($_SESSION['artistname'], ' ');  // Get first name by splitting at space
+                        ?>
+                        <!-- Display username button with first name -->
+                        <button class="username-btn mx-2"><?php echo htmlspecialchars($firstName); ?> <i class="fa-solid fa-user"></i></button>
                     <?php endif; ?>
                 </div>
+
             </div>
         </div>
     </nav>

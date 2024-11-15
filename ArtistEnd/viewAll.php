@@ -8,88 +8,85 @@ include('connect.php');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Music - Billie Eilish</title>
+    <title>All Music</title>
     <!-- Bootstrap Link -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- CSS File Link -->
-    <link rel="stylesheet" href="style.css">
+
+    <style>
+        #card-container {
+            max-width: 1600px; /* Restrict the container's width */
+            margin: 0 auto;    /* Center the container horizontally */
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Navigation bar -->
+    <!-- Navigation Bar -->
     <?php include('artistNavbar.php'); ?>
 
-    <!-- Main Section -->
+    <!-- All music headline -->
     <section id="section-header" class="px-5 my-5">
         <form action="artistActions.php" method="get" class="d-inline-block">
-            <button type="submit" class="themed-btn bg-transparent border-0 ml-5" name="back-to-artistHome-btn">
+            <button type="submit" class="themed-btn bg-transparent border-0 ml-5" name="back-to-dashboard-btn">
                 <i class="fa-solid fa-arrow-left h1"></i>
             </button>
         </form>
         <h1 class="ml-5 d-inline-block">All Music</h1>
     </section>
 
-    <section class="all-music-container px-5">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Song</th>
-                    <th scope="col">Artist</th>
-                    <th scope="col">Genre</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                // Query to find Billie Eilish's ArtistID
-                $artistID= $_SESSION['artistid'];
-                $artist_name = $_SESSION['artistname'];
+    <!-- Artist Releases Cards Section -->
+    <div id="card-container" class="d-flex flex-wrap gap-3 mt-4 px-3 mx-auto justify-content-center">
+        <?php
+        // Fetch the artist's name from the session
+        $artist_name = $_SESSION['artistname'];
 
-                $artist_name_query = "SELECT ArtistID FROM `artists` WHERE ArtistID='$artistID'";
-                $artist_name_result = mysqli_query($conn, $artist_name_query);
+        // Query to fetch the artist's ID
+        $select_artist = "SELECT * FROM `artists` WHERE `Name` = '$artist_name'";
+        $result_artist = mysqli_query($conn, $select_artist);
+        $artist_data = mysqli_fetch_assoc($result_artist);
 
-                if ($artist_name_result && mysqli_num_rows($artist_name_result) > 0) {
-                    $artist_row = mysqli_fetch_assoc($artist_name_result);
-                    $artist_id = $artist_row['ArtistID'];
+        if ($artist_data) {
+            $artist_id = $artist_data['ArtistID']; // Extract the ArtistID
 
-                    // Query to fetch all songs by Billie Eilish
-                    $select_songs = "SELECT * FROM `songs` WHERE `ArtistID` = $artist_id ORDER BY Title";
-                    $result_songs = mysqli_query($conn, $select_songs);
+            // Query to fetch all songs by the artist
+            $select_songs = "SELECT * FROM `songs` WHERE `ArtistID` = $artist_id";
+            $result_songs = mysqli_query($conn, $select_songs);
 
-                    if ($result_songs && mysqli_num_rows($result_songs) > 0) {
-                        while ($row_data = mysqli_fetch_assoc($result_songs)) {
-                            $song_name = $row_data['Title'];
-                            $genre_id = $row_data['GenreID'];
-                            $color_code = $row_data['ColorCode'];
-                            $audio = $row_data['Audio'];
+            // Loop through the results and display cards
+            while ($row_data = mysqli_fetch_assoc($result_songs)) {
+                $song_name = $row_data['Title'];   // Song title
+                $audio = $row_data['Audio'];       // Audio file name
 
-                            // Fetch genre information
-                            $select_genre = "SELECT Title FROM `genres` WHERE GenreID = $genre_id";
-                            $result_genre = mysqli_query($conn, $select_genre);
-                            $genre_data = mysqli_fetch_assoc($result_genre);
-                            $genre_title = $genre_data['Title'] ?? "Unknown Genre";
+                // Output the song card
+                echo "
+                <div class='card' style='width: 17rem;'>
+                    <img 
+                        class='card-img-top' 
+                        src='https://img.freepik.com/free-photo/vinyl-record-cassette-tape-design-resource_53876-105921.jpg?t=st=1730348087~exp=1730351687~hmac=6bda3f0924ff3161c42e359fbfe85beed3e78fccd83404824898ad19262ca2e4&w=996' 
+                        alt='Album Art' 
+                        style='width: 100%; height: 12rem; object-fit: cover;'
+                    >
+                    <div class='card-body position-relative'>
+                        <h5 class='card-title'>$song_name</h5>
+                        <p class='card-text'>$artist_name</p>
+                        <a 
+                            href='../Resources/Songs/$audio.mp3' 
+                            class='play-btn-back position-absolute bottom-0 end-0 rounded-circle bg-dark text-white play-btn' 
+                            target='_blank'
+                        >
+                            <i class='fa-solid fa-play p-3'></i>
+                        </a>
+                    </div>
+                </div>";
+            }
+        } else {
+            echo "<p class='text-danger'>Artist not found!</p>";
+        }
+        ?>
+    </div>
 
-                            // Display each song row
-                            echo "
-                            <tr>
-                                <td>$song_name</td>
-                                <td>$artist_name</td>
-                                <td>$genre_title</td>
-                                <td><a href='../Resources/Songs/$audio.mp3' target='_blank'><i class='fa-solid fa-play' style='color: $color_code;'></i></a></td>
-                            </tr>
-                            ";
-                        }
-                    } else {
-                        echo "<tr><td colspan='4'>No songs found for Billie Eilish.</td></tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='4'>Artist Billie Eilish not found in the database.</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
-    </section>
 </body>
+
 <script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>
 
 </html>

@@ -160,7 +160,7 @@ if (isset($_POST['profile-update-btn'])) {
                     }
                 } else {
                     // Update query without image
-                    $update_artist = "UPDATE artists SET Name = '$upName', Email = '$upEmail', Dob = '$upDOB', Gender = '$upGender',  Bio = '$upBio' Country = '$upCountry', WHERE Email = '$artistEmail'";
+                    $update_artist = "UPDATE artists SET Name = '$upName', Email = '$upEmail', Dob = '$upDOB', Gender = '$upGender',  Bio = '$upBio', Country = '$upCountry' WHERE Email = '$artistEmail'";
                 }
 
                 // Execute update query
@@ -205,14 +205,40 @@ if (isset($_POST['artist-login-btn']) || isset($_POST['artist-register-btn'])) {
 }
 
 
-// Dashboard--Your songs --- view all btn acyion
-
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-
-    
-    include('connect.php');
-    if (isset($_GET['view-all-btn'])) {
-        header('Location: viewAll.php');
-    }
+// Dashboard--Your songs --- view all btn action
+if (isset($_GET['view-all-btn'])) {
+    // Perform any actions needed before redirecting
+    header("Location: viewAll.php");
+    exit;
 }
+
+
+
+// Redirect to dashboard.php if back-to-dashboard-btn is clicked
+if (isset($_GET['back-to-dashboard-btn'])) {
+    header("Location: dashboard.php");
+    exit();
+}
+
+// Redirect to viewAllAlbum.php if view-all-album-btn is clicked
+
+if (isset($_GET['view-all-album-btn'])) {
+    header("Location: viewAllAlbum.php");
+    exit;
+}
+
+
+
+// Redirect to addAlbum.php if add-album-btn is clicked
+if (isset($_GET['add-album-btn'])) {
+    header("Location: addAlbum.php");
+    exit;
+}
+
+// Redirect to deleteAlbum.php if delete-album-btn is clicked
+if (isset($_GET['delete-album-btn'])) {
+    header("Location: deleteAlbum.php");
+    exit;
+}
+
 ?>

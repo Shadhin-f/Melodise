@@ -365,7 +365,7 @@ if (!isset($_SESSION['artistid'])) {
                 </div>
                 <!-- <a href="#" class="text-decoration-none themed-btn">View All</a> -->
                 <form action="artistActions.php" method="get">
-                    <button type="submit" class="btn btn-primary btn-lg shadow-lg rounded-pill px-4 py-1" name="view-all-btn">View All</button>
+                    <button type="submit" class="btn btn-primary btn-lg shadow-lg px-4 py-1" name="view-all-btn">View All</button>
                 </form>
             </div>
         </div>
@@ -376,14 +376,62 @@ if (!isset($_SESSION['artistid'])) {
 
 
         <!-- Your Album Section -->
-        <div class="section-card album-card">
+        <!-- <div class="section-card album-card">
             <div class="section-title">Your Album</div>
             <div class="card-body">
                 <div class="plus-btn">+</div>
                 <p>Your album details and releases go here.</p>
                 <a href="#" class="view-all-btn">View All</a>
             </div>
+        </div> -->
+
+
+        <div class="section-card album-card">
+    <div class="section-title">Your Albums</div>
+    <div class="card-body">
+        <div class="album-list">
+            <?php
+            // Fetch the artist ID from the session
+            $artistID = $_SESSION['artistid'];
+
+            // Fetch up to 4 albums by the artist
+            $select_albums = "SELECT Title FROM `albums` WHERE `ArtistID` = '$artistID' ORDER BY Title LIMIT 4";
+            $result_albums = mysqli_query($conn, $select_albums);
+
+            if ($result_albums && mysqli_num_rows($result_albums) > 0) {
+                while ($row_data = mysqli_fetch_assoc($result_albums)) {
+                    $album_name = htmlspecialchars($row_data['Title']); // Sanitize output
+
+                    echo "
+                        <div class='album-item'>
+                            <span class='album-title'>$album_name</span>
+                        </div>
+                    ";
+                }
+            } else {
+                echo "<div class='album-item'>No albums found.</div>";
+            }
+            ?>
         </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+            <form action="artistActions.php" method="get" class="d-inline-block">
+                <button type="submit" class="btn btn-primary btn-lg shadow-lg px-2 py-1" name="view-all-album-btn">View All</button>
+            </form>
+
+            <form action="addAlbum.php" method="get" class="d-inline-block">
+                <button type="submit" class="btn btn-success btn-lg shadow-lg px-4 py-1" name="add-album-btn">Add Album</button>
+            </form>
+
+            <form action="deleteAlbum.php" method="get" class="d-inline-block">
+                <button type="submit" class="btn btn-danger btn-lg shadow-lg px-4 py-1" name="delete-album-btn">Delete Album</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 
         <!-- Performance Insights Section -->
         <div class="section-card insights-card">
