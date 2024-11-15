@@ -203,4 +203,16 @@ if (isset($_POST['profile-update-btn'])) {
 if (isset($_POST['artist-login-btn']) || isset($_POST['artist-register-btn'])) {
     header('Location: artistlogin.php');
 }
+
+
+// Dashboard--Your songs --- view all btn acyion
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+
+    
+    include('connect.php');
+    if (isset($_GET['view-all-btn'])) {
+        header('Location: viewAll.php');
+    }
+}
 ?>
