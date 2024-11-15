@@ -140,8 +140,12 @@ include('connect.php')
         $result_albums_count = mysqli_query($conn, $select_albums_count);
         $albums_count = mysqli_fetch_assoc($result_albums_count);
 
-            
-
+        // query for calculating revenue
+        $select_revenue_data = "SELECT SUM(st.price) AS Revenue
+                                FROM subscription_types st 
+                                JOIN subscription_records sr ON st.PackageCode=sr.SubscriptionType; ";                   
+        $result_revenue_data = mysqli_query($conn, $select_revenue_data);
+        $revenue_data = mysqli_fetch_assoc($result_revenue_data);
 
         echo "
 
@@ -185,7 +189,7 @@ include('connect.php')
                     <div class='card'>
                         <div class='card-body'>
                             <h5 class='card-title'>Revenue</h5>
-                            <p class='card-text'>900</p>
+                            <p class='card-text'>{$revenue_data['Revenue']}</p>
                         </div>
                     </div>
                 </div>
@@ -235,6 +239,11 @@ include('connect.php')
         <section/>  ";
     
     }
+
+    // Artist followers chart
+
+    include('artist-followers.php')
+
     ?>
 
 <?php
@@ -260,7 +269,7 @@ include('connect.php')
         
         $select_subscriped_users = "SELECT u.Name, u.UserID, s.SubscriptionID, s.SubscriptionType, t.PackageName, s.EndDate 
                                     FROM subscription_records s inner join subscription_types t on s.SubscriptionType = t.PackageCode 
-                                    inner join users u on u.UserID = s.userID ORDER BY s.StartDate desc";                                            // query for selecting all songs
+                                    inner join users u on u.UserID = s.userID ORDER BY s.StartDate desc limit 10";                                            // query for selecting all songs
         $result_subscriped_users = mysqli_query($conn, $select_subscriped_users);
         while ($row_data = mysqli_fetch_assoc($result_subscriped_users)) {                              // loop to fetch all subscribed users
             $user_name = $row_data['Name'];
@@ -304,6 +313,54 @@ include('connect.php')
 if(isset($_SESSION['adminname'])) {
 
     echo"
+    
+    <!-- Manage Profiles Section -->
+
+
+    <section id='profile-control' class='p-3'>
+        <!-- Title -->
+        <div id='profile-control-title-container' class='d-flex flex-row justify-content-between flex-wrap align-items-center'>
+            <h1>Manage Profiles</h1>  
+        </div>
+        
+        
+        <!-- Manage Profiles Cards -->
+        <div id='control-card-container' class='d-flex flex-row justify-content-start flex-wrap align-items-center gap-5'>
+            <!-- Update User Info Card -->
+            <div class='card' style='width: 18rem;'>
+                <img class='card-img-top' src='https://images.unsplash.com/photo-1483032469466-b937c425697b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' style='width: 18rem; height: 12rem;' alt='Card image cap'>
+                <div class='card-body'>
+                    <h5 class='card-title'>Update User Info</h5>
+                    <p class='card-text'>Modify user details, access settings, and preferences.</p>
+                    <form action='adminaction.php' method='post'>
+                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-userInfo-btn'>Update</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Update Artist Info Card -->
+            <div class='card' style='width: 18rem;'>
+                <img class='card-img-top' src='https://img.freepik.com/free-photo/youth-group-with-pop-inspired-background_23-2151494787.jpg?t=st=1730347228~exp=1730350828~hmac=71391efa595cd178e4c77bae9e7c3fd8f49a7a80d200498605ddb229652ffe5a&w=1060' style='width: 18rem; height: 12rem;' alt='Card image cap'>
+                <div class='card-body'>
+                    <h5 class='card-title'>Update Artist Info</h5>
+                    <p class='card-text'>Edit artist profiles, bios, and featured content.</p>
+                    <form action='adminaction.php' method='post'>
+                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-artistInfo-btn'>Update</button>
+                    </form>
+                    
+                </div>
+            </div>
+
+            
+        </div>
+        
+    </section>
+
+    <!-- Session Check Ends here -->
+    </section>
+
+
+
     <!-- Master Control Section -->
 
     <section id='master-control' class='p-3'>
@@ -397,63 +454,6 @@ if(isset($_SESSION['adminname'])) {
         
     </section>
 
-
-    <!-- Manage Profiles Section -->
-
-
-    <section id='profile-control' class='p-3'>
-        <!-- Title -->
-        <div id='profile-control-title-container' class='d-flex flex-row justify-content-between flex-wrap align-items-center'>
-            <h1>Manage Profiles</h1>  
-        </div>
-        
-        
-        <!-- Manage Profiles Cards -->
-        <div id='control-card-container' class='d-flex flex-row justify-content-start flex-wrap align-items-center gap-5'>
-            <!-- Update User Info Card -->
-            <div class='card' style='width: 18rem;'>
-                <img class='card-img-top' src='https://images.unsplash.com/photo-1483032469466-b937c425697b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' style='width: 18rem; height: 12rem;' alt='Card image cap'>
-                <div class='card-body'>
-                    <h5 class='card-title'>Update User Info</h5>
-                    <p class='card-text'>Modify user details, access settings, and preferences.</p>
-                    <form action='adminaction.php' method='post'>
-                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-userInfo-btn'>Update</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Update Artist Info Card -->
-            <div class='card' style='width: 18rem;'>
-                <img class='card-img-top' src='https://img.freepik.com/free-photo/youth-group-with-pop-inspired-background_23-2151494787.jpg?t=st=1730347228~exp=1730350828~hmac=71391efa595cd178e4c77bae9e7c3fd8f49a7a80d200498605ddb229652ffe5a&w=1060' style='width: 18rem; height: 12rem;' alt='Card image cap'>
-                <div class='card-body'>
-                    <h5 class='card-title'>Update Artist Info</h5>
-                    <p class='card-text'>Edit artist profiles, bios, and featured content.</p>
-                    <form action='adminaction.php' method='post'>
-                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-artistInfo-btn'>Update</button>
-                    </form>
-                    
-                </div>
-            </div>
-
-            <!-- Track of Artist Followers Card -->
-            <div class='card' style='width: 18rem;'>
-                <img class='card-img-top' src='https://img.freepik.com/free-photo/youth-group-with-pop-inspired-background_23-2151494787.jpg?t=st=1730347228~exp=1730350828~hmac=71391efa595cd178e4c77bae9e7c3fd8f49a7a80d200498605ddb229652ffe5a&w=1060' style='width: 18rem; height: 12rem;' alt='Card image cap'>
-                <div class='card-body'>
-                    <h5 class='card-title'>Artist Followers</h5>
-                    <p class='card-text'>Keep track of the total followers of all artists.</p>
-                    <form action='adminaction.php' method='post'>
-                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-artistFollower-btn'>Check</button>
-                    </form>
-                    
-                </div>
-            </div>
-            
-        </div>
-        
-    </section>
-
-    <!-- Session Check Ends here -->
-    </section>
         ";
     
 }else {

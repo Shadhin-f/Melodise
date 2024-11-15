@@ -81,7 +81,7 @@ session_start();                 // Start session
 <body>
     <?php
     // Session check
-    if (!isset($_SESSION['username'])) {
+    if (!isset($_SESSION['email'])) {
         echo '<script>
                 alert("Login to access this page!!");
                 window.location.href = "login.php";

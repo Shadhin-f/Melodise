@@ -107,6 +107,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $_SESSION['usertype'] = $userType;
 
 
+                    // if user login admin session must be unset to avoid clashes
+                    session_start();
+                    if (isset($_SESSION['adminname'])) {
+                        unset($_SESSION['adminname']);
+                    }
+
+
                     header('Location: index.php');
                 } else {
                     echo '<script>
@@ -297,12 +304,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $result_insert_song_to_playlist = mysqli_query($conn, $insert_song_to_playlist);
 
             if ($result_insert_song_to_playlist) {
-                // echo '<script>alert("Song Added to playlist!!");</script>';
-                header('Location: index.php');
+                echo '<script>window.history.back();</script>';
             }
         } catch (Exception $e) {
-            // echo '<script>alert("Could not add!!");</script>';
-            header('Location: index.php');
+            echo '<script>window.history.back();</script>';
         }
     }
 
@@ -368,7 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
 
-    //Confirm Update profile button
+    //---------------------------     Confirm Update profile button (user profile)     -------------------
 
     if (isset($_POST['profile-update-btn'])) {
         // session_start();
@@ -451,10 +456,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     $result_user_credentials = mysqli_query($conn, $update_user_credentials);
                     if ($result_user_credentials) {
-                        echo '<script>
-                                alert("Profile Updated. Login to view updated profile!");
-                                window.location.href = "login.php";
+                        if (isset($_SESSION['adminname']) && !isset($_SESSION['userid'])) {
+                            echo '<script>
+                                alert("Profile Updated!");
+                                window.location.href = "../AdminEnd/user-update.php";
                                 </script>';
+                        } else {
+                            // updating the ssions
+                            $_SESSION['username'] = $upName;
+                            $_SESSION['email'] = $upEmail;
+                            echo '<script>
+                                    alert("Profile Updated. Login to view updated profile!");
+                                    window.location.href = "userprofile.php";
+                                    </script>';
+                        }
                     }
                 }
             }

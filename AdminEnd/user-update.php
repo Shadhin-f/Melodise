@@ -96,15 +96,20 @@ session_start();
                     $userName = $row_data['Name'];
                     $userEmail = $row_data['Email'];
 
+
+                    
+
                     echo "
                     <tr>
                         <td>$userID</td>
                         <td>$userName</td>
                         <td>$userEmail</td>
-                        <form action='adminaction.php' method='get'>
-                            <input type='hidden' name='user_email' value='$userEmail'>
-                            <td><button type='submit' class='btn edit-btn-custom' name='user-profile-edit-btn'>Edit</button></td>
-                        </form>
+                        <td>
+                            <form action='adminaction.php' method='post'>
+                                <input type='hidden' name='user_email' value='$userEmail'>
+                                <button type='submit' class='btn edit-btn-custom' name='user-profile-edit-btn'>Edit</button>
+                            </form>
+                        </td>
                     </tr>
                     ";
 
