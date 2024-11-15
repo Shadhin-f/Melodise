@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     // Start session for the logged-in user
                     $_SESSION['artistid'] = $artist_data['ArtistID'];
                     $_SESSION['artistname'] = $artist_data['Name'];
-                    $_SESSION['email'] = $artist_data['Email'];
+                    $_SESSION['artistemail'] = $artist_data['Email'];
                     
                     header('Location: dashboard.php');
                     exit();
@@ -94,6 +94,94 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
                 }
             }
+        }
+    }
+}
+
+
+//Edit Profile btn
+if (isset($_POST['edit-artist-btn'])){
+    $_SESSION['artistid']=$_POST['artist_id'];
+    header('Location: editProfile.php');
+}
+
+
+//Edit profile confirm
+
+if (isset($_POST['profile-update-btn'])) {
+    $artistEmail = $_SESSION['artistemail'];
+    $artistID = $_SESSION['artistid'];
+
+    $upName = $_POST['updated-name'];
+    $upEmail = $_POST['updated-email'];
+    $upDOB = $_POST['updated-dob'];
+    $upCountry = $_POST['updated-country'];
+    $upGender = $_POST['updated-gender'];
+    $upBio = $_POST['updated-bio'];
+
+    // Empty field check
+    if ($upName == '' || $upDOB == '' || $upCountry == '' || $upEmail == '' || $upBio == '') {
+        echo '<script>
+                alert("Please fill out all the necessary fields!");
+                window.location.href = "editprofile.php";
+              </script>';
+    } else {
+        // Checking if email is already in use and fetch the artist's current data
+        $select_artist = "SELECT * FROM artists WHERE Email = '$upEmail'";
+        $result_artist = mysqli_query($conn, $select_artist);
+
+        if ($result_artist) {
+            $artist_found = mysqli_num_rows($result_artist);
+            $artist_data = mysqli_fetch_assoc($result_artist);
+            $artistImage = $artist_data['Image'];
+
+            if ($artist_found > 0 && $upEmail != $artistEmail) {
+                echo '<script>
+                        alert("Email already in use!");
+                        window.location.href = "editprofile.php";
+                      </script>';
+            } else {
+                // Handle profile image upload
+                if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] != 4) {
+                    $uploadDirectory = 'C:/xampp/htdocs/website/Melodise/Resources/ArtistImges/';
+                    $oldImagePath = $uploadDirectory . $artistImage;
+                    $newImageName = $artistID;
+                    $newImagePath = $uploadDirectory . $newImageName;
+
+                    // Delete old image if exists and not the default one
+                    if (file_exists($oldImagePath) && $artistImage != 'unknown.jpg') {
+                        unlink($oldImagePath);
+                    }
+
+                    // Move uploaded file to the resources folder
+                    if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $newImagePath)) {
+                        // Update query with image
+                        $update_artist = "UPDATE artists SET Name = '$upName', Email = '$upEmail', Dob = '$upDOB', Gender = '$upGender', Bio = '$upBio', Country = '$upCountry', Image = '$newImageName' WHERE Email = '$artistEmail'";
+                    }
+                } else {
+                    // Update query without image
+                    $update_artist = "UPDATE artists SET Name = '$upName', Email = '$upEmail', Dob = '$upDOB', Gender = '$upGender',  Bio = '$upBio' Country = '$upCountry', WHERE Email = '$artistEmail'";
+                }
+
+                // Execute update query
+                $result_update = mysqli_query($conn, $update_artist);
+                if ($result_update) {
+                    echo '<script>
+                            alert("Profile Updated! Log in again to view updated profile.");
+                            window.location.href = "artistlogin.php";
+                          </script>';
+                } else {
+                    echo '<script>
+                            alert("Failed to update profile. Please try again.");
+                            window.location.href = "editprofile.php";
+                          </script>';
+                }
+            }
+        } else {
+            echo '<script>
+                    alert("Error fetching artist data.");
+                    window.location.href = "editprofile.php";
+                  </script>';
         }
     }
 }

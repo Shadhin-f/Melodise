@@ -1,25 +1,37 @@
 <?php
 session_start();
-if (!isset($_SESSION['artistname'])) {
-    header("Location: artistlogin.php");
-    exit();
-}
+include('connect.php');
 
-// Sample data - replace with real data from your database as needed
-$artistData = [
-    'username' => $_SESSION['artistname'],
-    'bio' => "An independent artist specializing in soulful music.",
-    'totalStreams' => 5000,
-    'topSong' => "Echoes of Time",
-    'recentFeedback' => [
-        ["name" => "Alice", "comment" => "Loved the new track!"],
-        ["name" => "Bob", "comment" => "Amazing beats! Keep it up!"]
-    ],
-    'upcomingEvents' => [
-        ["date" => "2024-11-20", "location" => "NYC Jazz Club", "event" => "Jazz Night"],
-        ["date" => "2024-12-05", "location" => "LA Theater", "event" => "Soul Fest"]
-    ],
-];
+// Check if artist is logged in
+if (!isset($_SESSION['artistid'])) {
+    echo '<script>
+                alert("Something went wrong!!!");
+                window.history.back();
+        </script>';
+} else {
+    $artistID = $_SESSION['artistid'];
+
+    // Query to get artist information
+    $select_artist_info = "SELECT * FROM `artists` WHERE ArtistID = '$artistID'";
+    $result_artist_info = mysqli_query($conn, $select_artist_info);
+    $artist_data = mysqli_fetch_assoc($result_artist_info);
+    $artistName = $artist_data['Name'];
+    $artistBio = $artist_data['Bio'];
+    $artistCountry = $artist_data['Country'];
+    $artistImage = $artist_data['Image'];
+
+    // Query to get follower count
+    $select_follower_Count = "SELECT COUNT(ArtistID) AS TotalFollowers FROM artist_followers WHERE ArtistID = $artistID";
+    $result_follower_Count = mysqli_query($conn, $select_follower_Count);
+    $followerCount = mysqli_fetch_assoc($result_follower_Count);
+    $totalFollowers = $followerCount['TotalFollowers'];
+
+    // Query to get album count
+    $select_album_Count = "SELECT COUNT(AlbumID) as NumOFAlbum FROM albums WHERE ArtistID = '$artistID';";
+    $result_album_Count = mysqli_query($conn, $select_album_Count);
+    $albumCount = mysqli_fetch_assoc($result_album_Count);
+    $totalAlbum = $albumCount['NumOFAlbum'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,165 +42,251 @@ $artistData = [
     <title>Artist Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
+        /* Artist Section Styling */
+        .artist-section {
+            display: flex;
+            gap: 40px;
+            padding: 40px;
+            align-items: flex-start;
+            background: linear-gradient(126deg, rgba(108, 192, 224, 1) 0%, rgba(21, 48, 57, 1) 100%);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .artist-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-size: cover;
+            background-position: center;
         }
 
-        .dashboard-header {
-            background-color: #343a40;
-            color: #ffffff;
-            padding: 30px;
-            text-align: center;
-            border-radius: 10px;
+        .artist-info {
+            flex: 1;
+        }
+
+        .artist-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .artist-bio {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .edit-button {
+            border: 1px solid #ff4d4d;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            background-color: transparent;
+            cursor: pointer;
             margin-bottom: 20px;
         }
 
+        .edit-button:hover {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        .info-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .info-button {
+            font-size: 0.9rem;
+            border: 1px solid #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        /* Logout button styling */
+        .logout-btn {
+            position: absolute;
+            right: 80px;
+            top: 20px;
+            color: #ff4d4d;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            color: #ff3333;
+        }
+
+        /* Dashboard Grid */
         .dashboard-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
+            grid-template-columns: repeat(3, 1fr); /* Three columns */
             gap: 20px;
+            align-items: end; /* Align items to the bottom */
         }
 
-        .dashboard-section {
+        /* Section Card Styling */
+        .section-card {
             background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            transition: transform 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .dashboard-section:hover {
-            transform: translateY(-5px);
+        /* Your Song and Your Album span more columns */
+        .song-card {
+            grid-column: span 1.5; /* Spans 1.5 columns */
         }
 
+        .album-card {
+            grid-column: span 1.5; /* Spans 1.5 columns */
+        }
+
+        .insights-card {
+            grid-column: span 1; /* Spans 1 column */
+        }
+
+        /* Section Title Styling */
         .section-title {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #343a40;
-            border-bottom: 2px solid #1B8673;
-            padding-bottom: 10px;
             margin-bottom: 15px;
         }
 
-        .insights-stat {
-            font-size: 1.2rem;
-            color: #1B8673;
+        /* Card Body Styling */
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .feedback-comment {
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-
-        .feedback-comment strong {
-            color: #343a40;
-        }
-
-        .upcoming-event {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            background-color: #e9ecef;
-        }
-
-        .btn-custom {
+        /* Button Styling */
+        .view-all-btn {
             background-color: #1B8673;
             color: white;
+            padding: 6px 20px;
+            border-radius: 30px;
+            text-align: center;
+            align-self: flex-end;
+            text-decoration: none;
         }
 
-        .btn-custom:hover {
-            background-color: #155f50;
-            color: white;
+        .view-all-btn:hover {
+            background-color: #145a50;
         }
 
-        .quick-links {
-            display: flex;
-            gap: 10px;
+        .plus-btn {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1B8673;
+            cursor: pointer;
+            align-self: flex-start;
         }
 
-        .wide-card {
-            grid-column: span 2; /* Makes the card take up the space of two columns */
+        /* Centered Upcoming Events Card */
+        .dashboard-container2 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Three columns */
+            gap: 20px;
         }
+
+        /* Section Card Styling */
+        .section-card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .empty1-card {
+            grid-column: span 1; /* Spans 1 column */
+        }
+
+        .upcoming-events-card {
+            grid-column: span 3; /* Spans 2 columns */
+        }
+
+        .empty2-card {
+            grid-column: span 1; /* Spans 1 column */
+        }
+
     </style>
 </head>
 <body>
-    <div class="container my-5">
-        <!-- Header Section -->
-        <div class="dashboard-header">
-            <h1>Welcome, <?php echo htmlspecialchars($artistData['username']); ?>!</h1>
-            <p>Here's a quick overview of your artist profile.</p>
+
+<!-- Artist Section -->
+<div class="artist-section p-5 mx-5">
+    <div class="artist-image" style="background-image: url('../Resources/ArtistImges/<?php echo $artistImage; ?>');"></div>
+    <div class="artist-info">
+        <div class="artist-name"><?php echo $artistName; ?></div>
+        <p class="artist-bio"><?php echo $artistBio; ?></p>
+        <form action='artistActions.php' method='post'>
+            <input type='hidden' name='artist_id' value="<?php echo htmlspecialchars($artistID); ?>">
+            <button type='submit' class='edit-button' name='edit-artist-btn'>Edit Profile</button>
+        </form>
+
+        <div class="info-buttons">
+            <div class="info-button"><?php echo $totalFollowers; ?> Followers</div>
+            <div class="info-button"><?php echo $totalAlbum; ?> Album released</div>
+            <div class="info-button"><?php echo $artistCountry; ?></div>
         </div>
+    </div>
+</div>
 
-        <!-- Main Dashboard Container (Irregular Grid Layout) -->
-        <div class="dashboard-container">
-            <!-- Profile Overview Section -->
-            <section class="dashboard-section wide-card">
-                <div class="section-title">Profile Overview</div>
-                <p><strong>Bio:</strong> <?php echo htmlspecialchars($artistData['bio']); ?></p>
-                <a href="edit-profile.php" class="btn btn-custom">Edit Profile</a>
-            </section>
+<!-- Logout Button -->
+<a href="artistlogin.php" class="logout-btn">LOGOUT</a>
 
-            <!-- Recent Releases Section -->
-            <section class="dashboard-section">
-                <div class="section-title">Recent Releases</div>
-                <p>List your recent releases here with links to manage them.</p>
-                <a href="add-release.php" class="btn btn-outline-success">Add New Release</a>
-            </section>
-
-            <!-- Performance Insights Section -->
-            <section class="dashboard-section">
-                <div class="section-title">Performance Insights</div>
-                <p class="insights-stat"><strong>Total Streams:</strong> <?php echo number_format($artistData['totalStreams']); ?></p>
-                <p class="insights-stat"><strong>Top Song:</strong> <?php echo htmlspecialchars($artistData['topSong']); ?></p>
-            </section>
-
-            <!-- Feedback/Reviews Section -->
-            <section class="dashboard-section">
-                <div class="section-title">Feedback</div>
-                <?php if (!empty($artistData['recentFeedback'])): ?>
-                    <ul class="list-group">
-                        <?php foreach ($artistData['recentFeedback'] as $feedback): ?>
-                            <li class="list-group-item feedback-comment">
-                                <strong><?php echo htmlspecialchars($feedback['name']); ?>:</strong> <?php echo htmlspecialchars($feedback['comment']); ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php else: ?>
-                    <p>No feedback yet.</p>
-                <?php endif; ?>
-                <a href="feedback.php" class="btn btn-outline-info mt-2">View All Feedback</a>
-            </section>
-
-            <!-- Upcoming Events Section -->
-            <section class="dashboard-section wide-card">
-                <div class="section-title">Upcoming Events</div>
-                <?php if (!empty($artistData['upcomingEvents'])): ?>
-                    <ul class="list-group">
-                        <?php foreach ($artistData['upcomingEvents'] as $event): ?>
-                            <li class="list-group-item upcoming-event">
-                                <strong><?php echo htmlspecialchars($event['event']); ?></strong> - <?php echo htmlspecialchars($event['date']); ?> at <?php echo htmlspecialchars($event['location']); ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php else: ?>
-                    <p>No upcoming events.</p>
-                <?php endif; ?>
-                <a href="add-event.php" class="btn btn-outline-success mt-2">Add New Event</a>
-            </section>
-
-            <!-- Quick Links Section -->
-            <section class="dashboard-section">
-                <div class="section-title">Quick Links</div>
-                <div class="quick-links">
-                    <a href="upload.php" class="btn btn-custom">Upload New Content</a>
-                    <a href="settings.php" class="btn btn-secondary">Account Settings</a>
-                    <a href="logout.php" class="btn btn-danger">Logout</a>
-                </div>
-            </section>
+<!-- Dashboard Grid -->
+<div class="dashboard-container mx-5">
+    <!-- Your Song Section -->
+    <div class="section-card song-card">
+        <div class="section-title">Your Song</div>
+        <div class="card-body">
+            <div class="plus-btn">+</div>
+            <p>Your latest tracks and music releases go here.</p>
+            <a href="#" class="view-all-btn">View All</a>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Your Album Section -->
+    <div class="section-card album-card">
+        <div class="section-title">Your Album</div>
+        <div class="card-body">
+            <div class="plus-btn">+</div>
+            <p>Your album details and releases go here.</p>
+            <a href="#" class="view-all-btn">View All</a>
+        </div>
+    </div>
+
+    <!-- Performance Insights Section -->
+    <div class="section-card insights-card">
+        <div class="section-title">Performance Insights</div>
+        <div class="card-body">
+            <p>Track your performance and analytics here.</p>
+        </div>
+    </div>
+
+    <!-- Empty -->
+    <div class="section-card .empty1-card">
+    </div>
+
+    <!-- Upcoming Events -->
+    <div class="section-card .upcoming-events-card">
+        <div class="section-title">Upcoming Events</div>
+        <div class="card-body">
+            <div class="plus-btn">+</div>
+            <a href="#" class="view-all-btn">View All</a>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
