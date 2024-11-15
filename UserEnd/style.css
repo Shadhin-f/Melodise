@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* Disabling the scroll wheel */
 #card-container::-webkit-scrollbar,
 #artist-card-container::-webkit-scrollbar,
 #playlist-card-container::-webkit-scrollbar {
@@ -16,13 +17,13 @@
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
-  scroll-behavior: smooth; /* Optional: smooth scrolling */
+  scroll-behavior: smooth;
 }
 
 /* Make sure the play-card itself has no margin to avoid unwanted gaps */
 .play-card {
   display: inline-block;
-  margin-right: 10px; /* Adjust this spacing as needed */
+  margin-right: 10px;
 }
 
 /* .card{

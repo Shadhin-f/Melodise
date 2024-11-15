@@ -24,6 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $_SESSION['admin-email'] = $admin_data['Email']; // sesssion name changed to adminemail - 'Email' clashes with user side session
 
 
+                    //  admin login must destroy all the user login session to protect admin permissions and access
+                    session_start();
+                    if (isset($_SESSION['userid'])) {
+                        unset($_SESSION['userid']);
+                        unset($_SESSION['username']);
+                        unset($_SESSION['email']);
+                    }
+
+
                     header('Location: adminhome.php');
                 } else {
                     echo '<script>

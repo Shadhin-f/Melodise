@@ -111,8 +111,8 @@ session_start();
 
         // Query to count playlist created count
         $select_playlist_count = "SELECT COUNT(PlaylistID) as TotalPlaylists
-                                        FROM `playlists` 
-                                        WHERE UserID = $userID;";
+                                  FROM `playlists` 
+                                  WHERE UserID = $userID;";
         $result_select_playlist_count = mysqli_query($conn, $select_playlist_count);
         $playlist_count_data = mysqli_fetch_assoc($result_select_playlist_count);
         $totalPlaylist = $playlist_count_data['TotalPlaylists'];
