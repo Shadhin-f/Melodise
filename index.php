@@ -120,8 +120,8 @@
         <p>Choose your path: User, Artist, or Admin</p>
         <div class="d-flex justify-content-center gap-3">
             <a href="http://localhost:8080/website/melodise/userend/login.php" class="nav-button"><i class="fas fa-user"></i> User End</a>
-            <a href="http://localhost:8080/website/melodise/userend/login.php" class="nav-button"><i class="fas fa-microphone"></i> Artist End</a>
-            <a href="http://localhost:8080/website/melodise/userend/login.php" class="nav-button"><i class="fas fa-user-shield"></i> Admin End</a>
+            <a href="http://localhost:8080/website/melodise/artistend/artistlogin.php" class="nav-button"><i class="fas fa-microphone"></i> Artist End</a>
+            <a href="http://localhost:8080/website/melodise/adminend/adminlogin.php" class="nav-button"><i class="fas fa-user-shield"></i> Admin End</a>
         </div>
     </div>
 

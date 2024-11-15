@@ -297,12 +297,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $result_insert_song_to_playlist = mysqli_query($conn, $insert_song_to_playlist);
 
             if ($result_insert_song_to_playlist) {
-                // echo '<script>alert("Song Added to playlist!!");</script>';
-                header('Location: index.php');
+                echo '<script>window.history.back();</script>';
             }
         } catch (Exception $e) {
-            // echo '<script>alert("Could not add!!");</script>';
-            header('Location: index.php');
+            echo '<script>window.history.back();</script>';
         }
     }
 

@@ -227,7 +227,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                <!-- Section to display playlists created by user -->
 
                <!-- Playlist Cards Section -->
-               <div id='card-container' class='mb-5'>";
+               <div id='playlist-card-container' class='mb-5'>";
 
 
 
@@ -354,6 +354,43 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                 playPauseIcon.classList.add('fa-pause');
             });
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Function to enable mouse scroll for horizontal scrolling
+        function enableHorizontalScroll(container) {
+            container.addEventListener('wheel', (event) => {
+                if (event.deltaY === 0) return; // No vertical scrolling
+                container.scrollLeft += event.deltaY; // Scroll horizontally based on the wheel movement
+                event.preventDefault(); // Prevent default scrolling behavior
+            });
+        }
+
+        // Apply to both card containers (Music, Artist, Playlist)
+        const cardContainer = document.getElementById('card-container');
+        const artistCardContainer = document.getElementById('artist-card-container');
+        const playlistCardContainer = document.getElementById('playlist-card-container'); // Assuming same for playlist section
+
+        // Enable horizontal scroll for all relevant containers
+        enableHorizontalScroll(cardContainer);
+        enableHorizontalScroll(artistCardContainer);
+        enableHorizontalScroll(playlistCardContainer);
     </script>
 
 </body>

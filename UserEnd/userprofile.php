@@ -36,9 +36,7 @@ session_start();
 <body>
 
     <?php
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+
     if (!isset($_SESSION['email'])) {
         echo '<script>
                 alert("Login to view your profile!!");
@@ -54,7 +52,7 @@ session_start();
 
 
         $userEmail = $_SESSION['email'];                        // Key for user
-        $userID = $_SESSION['userid'];                        
+        $userID = $_SESSION['userid'];
         $userName = $_SESSION['username'];
         $userType = $_SESSION['usertype'];                      // store the subscriotin type number 
 
@@ -111,14 +109,14 @@ session_start();
                           </div> -->";
 
 
-                            // Query to count playlist created count
-                            $select_playlist_count = "SELECT COUNT(PlaylistID) as TotalPlaylists
+        // Query to count playlist created count
+        $select_playlist_count = "SELECT COUNT(PlaylistID) as TotalPlaylists
                                         FROM `playlists` 
                                         WHERE UserID = $userID;";
-                            $result_select_playlist_count = mysqli_query($conn, $select_playlist_count);
-                            $playlist_count_data = mysqli_fetch_assoc($result_select_playlist_count);
-                            $totalPlaylist = $playlist_count_data['TotalPlaylists'];
-                    echo "
+        $result_select_playlist_count = mysqli_query($conn, $select_playlist_count);
+        $playlist_count_data = mysqli_fetch_assoc($result_select_playlist_count);
+        $totalPlaylist = $playlist_count_data['TotalPlaylists'];
+        echo "
                         <div>
                             <p class='mb-2 h5'>$totalPlaylist</p>
                             <p class='text-muted mb-0'>Playlists Created</p>

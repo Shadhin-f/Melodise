@@ -283,8 +283,9 @@ session_start();
     </div>
 
     <!-- Songs Table -->
+    <!-- Songs Table with Add to Playlist Button -->
     <div class="songs-table-container p-5">
-        <h3 class="mb-2">Latest releases</h3>
+        <h3 class="mb-2">Latest Releases</h3>
         <table class="songs-table">
             <thead>
                 <tr>
@@ -296,35 +297,35 @@ session_start();
                 </tr>
             </thead>
             <tbody>
-
-                <!-- Get Latest Songs of the artist -->
                 <?php
-                // query to get necessary information
+                // Query to get the latest songs of the artist
                 $select_music_info = "SELECT songs.SongID AS SongID, songs.Title as SongTitle, albums.Title AS AlbumTitle, genres.Title AS GentraTitle 
-                                                FROM `songs`
-                                                LEFT JOIN albums ON songs.AlbumID = albums.AlbumID
-                                                LEFT JOIN genres ON songs.GenreID = genres.GenreID
-                                                WHERE songs.ArtistID = '$artistID' LIMIT 10;";
-
-                $resul_music_info = mysqli_query($conn, $select_music_info);
+                                      FROM `songs`
+                                      LEFT JOIN albums ON songs.AlbumID = albums.AlbumID
+                                      LEFT JOIN genres ON songs.GenreID = genres.GenreID
+                                      WHERE songs.ArtistID = '$artistID' LIMIT 10;";
+                $result_music_info = mysqli_query($conn, $select_music_info);
                 $counter = 1;
-                while ($music_data = mysqli_fetch_assoc($resul_music_info)) {
+                while ($music_data = mysqli_fetch_assoc($result_music_info)) {
+                    $songID = $music_data['SongID'];
                     $songTitle = $music_data['SongTitle'];
                     $genre = $music_data['GentraTitle'];
                     $album = $music_data['AlbumTitle'];
                     echo "
-                            <tr>
-                                <td>$counter</td>
-                                <td>$songTitle</td>
-                                <td>$genre</td>
-                                <td>$album</td>
-                                <td><i class='fas fa-plus add-to-playlist'></i></td>
-                            </tr>
-                        ";
+                        <tr>
+                            <td>$counter</td>
+                            <td>$songTitle</td>
+                            <td>$genre</td>
+                            <td>$album</td>
+                            <td>
+                                <i class='fas fa-plus add-to-playlist' data-bs-toggle='modal' data-bs-target='#addToPlaylistModal' 
+                                   data-song-id='$songID' data-song-title='$songTitle' data-artist-name='$artistName'></i>
+                            </td>
+                        </tr>
+                    ";
                     $counter++;
                 }
                 ?>
-
             </tbody>
         </table>
     </div>
@@ -358,8 +359,60 @@ session_start();
     // include('footer.php');
     ?>
 
+    <!-- Add to Playlist Modal -->
+    <div class="modal fade" id="addToPlaylistModal" tabindex="-1" aria-labelledby="addToPlaylistModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addToPlaylistModalLabel">Add to Playlist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="user-actions.php" method="post">
+                        <input type="hidden" id="songID" name="songID">
+                        <input type="hidden" id="songName" name="songName">
+                        <input type="hidden" id="artistName" name="artistName">
+                        <div class="mb-3">
+                            <label for="playlistSelect" class="form-label">Choose Playlist</label>
+                            <select class="form-select" id="playlistSelect" name="playlistID">
+                                <?php
+                                $userID = $_SESSION['userid'];
+                                $query = "SELECT * FROM playlists WHERE UserID = '$userID'";
+                                $result = mysqli_query($conn, $query);
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo "<option value='" . $row['PlaylistID'] . "'>" . $row['Name'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" name="add-to-playlist-btn">Add to Playlist</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // JavaScript to handle modal and populate song details
+        document.querySelectorAll('.add-to-playlist').forEach(button => {
+            button.addEventListener('click', event => {
+                const songID = event.currentTarget.getAttribute('data-song-id');
+                const songTitle = event.currentTarget.getAttribute('data-song-title');
+                const artistName = event.currentTarget.getAttribute('data-artist-name');
+
+                document.getElementById('songID').value = songID;
+                document.getElementById('songName').value = songTitle;
+                document.getElementById('artistName').value = artistName;
+            });
+        });
+    </script>
 </body>
 
 </html>

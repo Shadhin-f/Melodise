@@ -1,97 +1,94 @@
-<?php 
+<?php
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        session_start();
-        include('connect.php');
-        // Login actions
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    session_start();
+    include('connect.php');
+    // Login actions
 
-        if (isset($_POST['admin-login-button'])) {
-            $loginEmail = $_POST['loginEmail'];
-            $loginPassword = $_POST['loginPassword'];
+    if (isset($_POST['admin-login-button'])) {
+        $loginEmail = $_POST['loginEmail'];
+        $loginPassword = $_POST['loginPassword'];
 
-            $select_admin_credentials = "SELECT * FROM `admins` WHERE Email = '$loginEmail'";                    // Query to search for login email in data base
-            $result_admin_credentials = mysqli_query($conn, $select_admin_credentials);
+        $select_admin_credentials = "SELECT * FROM `admins` WHERE Email = '$loginEmail'";                    // Query to search for login email in data base
+        $result_admin_credentials = mysqli_query($conn, $select_admin_credentials);
 
-            if ($result_admin_credentials) {
-                $admin_found = mysqli_num_rows($result_admin_credentials);
-                if ($admin_found > 0) {
-                    $admin_data = mysqli_fetch_assoc($result_admin_credentials);
-                    $admin_password = $admin_data['Password'];
-                    if ($loginPassword == $admin_password) {
-                        session_start();
-                        
-                        $_SESSION['adminname'] = $admin_data['Name'];
-                        $_SESSION['email'] = $admin_data['Email'];
+        if ($result_admin_credentials) {
+            $admin_found = mysqli_num_rows($result_admin_credentials);
+            if ($admin_found > 0) {
+                $admin_data = mysqli_fetch_assoc($result_admin_credentials);
+                $admin_password = $admin_data['Password'];
+                if ($loginPassword == $admin_password) {
+                    session_start();
+
+                    $_SESSION['adminname'] = $admin_data['Name'];
+                    $_SESSION['admin-email'] = $admin_data['Email']; // sesssion name changed to adminemail - 'Email' clashes with user side session
 
 
-                        header('Location: adminhome.php');
-                        
-                    } else {
-                        echo '<script>
+                    header('Location: adminhome.php');
+                } else {
+                    echo '<script>
                                 alert("Incorrect Password! Try again!!");
                                 window.location.href = "adminlogin.php";
                             </script>';
-                    }
-                } else {
-                    echo '<script>
+                }
+            } else {
+                echo '<script>
                                 alert("admin Not Found!!!");
                                 window.location.href = "adminlogin.php";
                             </script>';
-                }
             }
         }
+    }
 
-        if (isset($_POST['login-btn'])) {
-            header('Location: adminlogin.php');
+    if (isset($_POST['login-btn'])) {
+        header('Location: adminlogin.php');
+    }
 
-        }
+    if (isset($_POST['logout-btn'])) {
+        session_start();
+        session_unset();
+        session_destroy();
+        header('Location: adminlogin.php');
+    }
 
-        if (isset($_POST['logout-btn'])) {
-            session_start();
-            session_unset();
-            session_destroy();
-            header('Location: adminlogin.php');
+    // user Search Button action
 
-        }
+    if (isset($_POST['user-search-btn'])) {
+        $user_search_key = $_POST['user-search-key'];
+        // echo $user_search_key;
+        $_SESSION['user-search-key'] = $user_search_key;
+        header('Location: user-update.php');
+        exit();
+    }
 
-        // user Search Button action
+    // artist Search Button action
 
-        if (isset($_POST['user-search-btn'])){
-            $user_search_key = $_POST['user-search-key'];
-            // echo $user_search_key;
-            $_SESSION['user-search-key'] = $user_search_key;
-            header('Location: user-update.php');
-            exit();
-        }
-
-        // artist Search Button action
-
-        if (isset($_POST['artist-search-btn'])){
-            $artist_search_key = $_POST['artist-search-key'];
-            $_SESSION['artist-search-key'] = $artist_search_key;
-            header('Location: update-artist-info.php');
-            exit();
-        }
-
-
-        //admin user profile update button
-
-        if (isset($_POST['update-userInfo-btn'])) {
-            header('Location: user-update.php');
-        }
-
-        //admin artist followers tracking button
-        if (isset($_POST['update-artistFollower-btn'])) {
-            header('Location: artist-followers.php');
-        }
-
-        //admin artist info update button
-        if (isset($_POST['update-artistInfo-btn'])) {
-            header('Location: update-artist-info.php');
-        }
+    if (isset($_POST['artist-search-btn'])) {
+        $artist_search_key = $_POST['artist-search-key'];
+        $_SESSION['artist-search-key'] = $artist_search_key;
+        header('Location: update-artist-info.php');
+        exit();
+    }
 
 
-        //Confirm Update profile button
+    //admin user profile update button
+
+    if (isset($_POST['update-userInfo-btn'])) {
+        header('Location: user-update.php');
+    }
+
+    //admin artist followers tracking button
+    if (isset($_POST['update-artistFollower-btn'])) {
+        header('Location: artist-followers.php');
+    }
+
+    //admin artist info update button
+    if (isset($_POST['update-artistInfo-btn'])) {
+        header('Location: update-artist-info.php');
+    }
+
+
+    //Confirm Update profile button
 
     if (isset($_POST['profile-update-btn'])) {
         // session_start();
@@ -184,24 +181,26 @@
         }
     }
 
+
     //user-profile-edit-btn
-    if (isset($_POST['user-profile-edit-btn'])){
+    if (isset($_POST['user-profile-edit-btn'])) {
         $userEmail = $_POST['user_email'];
         $_SESSION['email'] = $userEmail;
-        
+
         header('Location: ..\UserEnd\profileupdate.php');
     }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    include('connect.php');
 
 
-    }
-
-    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        include('connect.php');
 
 
-        
-
-        
-    }
-    
-?>
+    //user-profile-edit-btn
+    // if (isset($_GET['user-profile-edit-btn'])) {
+    //     $userEmail = $_GET['user_email'];
+    //     $_SESSION['email'] = $userEmail;
+    //     header('Location: Melodise\UserEnd\profileupdate.php');
+    // }
+}
