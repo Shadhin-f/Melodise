@@ -142,7 +142,7 @@ session_start();
                     <!-- Fetch and Display Songs in Playlist -->
                     <?php
                     $playlistID = $_SESSION['playlistid'];
-                    $select_playlist_songs = "SELECT songs.SongID, songs.Title, artists.Name
+                    $select_playlist_songs = "SELECT songs.SongID, songs.Title, artists.Name, songs.Audio
                                               FROM playlist_songs
                                               LEFT JOIN songs ON playlist_songs.SongID = songs.SongID
                                               LEFT JOIN artists ON songs.ArtistID = artists.ArtistID
@@ -154,11 +154,12 @@ session_start();
                         $songID = $row_data['SongID'];
                         $songName = htmlspecialchars($row_data['Title']);
                         $artistName = htmlspecialchars($row_data['Name']);
+                        $audio = $row_data['Audio'];
                         echo "
                             <tr class='song-row'>
                                 <td>$serialNumber</td>
                                 <td>
-                                    <button class='play-btn me-2'>
+                                    <button class='play-btn me-2' data-song-id='$songID' data-song-name='$songName' data-artist-name='$artistName' data-song-url='../Resources/Songs/$audio.mp3'>
                                         <i class='fa-solid fa-play'></i>
                                     </button> $songName
                                 </td>
@@ -189,6 +190,35 @@ session_start();
         function confirmDelete() {
             return confirm("Are you sure you want to delete this playlist?");
         }
+    </script>
+
+    <!-- JavaScript to Handle Song Playback -->
+    <script>
+        // Select all play buttons
+        document.querySelectorAll('.play-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Get song details from data attributes
+                const songID = button.getAttribute('data-song-id');
+                const songName = button.getAttribute('data-song-name');
+                const artistName = button.getAttribute('data-artist-name');
+                const songUrl = button.getAttribute('data-song-url');
+
+                // Update the music player
+                document.getElementById('songID').value = songID;
+                document.getElementById('songTitle').textContent = songName;
+                document.getElementById('songArtist').textContent = artistName;
+                document.querySelector('.album-art').style.backgroundImage = `url('../Resources/DesignElements/ProfileBack.jpg')`;
+
+                // Load the new song and play it
+                audio.src = songUrl;
+                audio.play();
+
+                // Update the play/pause button icon
+                const playPauseIcon = document.getElementById('playPauseBtn').querySelector('i');
+                playPauseIcon.classList.remove('fa-play');
+                playPauseIcon.classList.add('fa-pause');
+            });
+        });
     </script>
 
     <!-- Bootstrap and FontAwesome Scripts -->

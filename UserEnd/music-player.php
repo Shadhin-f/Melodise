@@ -18,8 +18,8 @@ include('connect.php');
         .custom-player-card {
             background-color: #bdbcbb;
             color: white;
-            padding: 10px 15px;
-            height: 60px;
+            padding: 10px 15px !important;
+            height: 70px;
         }
 
         .album-art {
@@ -88,7 +88,7 @@ include('connect.php');
 
             <!-- Song information -->
             <div class="song-info">
-                <input type="hidden" id="songID">     <!-- Passing song ID using js -->
+                <input type="hidden" id="songID"> <!-- Passing song ID using js -->
                 <p class="song-title mb-0" id="songTitle">No track</p>
                 <p class="song-artist mb-0" id="songArtist">Unknown</p>
             </div>
@@ -124,7 +124,6 @@ include('connect.php');
     <!-- Modal to add playlist -->
 
 
-    <!-- Add to Playlist Modal -->
     <div class="modal fade" id="addToPlaylistModal" tabindex="-1" aria-labelledby="addToPlaylistModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered"> <!-- Add modal-dialog-centered class -->
             <div class="modal-content">
@@ -217,17 +216,16 @@ include('connect.php');
     // script to pass the song info
 
     document.getElementById('addToPlaylistBtn').addEventListener('click', () => {
-    // Get the current song details from your player
-    const songName = document.getElementById('songTitle').textContent;
-    const artistName = document.getElementById('songArtist').textContent;
-    const songID = document.getElementById('songID').getAttribute('value');
+        // Get the current song details from your player
+        const songName = document.getElementById('songTitle').textContent;
+        const artistName = document.getElementById('songArtist').textContent;
+        const songID = document.getElementById('songID').getAttribute('value');
 
-    // Set the values in the modal's hidden inputs
-    document.getElementById('songName').value = songName;
-    document.getElementById('artistName').value = artistName;
-    document.getElementById('songid').value = songID;
-});
-
+        // Set the values in the modal's hidden inputs
+        document.getElementById('songName').value = songName;
+        document.getElementById('artistName').value = artistName;
+        document.getElementById('songid').value = songID;
+    });
 </script>
 
 </html>

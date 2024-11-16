@@ -23,7 +23,8 @@ if (session_status() === PHP_SESSION_NONE) {
             font-size: 2rem !important;
             font-weight: bold;
         }
-        .navbar-brand:hover{
+
+        .navbar-brand:hover {
             color: #1B8673 !important;
         }
 
@@ -51,6 +52,19 @@ if (session_status() === PHP_SESSION_NONE) {
         .username-btn:hover {
             color: #1B8673;
             cursor: pointer;
+        }
+
+        .search-btn-custom {
+            color: #1B8673;
+            border: 1px solid #1B8673;
+            border-radius: 5px;
+            padding: 4px 8px;
+        }
+
+        .search-btn-custom:hover {
+            color: white;
+            background-color: #1B8673;
+            transition-duration: .3s;
         }
 
         /* Style for icon inside the button */
@@ -123,7 +137,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
                 <form class="d-flex form-inline" action="user-actions.php" method="get">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search-key">
-                    <button class="btn btn-outline-success" type="submit" name="search-btn">Search</button>
+                    <button class="search-btn-custom" type="submit" name="search-btn"><i class="fas fa-search"></i></button>
                 </form>
 
                 <div class="d-flex justify-content-center align-items-center px-3">
