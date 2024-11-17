@@ -108,7 +108,14 @@ include('connect.php');
 
             <!-- Add to Favorite button -->
             <div class="ms-2">
-                <button id="addToFavoriteBtn" class="btn btn-sm text-black"><i class="fas fa-heart"></i></button>
+                <!-- Toggle Favorite button -->
+                <form action='user-actions.php' method="post">
+                    <input type="hidden" name="songID" id="favSongID">
+                    <button type="submit" name="toggle-favorite" id="addToFavoriteBtn" class="btn btn-sm text-black">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </form>
+
             </div>
 
             <!-- Add to Playlist button in the music player -->

@@ -100,6 +100,27 @@ session_start();
                 window.location.href = "login.php";
               </script>';
     }
+    $userID = $_SESSION['userid'];
+    if (isset($_GET['playlistname'])) {
+        $_SESSION['playlistname'] = $_GET['playlistname'];
+
+        // Sql query to get playlist id of favourite playlist of the user
+        $select_fav_playlist_id = "SELECT * 
+                                    FROM playlists
+                                    WHERE playlists.UserID = '$userID' AND playlists.Name = 'Favourite';";
+        $result_fav_playlist_id = mysqli_query($conn, $select_fav_playlist_id);
+        if ($result_fav_playlist_id) {
+            $playlist_data = mysqli_fetch_assoc($result_fav_playlist_id);
+            if (isset($playlist_data) && isset($playlist_data['PlaylistID'])) {
+                $_SESSION['playlistid'] = $playlist_data['PlaylistID'];
+            } else {
+                echo '<script>
+                        alert("You don\'t have any liked song!");
+                        window.location.href = "index.php";
+                      </script>';
+            }
+        }
+    }
     ?>
 
     <!-- Page Container -->
@@ -115,7 +136,9 @@ session_start();
                     </button>
                 </form>
                 <!-- Playlist Name -->
-                <h1 class="ms-3 mb-0"><?php echo htmlspecialchars($_SESSION['playlistname']); ?></h1>
+                <h1 class="ms-3 mb-0"><?php
+                                        echo htmlspecialchars($_SESSION['playlistname']);
+                                        ?></h1>
             </div>
 
             <!-- Delete Playlist Button -->
@@ -141,12 +164,25 @@ session_start();
                 <tbody>
                     <!-- Fetch and Display Songs in Playlist -->
                     <?php
-                    $playlistID = $_SESSION['playlistid'];
-                    $select_playlist_songs = "SELECT songs.SongID, songs.Title, artists.Name, songs.Audio
+
+                    // For favourite playlist nav link action
+                    if (isset($_SESSION['playlistname']) && !isset($_SESSION['playlistid'])) {
+                        $select_playlist_songs = "SELECT songs.SongID, songs.Title, artists.Name, songs.Audio
+                                              FROM playlist_songs
+                                              LEFT JOIN songs ON playlist_songs.SongID = songs.SongID
+                                              LEFT JOIN artists ON songs.ArtistID = artists.ArtistID
+                                              LEFT JOIN playlists ON playlist_songs.PlaylistID = playlists.PlaylistID
+                                              WHERE playlists.Name = 'Favourite' AND playlists.UserID = '$userID';";
+                    } else {
+                        if (isset($_SESSION['playlistid'])) {
+                            $playlistID = $_SESSION['playlistid'];
+                        }
+                        $select_playlist_songs = "SELECT songs.SongID, songs.Title, artists.Name, songs.Audio
                                               FROM playlist_songs
                                               LEFT JOIN songs ON playlist_songs.SongID = songs.SongID
                                               LEFT JOIN artists ON songs.ArtistID = artists.ArtistID
                                               WHERE PlaylistID = '$playlistID';";
+                    }
                     $result_playlist_songs = mysqli_query($conn, $select_playlist_songs);
                     $serialNumber = 1;
 

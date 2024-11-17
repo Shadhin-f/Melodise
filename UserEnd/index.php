@@ -3,6 +3,8 @@
 include('connect.php');
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    unset($_SESSION['playlistid']);
+    unset($_SESSION['playlistname']);
 }
 
 if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
@@ -340,6 +342,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
 
                 // Update the music player card
                 document.getElementById('songID').value = songID;
+                document.getElementById('favSongID').value = songID;
                 document.getElementById('songTitle').textContent = songName;
                 document.getElementById('songArtist').textContent = artistName;
                 document.querySelector('.album-art').style.backgroundImage = `url(${albumArt})`;

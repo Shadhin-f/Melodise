@@ -104,6 +104,28 @@ session_start();
             margin-bottom: 20px;
         }
 
+
+
+        /* Explore Button */
+        .explore-btn {
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            background-color: #1B8673;
+            color: white;
+            border-radius: 25px;
+            transition: background-color 0.3s, transform 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .explore-btn:hover {
+            background-color: #178b65;
+            transform: scale(1.05);
+            text-decoration: none;
+        }
+
+
         @media (max-width: 991px) {
             .cards-row .card-container {
                 flex: 0 1 48%;
@@ -260,14 +282,14 @@ session_start();
 
                 <!-- Back Button -->
                 <div class="d-flex justify-content-center">
-                    <button onclick="window.location.href='melodise/userend/index.php'" class="btn btn-back"> Explore MELODISE</button>
+                    <a href='index.php' class="explore-btn"> Explore MELODISE</a>
                 </div>
             </div>
         </div>
     </form>
 
     <!-- Bootstrap and Font Awesome JavaScript dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

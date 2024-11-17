@@ -121,12 +121,34 @@ if (session_status() === PHP_SESSION_NONE) {
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="index.php?unset_session=true">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="allmusic.php">Explore</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="allartist.php">Favourite</a>
-                    </li>
+                    </li> -->
+                    <?php
+                    if (isset($_SESSION['userid'])) {
+                        $userType = $_SESSION['usertype'];
+                        if ($userType > 1) {
+                            echo "
+                                <li class='nav-item'>
+                                    <a class='nav-link' href='view-playlist.php?playlistname=Favourite'>Favourite</a>
+                                </li>
+                            ";
+                        } else {
+                            echo "
+                                <li class='nav-item'>
+                                    <a class='nav-link' href='subscription-purchase.php'>Buy M+</a>
+                                </li>
+                            ";
+                        }
+                    } else {
+
+                        echo "
+                            <li class='nav-item'>
+                                <a class='nav-link' href='subscription-purchase.php'>Buy M+</a>
+                            </li>
+                        ";
+                    }
+                    ?>
                 </ul>
 
 

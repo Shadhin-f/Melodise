@@ -349,14 +349,88 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
 
-    // profile edit btn (user profile)
+
+
+
+
+
+
+    // ------------------------------ Fav playlist actions -----------------------------------------------
+
+    if (isset($_POST['toggle-favorite'])) {
+        try {
+
+            $userID = $_SESSION['userid'];
+            $songID = $_POST['songID'];
+
+            // Check if "Favorite" playlist exists for this user
+            $check_fav_playlist_query = "SELECT * FROM playlists WHERE UserID = '$userID' AND Name = 'Favourite'";
+            $result = mysqli_query($conn, $check_fav_playlist_query);
+
+            if (mysqli_num_rows($result) == 0) {
+                // If "Favorite" playlist doesn't exist, create it
+                $create_fav_playlist_query = "INSERT INTO playlists (UserID, Name) VALUES ('$userID', 'Favourite')";
+                mysqli_query($conn, $create_fav_playlist_query);
+            }
+
+            // Get the "Favorite" playlist ID
+            $fav_playlist_id_query = "SELECT PlaylistID FROM playlists WHERE UserID = '$userID' AND Name = 'Favourite'";
+            $fav_playlist_id_result = mysqli_query($conn, $fav_playlist_id_query);
+            $fav_playlist_id_row = mysqli_fetch_assoc($fav_playlist_id_result);
+            $favPlaylistID = $fav_playlist_id_row['PlaylistID'];
+
+            // Check if the song is already in the "Favorite" playlist
+            $check_song_query = "SELECT * FROM playlist_songs WHERE PlaylistID = '$favPlaylistID' AND SongID = '$songID'";
+            $check_song_result = mysqli_query($conn, $check_song_query);
+
+            if (mysqli_num_rows($check_song_result) > 0) {
+                // If the song is in the "Favorite" playlist, remove it
+                $remove_song_query = "DELETE FROM playlist_songs WHERE PlaylistID = '$favPlaylistID' AND SongID = '$songID'";
+                mysqli_query($conn, $remove_song_query);
+            } else {
+                // If the song is not in the "Favorite" playlist, add it
+                $add_song_query = "INSERT INTO playlist_songs (PlaylistID, SongID) VALUES ('$favPlaylistID', '$songID')";
+                mysqli_query($conn, $add_song_query);
+            }
+
+            echo '<script>
+            
+                    window.history.back();
+    
+                </script>';
+        } catch (Exception $e) {
+            echo '<script>
+            
+                    window.history.back();
+    
+                </script>';
+        }
+    }
+
+
+
+
+
+
+
+
+
+    // ------------------------------ User profile actions ---------------------------------
+
+
+
+    //------------------------------------ Subscription buy btn (user profile)------------------------------
 
     if (isset($_POST['subscription-buy-btn'])) {
         header('Location: subscription-purchase.php');
     }
 
+    if (isset($_POST['free-continue-btn'])) {
+        header('Location: index.php');
+    }
 
-    //------------------------------------ Subscription buy btn (user profile)------------------------------
+
+    // --------------------------------  profile edit btn (user profile) ----------------------------------------
 
     if (isset($_POST['profile-edit-btn'])) {
         header('Location: profileupdate.php');
@@ -376,10 +450,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 
+
+
     //---------------------------     Confirm Update profile button (user profile)     -------------------
-
-
-
 
 
 
