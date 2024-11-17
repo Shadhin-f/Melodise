@@ -249,7 +249,7 @@ include('connect.php')
 <?php
     if(isset($_SESSION['adminname'])){
 
-    //tableeeeeeeee
+    // latest subscribed users table
 
     echo'
     <section>

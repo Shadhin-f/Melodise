@@ -72,9 +72,19 @@ session_start();                 // Start session
             color: white;
         }
 
+        .btn-delete {
+            background-color: #1B8673;
+            color: white;
+        }
+
         .btn-update:hover {
             background-color: #145a50;
         }
+
+        .btn-delete:hover {
+            background-color: #145a50;
+        }
+
     </style>
 </head>
 
@@ -164,6 +174,7 @@ session_start();                 // Start session
             <div class="d-flex justify-content-between mt-4">
                 <button type="button" class="btn btn-custom btn-cancel" onclick="window.location.href='userprofile.php'">Cancel</button>
                 <button type="submit" class="btn btn-custom btn-update" name='profile-update-btn'>Update</button>
+                <button type="submit" class="btn btn-custom btn-delete" name='profile-delete-btn'>Delete Account</button>
             </div>
         </form>
     </div>

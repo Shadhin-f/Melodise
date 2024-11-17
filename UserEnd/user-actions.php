@@ -476,6 +476,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
+    //Delete account button 
+
+    if (isset($_POST['profile-delete-btn'])) {
+
+        $userEmail = $_SESSION['email'];
+
+        $delete_userAccount_query = "DELETE FROM users WHERE  `users`.`Email` = '$userEmail'";
+        $result_delete_userAccount = mysqli_query($conn, $delete_userAccount_query);
+        if ($result_delete_userAccount) {
+            echo '<script>
+                            alert("User Account Deleted");
+                            window.location.href = "login.php";
+                            </script>';
+        }
+    }
+
+
 
 
     // Button forward to payment page

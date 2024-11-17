@@ -35,12 +35,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <body>
 
-<!-- Navigation bar -->
-
-<?php 
-    // include('navbar.php')
-?>
-
 <?php
 if (isset($_SESSION['adminname'])) {
 
