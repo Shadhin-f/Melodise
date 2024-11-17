@@ -373,12 +373,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
 
+
+
+
     //---------------------------     Confirm Update profile button (user profile)     -------------------
+
+
+
+
+
+
 
     if (isset($_POST['profile-update-btn'])) {
         // session_start();
 
         $userEmail = $_SESSION['email'];
+        $userID = $_SESSION['userid'];
 
         $upName = $_POST['updated-name'];
         $upEmail = $_POST['updated-email'];
@@ -426,12 +436,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] != 4) {
 
                         // Getting the file extension of the uploaded file
-                        // $originalExtension = pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION);
+                        $originalExtension = pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION);
 
                         $uploadDirectory = 'C:/xampp/htdocs/website/Melodise/Resources/UserImages/';
                         $oldImagePath = $uploadDirectory . $userImage;
-                        // $newImageName = $upEmail . '.' . $originalExtension;                                                   // New image name
-                        $newImageName = $upEmail;                                              // New image name
+                        $newImageName = $userID . '.' . $originalExtension;               // New image name with extension
+                        //$newImageName = $userID;                                         // New image name
                         $newImagePath = $uploadDirectory . $newImageName;
 
                         // Delete the old image 
@@ -477,11 +487,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    //Delete account button (Uma)
+
+
+
+
+
+
+    //Delete account button (Uma & shadhin)
+
+
+
+
+
 
     if (isset($_POST['profile-delete-btn'])) {
 
         $userEmail = $_SESSION['email'];
+
+        // Also dete the user image if existed
+        // Fetch the user image name from the database before deleting the account
+        $fetch_image_query = "SELECT `Image` FROM `users` WHERE `Email` = '$userEmail'";
+        $result_fetch_image = mysqli_query($conn, $fetch_image_query);
+
+        if ($result_fetch_image) {
+            $row = mysqli_fetch_assoc($result_fetch_image);
+            $userImage = $row['Image'];
+
+            $uploadDirectory = 'C:/xampp/htdocs/website/Melodise/Resources/UserImages/';
+            $imagePath = $uploadDirectory . $userImage;
+
+            // Delete the image if it exists and is not 'unknown.jpg'
+            if (file_exists($imagePath) && $userImage != 'unknown.jpg') {
+                unlink($imagePath);
+            }
+        }
 
         $delete_userAccount_query = "DELETE FROM users WHERE  `users`.`Email` = '$userEmail'"; // Cascade used for playlitsts and subscription records in database(Shadhin)
         $result_delete_userAccount = mysqli_query($conn, $delete_userAccount_query);
