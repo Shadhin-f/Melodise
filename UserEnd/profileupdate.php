@@ -73,7 +73,7 @@ session_start();                 // Start session
         }
 
         .btn-delete {
-            background-color: #1B8673;
+            background-color: tomato;
             color: white;
         }
 
@@ -84,7 +84,6 @@ session_start();                 // Start session
         .btn-delete:hover {
             background-color: #145a50;
         }
-
     </style>
 </head>
 
@@ -110,15 +109,15 @@ session_start();                 // Start session
         $userDOB = $user_data['DateOfBirth'];
         $userGender = $user_data['Gender'];
         $userCountry = $user_data['Country'];
-        $userImage = $user_data['Image']; 
+        $userImage = $user_data['Image'];
     }
-?>
+    ?>
 
     <div class="form-card text-center">
         <div class="logo mb-3">MELODISE</div>
         <h2 class="mb-4">Update Profile</h2>
 
-        <form form action="user-actions.php" method="post"  enctype="multipart/form-data">
+        <form form action="user-actions.php" method="post" enctype="multipart/form-data">
             <!-- Name field -->
             <div class="mb-3">
                 <input type="text" class="form-control" id="name" name="updated-name" placeholder="Name" value="<?php echo htmlspecialchars($userName); ?>" required>

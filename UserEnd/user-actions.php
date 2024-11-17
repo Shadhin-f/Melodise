@@ -456,6 +456,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     $result_user_credentials = mysqli_query($conn, $update_user_credentials);
                     if ($result_user_credentials) {
+                        // If admin logged in the after updating redirected to user-update page in admin end
                         if (isset($_SESSION['adminname']) && !isset($_SESSION['userid'])) {
                             echo '<script>
                                 alert("Profile Updated!");
@@ -476,19 +477,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    //Delete account button 
+    //Delete account button (Uma)
 
     if (isset($_POST['profile-delete-btn'])) {
 
         $userEmail = $_SESSION['email'];
 
-        $delete_userAccount_query = "DELETE FROM users WHERE  `users`.`Email` = '$userEmail'";
+        $delete_userAccount_query = "DELETE FROM users WHERE  `users`.`Email` = '$userEmail'"; // Cascade used for playlitsts and subscription records in database(Shadhin)
         $result_delete_userAccount = mysqli_query($conn, $delete_userAccount_query);
         if ($result_delete_userAccount) {
-            echo '<script>
-                            alert("User Account Deleted");
-                            window.location.href = "login.php";
-                            </script>';
+            // If admin logged in then, redirected to admin end user-update page
+            if (isset($_SESSION['adminname']) && !isset($_SESSION['userid'])) {
+                echo '<script>
+                    alert("User Deleted!");
+                    window.location.href = "../AdminEnd/user-update.php";
+                    </script>';
+            } else {
+                echo '<script>
+                                alert("User Account Deleted");
+                                window.location.href = "login.php";
+                                </script>';
+            }
         }
     }
 
