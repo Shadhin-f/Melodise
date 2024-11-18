@@ -119,9 +119,9 @@
         <h1>Welcome to MELODISE</h1>
         <p>Choose your path: User, Artist, or Admin</p>
         <div class="d-flex justify-content-center gap-3">
-            <a href="http://localhost:8080/website/melodise/userend/login.php" class="nav-button"><i class="fas fa-user"></i> User End</a>
-            <a href="http://localhost:8080/website/melodise/artistend/artistlogin.php" class="nav-button"><i class="fas fa-microphone"></i> Artist End</a>
-            <a href="http://localhost:8080/website/melodise/adminend/adminlogin.php" class="nav-button"><i class="fas fa-user-shield"></i> Admin End</a>
+            <a href="http://localhost/website/melodise//userend/login.php" class="nav-button"><i class="fas fa-user"></i> User End</a>
+            <a href="http://localhost/website/melodise/artistend/artistlogin.php" class="nav-button"><i class="fas fa-microphone"></i> Artist End</a>
+            <a href="http://localhost/website/melodise/adminend/adminlogin.php" class="nav-button"><i class="fas fa-user-shield"></i> Admin End</a>
         </div>
     </div>
 
@@ -221,6 +221,30 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script>
+    // Function to check if a page is available
+    function checkPage(url, fallbackUrl) {
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    // Redirect if the page is not available
+                    window.location.href = fallbackUrl;
+                }
+            })
+            .catch(() => {
+                // Redirect on network error
+                window.location.href = fallbackUrl;
+            });
+    }
+
+    // Check each link and redirect if necessarys
+    checkPage('http://localhost/website/melodise//userend/login.php','http://localhost:8080/website/melodise/userend/login.php');
+    checkPage('http://localhost/website/melodise/artistend/artistlogin.php', 'http://localhost:8080/website/melodise/artistend/artistlogin.php');
+    checkPage('http://localhost/website/melodise/adminend/adminlogin.php','http://localhost:8080/website/melodise/adminend/adminlogin.php');
+</script>
 </body>
 
 </html>

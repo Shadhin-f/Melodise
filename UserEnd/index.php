@@ -183,7 +183,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
             }
             ?>
         </div>
-    </section>
+    </section> 
 
 
 
@@ -204,7 +204,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
             echo "
 
 
-            <section id='user-playlist' class='p-3 mb-5'>
+            <section id='user-playlist' class='p-3'>
                <!-- Title for playlist -->
                <!-- Title include button to add new playlist -->
                <!-- Title include button to view all playlist -->
@@ -229,7 +229,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                <!-- Section to display playlists created by user -->
 
                <!-- Playlist Cards Section -->
-               <div id='playlist-card-container' class='mb-5'>";
+               <div id='playlist-card-container' class='mb-2'>";
 
 
 
@@ -285,6 +285,8 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
     }
 
     ?>
+    </section>
+    <!-- // End of playlist section -->
 
     <!-- Modal for playlist creation -->
 
@@ -310,6 +312,69 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
             </div>
         </div>
     </div>
+
+
+
+    <!-- Followed Artists section -->
+     <?php 
+        if(isset($_SESSION['userid'])):
+     ?>
+
+
+    <section id="fav-artist" class="p-3 mb-5">
+        <div id="fav-artist-title-container" class="d-flex flex-row justify-content-between align-items-center">
+            <h1>
+                <?php
+                
+                    echo "Artists you follow";
+                ?>
+            </h1>
+            <form action="user-actions.php" method="get">
+                <button type="submit" class="themed-btn bg-transparent border-0" name='all-artist-btn'>All Artist</button>
+            </form>
+        </div>
+
+        <!-- Artist Cards container div -->
+        <div id="fav-artist-card-container" class="mb-5">
+            <?php
+            // Fetching artists data from the database
+            $select_artists = "SELECT * 
+                                FROM `artist_followers`
+                                LEFT JOIN artists ON artist_followers.ArtistID = artists.ArtistID
+                                WHERE artist_followers.UserID = '$userID'
+                                AND artists.Name LIKE '%" . (isset($_SESSION['searchKey']) && $_SESSION['searchKey'] !== '' ? $_SESSION['searchKey'] : '') . "%' 
+                                LIMIT 10";
+            $result_artists = mysqli_query($conn, $select_artists);
+
+            while ($row_data = mysqli_fetch_assoc($result_artists)) {
+                $artist_id = $row_data['ArtistID']; // Assuming your artist table has an 'ID' column
+                $artist_name = $row_data['Name'];
+                $artist_img = $row_data['Image'];
+
+                // Artist cards with a form for each artist
+                echo "
+                <form action='user-actions.php' method='get' class='d-inline-block'>
+                    <input type='hidden' name='artist_id' value='$artist_id'>
+                    <button type='submit' class='artist-card-btn bg-transparent border-0 p-0' name='view-artist-profile-btn'>
+                        <div class='artist-card mx-3 mt-3' style='width: 12rem;'>
+                            <div class='artist-img-circle mx-auto rounded-circle mt-2' style='width: 10rem; height: 10rem; background-image: url(\"../Resources/ArtistImges/$artist_img\"); background-color: antiquewhite; background-repeat: no-repeat; background-size: cover;'></div>
+                            <p class='d-block text-center artist-name mx-auto mt-2 w-auto'>$artist_name</p>
+                        </div>
+                    </button>
+                </form>
+            ";
+            }
+            ?>
+        </div>
+    </section>
+
+    <?php 
+        endif;
+    ?>
+
+
+
+
 
 
     <!-- ------------------ Footer sections-------------------------------- -->
@@ -379,21 +444,23 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
         // Function to enable mouse scroll for horizontal scrolling
         function enableHorizontalScroll(container) {
             container.addEventListener('wheel', (event) => {
-                if (event.deltaY === 0) return; // No vertical scrolling
-                container.scrollLeft += event.deltaY; // Scroll horizontally based on the wheel movement
-                event.preventDefault(); // Prevent default scrolling behavior
+                if (event.deltaY === 0) return;                     // No vertical scrolling
+                container.scrollLeft += event.deltaY;               // Scroll horizontally based on the wheel movement
+                event.preventDefault();                             // Prevent default scrolling behavior
             });
         }
 
         // Apply to both card containers (Music, Artist, Playlist)
         const cardContainer = document.getElementById('card-container');
         const artistCardContainer = document.getElementById('artist-card-container');
-        const playlistCardContainer = document.getElementById('playlist-card-container'); // Assuming same for playlist section
+        const playlistCardContainer = document.getElementById('playlist-card-container'); 
+        const favArtistCardContainer = document.getElementById('fav-artist-card-container'); 
 
         // Enable horizontal scroll for all relevant containers
         enableHorizontalScroll(cardContainer);
         enableHorizontalScroll(artistCardContainer);
         enableHorizontalScroll(playlistCardContainer);
+        enableHorizontalScroll(favArtistCardContainer);
     </script>
 
 </body>
