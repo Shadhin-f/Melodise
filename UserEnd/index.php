@@ -183,7 +183,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
             }
             ?>
         </div>
-    </section> 
+    </section>
 
 
 
@@ -316,43 +316,43 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
 
 
     <!-- Followed Artists section -->
-     <?php 
-        if(isset($_SESSION['userid'])):
-     ?>
+    <?php
+    if (isset($_SESSION['userid'])):
+    ?>
 
 
-    <section id="fav-artist" class="p-3 mb-5">
-        <div id="fav-artist-title-container" class="d-flex flex-row justify-content-between align-items-center">
-            <h1>
-                <?php
-                
+        <section id="fav-artist" class="p-3 mb-5">
+            <div id="fav-artist-title-container" class="d-flex flex-row justify-content-between align-items-center">
+                <h1>
+                    <?php
+
                     echo "Artists you follow";
-                ?>
-            </h1>
-            <form action="user-actions.php" method="get">
-                <button type="submit" class="themed-btn bg-transparent border-0" name='all-artist-btn'>All Artist</button>
-            </form>
-        </div>
+                    ?>
+                </h1>
+                <form action="user-actions.php" method="get">
+                    <button type="submit" class="themed-btn bg-transparent border-0" name='all-artist-btn'>All Artist</button>
+                </form>
+            </div>
 
-        <!-- Artist Cards container div -->
-        <div id="fav-artist-card-container" class="mb-5">
-            <?php
-            // Fetching artists data from the database
-            $select_artists = "SELECT * 
+            <!-- Artist Cards container div -->
+            <div id="fav-artist-card-container" class="mb-5">
+                <?php
+                // Fetching artists data from the database
+                $select_artists = "SELECT * 
                                 FROM `artist_followers`
                                 LEFT JOIN artists ON artist_followers.ArtistID = artists.ArtistID
                                 WHERE artist_followers.UserID = '$userID'
                                 AND artists.Name LIKE '%" . (isset($_SESSION['searchKey']) && $_SESSION['searchKey'] !== '' ? $_SESSION['searchKey'] : '') . "%' 
                                 LIMIT 10";
-            $result_artists = mysqli_query($conn, $select_artists);
+                $result_artists = mysqli_query($conn, $select_artists);
 
-            while ($row_data = mysqli_fetch_assoc($result_artists)) {
-                $artist_id = $row_data['ArtistID']; // Assuming your artist table has an 'ID' column
-                $artist_name = $row_data['Name'];
-                $artist_img = $row_data['Image'];
+                while ($row_data = mysqli_fetch_assoc($result_artists)) {
+                    $artist_id = $row_data['ArtistID']; // Assuming your artist table has an 'ID' column
+                    $artist_name = $row_data['Name'];
+                    $artist_img = $row_data['Image'];
 
-                // Artist cards with a form for each artist
-                echo "
+                    // Artist cards with a form for each artist
+                    echo "
                 <form action='user-actions.php' method='get' class='d-inline-block'>
                     <input type='hidden' name='artist_id' value='$artist_id'>
                     <button type='submit' class='artist-card-btn bg-transparent border-0 p-0' name='view-artist-profile-btn'>
@@ -363,13 +363,13 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                     </button>
                 </form>
             ";
-            }
-            ?>
-        </div>
-    </section>
+                }
+                ?>
+            </div>
+        </section>
 
-    <?php 
-        endif;
+    <?php
+    endif;
     ?>
 
 
@@ -395,7 +395,8 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
 
 
     <script>
-        // Select all play-card elements
+        // Select all play-card elements ------------- v1 -----------------------
+
         document.querySelectorAll('.play-card').forEach(card => {
             card.addEventListener('click', () => {
                 // Get song details from the data attributes
@@ -441,20 +442,24 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
 
 
 
+
+
+
+
         // Function to enable mouse scroll for horizontal scrolling
         function enableHorizontalScroll(container) {
             container.addEventListener('wheel', (event) => {
-                if (event.deltaY === 0) return;                     // No vertical scrolling
-                container.scrollLeft += event.deltaY;               // Scroll horizontally based on the wheel movement
-                event.preventDefault();                             // Prevent default scrolling behavior
+                if (event.deltaY === 0) return; // No vertical scrolling
+                container.scrollLeft += event.deltaY; // Scroll horizontally based on the wheel movement
+                event.preventDefault(); // Prevent default scrolling behavior
             });
         }
 
         // Apply to both card containers (Music, Artist, Playlist)
         const cardContainer = document.getElementById('card-container');
         const artistCardContainer = document.getElementById('artist-card-container');
-        const playlistCardContainer = document.getElementById('playlist-card-container'); 
-        const favArtistCardContainer = document.getElementById('fav-artist-card-container'); 
+        const playlistCardContainer = document.getElementById('playlist-card-container');
+        const favArtistCardContainer = document.getElementById('fav-artist-card-container');
 
         // Enable horizontal scroll for all relevant containers
         enableHorizontalScroll(cardContainer);
