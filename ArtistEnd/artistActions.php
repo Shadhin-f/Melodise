@@ -189,6 +189,61 @@ if (isset($_POST['profile-update-btn'])) {
 
 
 
+// Add Album Action
+
+
+// Add Album Action
+if (isset($_POST['add-album'])) {
+    // Check if ArtistID is set in the session
+    if (!isset($_SESSION['artistid'])) {
+        $_SESSION['error'] = "Artist not logged in!";
+        header("Location: dashboard.php");
+        exit();
+    }
+
+    // Get form data
+    $artistID = $_SESSION['artistid']; // Artist ID from session
+    $albumName = $_POST['albumName'];
+    $releaseDate = $_POST['releaseDate'];
+    $albumCover = $_FILES['albumCover'];
+
+    // Validate file upload
+    $targetDir = "uploads/albums/";
+    if (!is_dir($targetDir)) {
+        mkdir($targetDir, 0777, true); // Create directory if it doesn't exist
+    }
+    $targetFile = $targetDir . basename($albumCover['name']);
+    $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+    // Check for valid file types (JPG, JPEG, PNG)
+    if (!in_array($fileType, ['jpg', 'jpeg', 'png'])) {
+        $_SESSION['error'] = "Only JPG, JPEG, and PNG files are allowed.";
+        header("Location: addAlbum.php");
+        exit();
+    }
+
+    // Move the uploaded file
+    if (!move_uploaded_file($albumCover['tmp_name'], $targetFile)) {
+        $_SESSION['error'] = "Failed to upload album cover.";
+        header("Location: addAlbum.php");
+        exit();
+    }
+
+    // Insert album details into the database
+    $albumCoverName = basename($albumCover['name']); // Extract file name
+    $sql = "INSERT INTO `albums` (`AlbumID`, `Title`, `ReleaseDate`, `ArtistID`, `AlbumCover`) VALUES (NULL, '$albumName', '$releaseDate', '$artistID', '$albumCoverName')";
+    if (mysqli_query($conn, $sql)) {
+        $_SESSION['success'] = "Album added successfully!";
+        header("Location: dashboard.php"); // Redirect to dashboard or album list page
+    } else {
+        $_SESSION['error'] = "Error adding album: " . mysqli_error($conn);
+        header("Location: addAlbum.php"); // Redirect back to add album page
+    }
+}
+
+
+
+
 
    //  Log out btn action (user profile)
 
@@ -235,10 +290,87 @@ if (isset($_GET['add-album-btn'])) {
     exit;
 }
 
+
+if (isset($_POST['delete-music-btn'])) {
+    $song_id = $_POST['song_id'];
+
+    // Query to delete the song from the database
+    $delete_song = "DELETE FROM songs WHERE SongID = $song_id";
+    if (mysqli_query($conn, $delete_song)) {
+        echo "<script>alert('Song deleted successfully!');</script>";
+    } else {
+        echo "<script>alert('Error deleting song: " . mysqli_error($conn) . "');</script>";
+    }
+
+    // Redirect back to the All Music page
+    echo "<script>window.location.href = 'viewAllMusic.php';</script>";
+}
+
+/*
 // Redirect to deleteAlbum.php if delete-album-btn is clicked
 if (isset($_GET['delete-album-btn'])) {
     header("Location: deleteAlbum.php");
     exit;
 }
+*/
+
+
+
+ // Add music actions
+ if (isset($_POST['add-music-button'])) {
+    $regTitle = $_POST['songTitle'];
+    $regsDate = $_POST['releaseDate'];
+    $regDuration = $_POST['duration'];
+    $regAlbum = $_POST['album'];
+    $regGenre= $_POST['genre'];
+    $regDob = $_POST['mp3File'];
+    $regCountry = $_POST['country'];
+    $reBio = $_POST['bio'];
+
+    // Check for empty fields
+    if (empty($regName) || empty($regPassword) || empty($regRePassword) || empty($regDob) || empty($regCountry) || empty($gender) || empty($reBio)) {
+        echo '<script>
+                alert("Please fill out all the necessary fields!!!");
+                window.location.href = "artistlogin.php";
+            </script>';
+    } else {
+        // Password confirmation check
+        if ($regPassword != $regRePassword) {
+            echo '<script>
+                    alert("Password did not match!!");
+                    window.location.href = "artistlogin.php";
+                </script>';
+        } else {
+            // Check if email is already in use
+            $select_artist_credentials = "SELECT * FROM `artists` WHERE Email = '$regEmail'";
+            $result_artist_credentials = mysqli_query($conn, $select_artist_credentials);
+
+            if ($result_artist_credentials) {
+                $artist_found = mysqli_num_rows($result_artist_credentials);
+                if ($artist_found > 0) {
+                    echo '<script>
+                            alert("Email Already in use!!");
+                            window.location.href = "artistlogin.php";
+                        </script>';
+                } else {
+                    // Insert artist credentials into the database
+                    $insert_artist_credentials = "INSERT INTO `artists` (`ArtistID`, `Name`, `Email`, `Password`, `Gender`,  `Dob`,`Bio` , `Country`, `Image`) VALUES (NULL, '$regName', '$regEmail', '$regPassword', '$gender',  '$regDob', '$reBio', '$regCountry', 'unknown.jpg')";
+                    $result_artist_credentials = mysqli_query($conn, $insert_artist_credentials);
+
+                    if ($result_artist_credentials) {
+                        echo '<script>
+                                alert("Registration successful!!");
+                                window.location.href = "artistlogin.php";
+                            </script>';
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
 
 ?>

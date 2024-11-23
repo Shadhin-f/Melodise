@@ -44,15 +44,19 @@ include('connect.php');
 
 <!-- Navigation Bar -->
 <?php include('artistNavbar.php'); ?>
+
     <!-- Header Section -->
-    <section id="section-header" class="px-5 my-5">
-        <form action="artistActions.php" method="get" class="d-inline-block">
-            <button type="submit" class="themed-btn bg-transparent border-0 ml-5" name="back-to-dashboard-btn">
-                <i class="fa-solid fa-arrow-left h1"></i>
-            </button>
-        </form>
-        <h1 class="ml-5 d-inline-block">All Albums</h1>
-    </section>
+<!-- Header Section -->
+<section id="section-header" class="px-5 my-5 d-flex justify-content-between align-items-center">
+    <form action="artistActions.php" method="get" class="d-inline-block">
+        <button type="submit" class="themed-btn bg-transparent border-0" name="back-to-dashboard-btn">
+            <i class="fa-solid fa-arrow-left h1"></i>
+        </button>
+    </form>
+    <h1 class="d-inline-block">All Albums</h1>
+    <a href="addAlbum.php" class="btn btn-primary">Add Album</a>
+</section>
+
 
     <!-- Album Cards Section -->
     <section>
