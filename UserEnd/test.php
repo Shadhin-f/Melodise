@@ -1,226 +1,238 @@
-<!doctype html>
+<?php
+include('connect.php');
+// session_start();
+?>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Landing Page</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        /* General Styling */
-        body {
-            font-family: Arial, sans-serif;
-            color: #333;
-            background-color: #f9f9f9;
-        }
+        /* Music plyer customise */
 
-        /* Hero Section */
-        .hero-section {
-            background-color: #1b8673;
+        .custom-player-card {
+            background-color: #bdbcbb;
             color: white;
-            padding: 100px 20px;
-            text-align: center;
+            padding: 10px 15px !important;
+            height: 70px;
         }
 
-        .hero-section h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
-        .hero-section p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-        }
-
-        .nav-button {
-            background-color: white;
-            color: #1b8673;
-            border: 2px solid #1b8673;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-
-        .nav-button:hover {
-            background-color: #1b8673;
-            color: white;
-        }
-
-        /* Features Section */
-        .features-section,
-        .guidelines-section {
-            padding: 60px 20px;
-        }
-
-        .features-section h2,
-        .guidelines-section h2 {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .feature-card {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
-        }
-
-        .feature-card:hover {
-            border-color: #1b8673;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Setup Guidelines Section */
-        .guideline-step {
-            border-left: 3px solid #1b8673;
-            padding-left: 15px;
-            margin-bottom: 20px;
-        }
-
-        /* Members Section */
-        .credits-section {
-            background-color: #f1f1f1;
-            padding: 60px 20px;
-        }
-
-        .member-card {
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .member-card:hover {
-            border-color: #1b8673;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .member-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
+        .album-art {
+            width: 50px;
+            height: 50px;
             background-size: cover;
             background-position: center;
-            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .song-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 10px;
+        }
+
+        .song-title {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .song-artist {
+            font-size: 0.75rem;
+            margin: 0;
+            color: #e3e2e1;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 5px;
+            background-color: #d4d4d4;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .custom-progress-bar {
+            height: 100%;
+            background-color: #fff;
+        }
+
+        .volume-control {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .active-heart {
+            color: #1B8673;
         }
     </style>
 </head>
 
 <body>
-    <!-- Hero Section -->
-    <div class="hero-section">
-        <h1>Welcome to Our Project</h1>
-        <p>Choose your path: User, Artist, or Admin</p>
-        <div class="d-flex justify-content-center gap-3">
-            <a href="user-page.html" class="nav-button"><i class="fas fa-user"></i> User End</a>
-            <a href="artist-page.html" class="nav-button"><i class="fas fa-microphone"></i> Artist End</a>
-            <a href="admin-page.html" class="nav-button"><i class="fas fa-user-shield"></i> Admin End</a>
+    <!-- Music Player (Somehow functional functional :)  ) -->
+    <div class="card fixed-bottom custom-player-card d-flex align-items-center">
+        <div class="d-flex align-items-center w-100">
+            <!-- Album art with background image -->
+            <div class="album-art" style="background-image: url('https://images.unsplash.com/photo-1730688213382-b62363b93824?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyMHx8fGVufDB8fHx8fA%3D%3D');"></div>
+
+            <!-- Song information -->
+            <div class="song-info">
+                <input type="hidden" id="songID"> <!-- Passing song ID using js -->
+                <p class="song-title mb-0" id="songTitle">No track</p>
+                <p class="song-artist mb-0" id="songArtist">Unknown</p>
+            </div>
+
+            <!-- play/pause button and progress bar -->
+            <div class="d-flex flex-grow-1 align-items-center justify-content-center">
+                <button id="playPauseBtn" class="btn btn-sm text-black me-2"><i class="fas fa-play"></i></button>
+                <div class="progress-container">
+                    <div id="songProgress" class="progress-bar custom-progress-bar"></div>
+                </div>
+            </div>
+
+            <!-- Volume control -->
+            <div class="volume-control ms-2">
+                <button id="volumeBtn" class="btn btn-sm text-black"><i class="fas fa-volume-up"></i></button>
+            </div>
+
+            <!-- Add to Favorite button -->
+            <div class="ms-2">
+                <!-- Toggle Favorite button -->
+                <form action='user-actions.php' method="post">
+                    <input type="hidden" name="songID" id="favSongID">
+                    <button type="submit" name="toggle-favorite" id="addToFavoriteBtn" class="btn btn-sm text-black">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </form>
+
+            </div>
+
+            <!-- Add to Playlist button in the music player -->
+            <button id="addToPlaylistBtn" class="btn btn-sm text-black" data-bs-toggle="modal" data-bs-target="#addToPlaylistModal">
+                <i class="fas fa-list-ul"></i>
+            </button>
+
         </div>
     </div>
 
-    <!-- Features Section -->
-    <section class="features-section">
-        <h2>Key Features</h2>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="feature-card text-center">
-                        <i class="fas fa-music fa-3x mb-3"></i>
-                        <h5>User End Features</h5>
-                        <p>Discover and listen to your favorite music with an intuitive user interface.</p>
-                    </div>
+
+
+    <!-- Modal to add playlist -->
+
+
+    <div class="modal fade" id="addToPlaylistModal" tabindex="-1" aria-labelledby="addToPlaylistModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered"> <!-- Add modal-dialog-centered class -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addToPlaylistModalLabel">Add to Playlist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="feature-card text-center">
-                        <i class="fas fa-guitar fa-3x mb-3"></i>
-                        <h5>Artist End Features</h5>
-                        <p>Manage your songs and albums, and connect with your fans seamlessly.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="feature-card text-center">
-                        <i class="fas fa-cogs fa-3x mb-3"></i>
-                        <h5>Admin End Features</h5>
-                        <p>Oversee and manage the entire platform with powerful administrative tools.</p>
-                    </div>
+                <div class="modal-body">
+                    <form action="user-actions.php" method="post">
+                        <!-- Hidden input to store the song info -->
+                        <input type="hidden" id="songid" name="songID">
+                        <input type="hidden" id="songName" name="songName">
+                        <input type="hidden" id="artistName" name="artistName">
+                        <!-- Dropdown for selecting the playlist -->
+                        <div class="mb-3">
+                            <label for="playlistSelect" class="form-label">Choose Playlist</label>
+                            <select class="form-select" id="playlistSelect" name="playlistID">
+                                <!-- Playlist options will be dynamically populated -->
+                                <?php
+                                $userID = $_SESSION['userid'];
+                                $query = "SELECT * FROM playlists WHERE UserID = '$userID'";
+                                $result = mysqli_query($conn, $query);
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo "<option value='" . $row['PlaylistID'] . "'>" . $row['Name'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" name="add-to-playlist-btn">Add to Playlist</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Setup Guidelines Section -->
-    <section class="guidelines-section bg-light">
-        <h2>Setup Guidelines</h2>
-        <div class="container">
-            <div class="guideline-step">
-                <h5>Step 1: Clone the Repository</h5>
-                <p>Use <code>git clone [repository URL]</code> to clone the project.</p>
-            </div>
-            <div class="guideline-step">
-                <h5>Step 2: Install Dependencies</h5>
-                <p>Run <code>npm install</code> to install all necessary packages.</p>
-            </div>
-            <div class="guideline-step">
-                <h5>Step 3: Configure the Environment</h5>
-                <p>Set up your <code>.env</code> file with your database and API keys.</p>
-            </div>
-            <div class="guideline-step">
-                <h5>Step 4: Run the Project</h5>
-                <p>Use <code>npm start</code> to launch the project locally.</p>
-            </div>
-        </div>
-    </section>
 
-    <!-- Credits Section -->
-    <section class="credits-section">
-        <h2 class="text-center">Meet the Team</h2>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 mb-4">
-                    <div class="member-card">
-                        <div class="member-img" style="background-image: url('path-to-image-1.jpg');"></div>
-                        <h5>Member 1</h5>
-                        <p>Role: Developer</p>
-                        <p>Contribution: Backend development and database management.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="member-card">
-                        <div class="member-img" style="background-image: url('path-to-image-2.jpg');"></div>
-                        <h5>Member 2</h5>
-                        <p>Role: Designer</p>
-                        <p>Contribution: UI/UX design and front-end development.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="member-card">
-                        <div class="member-img" style="background-image: url('path-to-image-3.jpg');"></div>
-                        <h5>Member 3</h5>
-                        <p>Role: Project Manager</p>
-                        <p>Contribution: Project coordination and feature planning.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="member-card">
-                        <div class="member-img" style="background-image: url('path-to-image-4.jpg');"></div>
-                        <h5>Member 4</h5>
-                        <p>Role: Tester</p>
-                        <p>Contribution: Quality assurance and bug testing.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
+<script>
+    const audio = new Audio('');
+    let isPlaying = false;
+    let isMuted = false;
+
+    // Play/Pause functionality
+    document.getElementById('playPauseBtn').addEventListener('click', () => {
+        const playPauseIcon = document.getElementById('playPauseBtn').querySelector('i');
+        if (isPlaying) {
+            audio.pause();
+            playPauseIcon.classList.remove('fa-pause');
+            playPauseIcon.classList.add('fa-play');
+        } else {
+            audio.play();
+            playPauseIcon.classList.remove('fa-play');
+            playPauseIcon.classList.add('fa-pause');
+        }
+        isPlaying = !isPlaying;
+    });
+
+    // Volume toggle functionality
+    document.getElementById('volumeBtn').addEventListener('click', () => {
+        const volumeIcon = document.getElementById('volumeBtn').querySelector('i');
+        if (isMuted) {
+            audio.volume = 1.0; // Full volume
+            volumeIcon.classList.remove('fa-volume-mute');
+            volumeIcon.classList.add('fa-volume-up');
+        } else {
+            audio.volume = 0.0; // Mute
+            volumeIcon.classList.remove('fa-volume-up');
+            volumeIcon.classList.add('fa-volume-mute');
+        }
+        isMuted = !isMuted;
+    });
+
+    // Heart button color toggle
+    document.getElementById('addToFavoriteBtn').addEventListener('click', () => {
+        const heartIcon = document.getElementById('addToFavoriteBtn').querySelector('i');
+        heartIcon.classList.toggle('active-heart');
+    });
+
+    // Update song progress
+    audio.ontimeupdate = () => {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        document.getElementById('songProgress').style.width = progress + '%';
+    };
+
+    // script to pass the song info
+
+    document.getElementById('addToPlaylistBtn').addEventListener('click', () => {
+        // Get the current song details from your player
+        const songName = document.getElementById('songTitle').textContent;
+        const artistName = document.getElementById('songArtist').textContent;
+        const songID = document.getElementById('songID').getAttribute('value');
+
+        // Set the values in the modal's hidden inputs
+        document.getElementById('songName').value = songName;
+        document.getElementById('artistName').value = artistName;
+        document.getElementById('songid').value = songID;
+    });
+</script>
 
 </html>
