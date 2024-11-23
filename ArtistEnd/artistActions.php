@@ -193,6 +193,7 @@ if (isset($_POST['profile-update-btn'])) {
 
 
 // Add Album Action
+// Add Album Action
 if (isset($_POST['add-album'])) {
     // Check if ArtistID is set in the session
     if (!isset($_SESSION['artistid'])) {
@@ -207,12 +208,20 @@ if (isset($_POST['add-album'])) {
     $releaseDate = $_POST['releaseDate'];
     $albumCover = $_FILES['albumCover'];
 
+    // Fetch the latest AlbumID and generate new AlbumID
+    $query = "SELECT MAX(AlbumID) AS LatestAlbumID FROM albums";
+    $result = mysqli_query($conn, $query);
+    $latestAlbumID = mysqli_fetch_assoc($result)['LatestAlbumID'] ?? 0;
+    $newAlbumID = $latestAlbumID + 1;  // Increment AlbumID
+
     // Validate file upload
-    $targetDir = "uploads/albums/";
+    $targetDir = "C:/xampp/htdocs/website/Melodise/Resources/AlbumCovers/";
     if (!is_dir($targetDir)) {
         mkdir($targetDir, 0777, true); // Create directory if it doesn't exist
     }
-    $targetFile = $targetDir . basename($albumCover['name']);
+
+    // Validate album cover file
+    $targetFile = $targetDir . $newAlbumID . "." . strtolower(pathinfo($albumCover['name'], PATHINFO_EXTENSION));
     $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
     // Check for valid file types (JPG, JPEG, PNG)
@@ -230,8 +239,10 @@ if (isset($_POST['add-album'])) {
     }
 
     // Insert album details into the database
-    $albumCoverName = basename($albumCover['name']); // Extract file name
-    $sql = "INSERT INTO `albums` (`AlbumID`, `Title`, `ReleaseDate`, `ArtistID`, `AlbumCover`) VALUES (NULL, '$albumName', '$releaseDate', '$artistID', '$albumCoverName')";
+    $albumCoverName = basename($targetFile); // Use the new file name
+    $sql = "INSERT INTO `albums` (`AlbumID`, `Title`, `ReleaseDate`, `ArtistID`, `AlbumCover`) 
+            VALUES ('$newAlbumID', '$albumName', '$releaseDate', '$artistID', '$albumCoverName')";
+    
     if (mysqli_query($conn, $sql)) {
         $_SESSION['success'] = "Album added successfully!";
         header("Location: dashboard.php"); // Redirect to dashboard or album list page
@@ -240,6 +251,90 @@ if (isset($_POST['add-album'])) {
         header("Location: addAlbum.php"); // Redirect back to add album page
     }
 }
+
+
+
+
+
+
+if (isset($_POST['add-music-button'])) {
+    $regTitle = trim($_POST['songTitle'] ?? '');
+    $regsDate = trim($_POST['releaseDate'] ?? '');
+    $regDuration = trim($_POST['duration'] ?? '');
+    $regAlbum = trim($_POST['album'] ?? '');
+    $regGenre = trim($_POST['genre'] ?? '');
+    $regColorCode = trim($_POST['colorCode'] ?? '');
+
+    // Validate required fields
+    if (empty($regTitle) || empty($regsDate) || empty($regDuration) || empty($regAlbum) || empty($regGenre) || empty($regColorCode)) {
+        echo '<script>
+                alert("Please fill out all the necessary fields!");
+                window.location.href = "addMusic.php";
+            </script>';
+        exit();
+    }
+
+    // Validate uploaded file
+    if ($_FILES['mp3File']['error'] != UPLOAD_ERR_OK) {
+        echo '<script>
+                alert("Please upload a valid audio file!");
+                window.location.href = "addMusic.php";
+            </script>';
+        exit();
+    }
+
+    // Validate file type (allow common audio formats)
+    $allowedFileTypes = ['mp3', 'wav', 'aac', 'flac', 'ogg', 'm4a'];
+    $fileType = strtolower(pathinfo($_FILES['mp3File']['name'], PATHINFO_EXTENSION));
+    if (!in_array($fileType, $allowedFileTypes)) {
+        echo '<script>
+                alert("Only audio files (MP3, WAV, AAC, FLAC, OGG, M4A) are allowed!");
+                window.location.href = "addMusic.php";
+            </script>';
+        exit();
+    }
+
+    // Fetch the latest SongID and generate new SongID
+    $artistID = $_SESSION['artistid'];
+    $query = "SELECT MAX(SongID) AS LatestSongID FROM songs";
+    $result = mysqli_query($conn, $query);
+    $latestSongID = mysqli_fetch_assoc($result)['LatestSongID'] ?? 0;
+    $newSongID = $latestSongID + 1;
+
+    // Rename and move the uploaded file
+    $targetDir = "C:/xampp/htdocs/website/Melodise/Resources/Songs/";
+    if (!is_dir($targetDir)) {
+        mkdir($targetDir, 0777, true); // Create directory if it doesn't exist
+    }
+    $newFileName = $newSongID;
+    $targetFile = $targetDir . $newFileName;
+
+    if (!move_uploaded_file($_FILES['mp3File']['tmp_name'], $targetFile)) {
+        echo '<script>
+                alert("Failed to upload the audio file.");
+                window.location.href = "addMusic.php";
+            </script>';
+        exit();
+    }
+
+    // Insert song details into the database
+    $sql = "INSERT INTO `songs` (`SongID`, `Title`, `Duration`, `ReleaseDate`, `AlbumID`, `GenreID`, `ArtistID`, `ColorCode`, `Audio`) 
+            VALUES ('$newSongID', '$regTitle', '$regDuration', '$regsDate', '$regAlbum', '$regGenre', '$artistID', '$regColorCode', '$newFileName')";
+
+    if (mysqli_query($conn, $sql)) {
+        echo '<script>
+                alert("Music added successfully!");
+                window.location.href = "viewAllMusic.php";
+            </script>';
+    } else {
+        echo '<script>
+                alert("Error adding music: ' . mysqli_error($conn) . '");
+                window.location.href = "addMusic.php";
+            </script>';
+    }
+}
+
+
 
 
 

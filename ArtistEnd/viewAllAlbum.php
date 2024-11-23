@@ -87,7 +87,7 @@ include('connect.php');
                             <h5 class='card-title'>$album_name</h5>
                             
                             <a 
-            href='songsPage.php?album=$album_name' 
+            href='albumSongs.php?album=$album_name' 
             class='btn btn-primary position-absolute bottom-0 end-0 m-3' 
             style='z-index: 1;'
         >

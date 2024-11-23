@@ -1,6 +1,27 @@
+<?php
+// Include database connection file
+include('connect.php');
+
+// Start the session to get the logged-in user's data
+session_start();
+
+// Assuming you have set the ArtistID in session after login
+$artistID = $_SESSION['artistid']; // Change 'ArtistID' if your session variable is named differently
+
+// Fetch albums from the database where the ArtistID matches
+$albumQuery = "SELECT AlbumID, Title FROM albums WHERE ArtistID = $artistID";
+$albumResult = mysqli_query($conn, $albumQuery);
+
+// Fetch genres from the database (no need to filter by ArtistID)
+$genreQuery = "SELECT GenreID, Title FROM genres";  // Correct column name for genre
+$genreResult = mysqli_query($conn, $genreQuery);
+
+// Close the database connection
+mysqli_close($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,45 +98,59 @@
         <h2 class="mb-4">Music Release Form</h2>
 
         <!-- Music Release Form -->
-        <form>
+        <form method="POST" action="artistActions.php" enctype="multipart/form-data">
             <div class="mb-3">
-                <input type="text" class="form-control" id="songTitle" placeholder="Enter song title" required>
+                <input type="text" class="form-control" id="songTitle" name="songTitle" placeholder="Enter song title" required>
             </div>
             <div class="mb-3">
-                <input type="date" class="form-control" id="releaseDate" placeholder="Select release date" required>
+                <input type="date" class="form-control" id="releaseDate" name="releaseDate" placeholder="Select release date" required>
             </div>
             <div class="mb-3">
-                <input type="text" class="form-control" id="duration" placeholder="Enter duration (e.g., 3:45)" required>
+                <input type="text" class="form-control" id="duration" name="duration" placeholder="Enter duration (e.g., 3:45)" required>
             </div>
             <div class="mb-3">
-                <select id="album" class="form-select" required>
+                <select id="album" name="album" class="form-select" required>
                     <option selected disabled>Select album</option>
-                    <option value="Album 1">Album 1</option>
-                    <option value="Album 2">Album 2</option>
-                    <option value="Album 3">Album 3</option>
+                    <?php
+                    // Check if there are albums for the logged-in artist
+                    if (mysqli_num_rows($albumResult) > 0) {
+                        // Loop through each album and create an option
+                        while ($album = mysqli_fetch_assoc($albumResult)) {
+                            echo "<option value='" . $album['AlbumID'] . "'>" . $album['Title'] . "</option>";
+                        }
+                    } else {
+                        echo "<option value=''>No albums available</option>";
+                    }
+                    ?>
                 </select>
             </div>
             <div class="mb-3">
-                <select id="genre" class="form-select" required>
+                <select id="genre" name="genre" class="form-select" required>
                     <option selected disabled>Select genre</option>
-                    <option value="Pop">Pop</option>
-                    <option value="Rock">Rock</option>
-                    <option value="Jazz">Jazz</option>
-                    <option value="Classical">Classical</option>
-                    <option value="Hip-Hop">Hip-Hop</option>
+                    <?php
+                    // Check if there are genres
+                    if (mysqli_num_rows($genreResult) > 0) {
+                        // Loop through each genre and create an option
+                        while ($genre = mysqli_fetch_assoc($genreResult)) {
+                            echo "<option value='" . $genre['GenreID'] . "'>" . $genre['Title'] . "</option>";
+                        }
+                    } else {
+                        echo "<option value=''>No genres available</option>";
+                    }
+                    ?>
                 </select>
             </div>
             <div class="mb-3">
                     <label for="mp3File" class="form-label">Upload MP3 File</label>
-                    <input type="file" class="form-control" id="mp3File" accept=".mp3" required>
+                    <input type="file" class="form-control" id="mp3File" name="mp3File" required>
             </div>
             <div class="mb-3 text-start">
                 <label for="colorCode" class="form-label">Color Code</label>
-                <input type="color" class="form-control form-control-color" id="colorCode" value="#1B8673" required>
+                <input type="color" class="form-control form-control-color" id="colorCode" name="colorCode" value="#1B8673" required>
                 <input type="text" id="colorHex" class="form-control mt-2" readonly>
             </div>
 
-            <button type="submit" class="btn btn-custom btn-submit w-100 mt-3">Submit</button>
+            <button type="submit" name = "add-music-button" class="btn btn-custom btn-submit w-100 mt-3">Submit</button>
         </form>
     </div>
 
