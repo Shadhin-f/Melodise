@@ -56,7 +56,7 @@ if (isset($_SESSION['adminname'])) {
     echo '<script>';
     echo 'var artistData = ' . $json_data . ';'; 
     echo '</script>';
-}
+
 ?>
 
 <!-- Container for the chart -->
@@ -97,6 +97,10 @@ const artistChart = new Chart(ctx, {
     }
 });
 </script>
+
+<?php
+} 
+?>
 
 </body>
 
