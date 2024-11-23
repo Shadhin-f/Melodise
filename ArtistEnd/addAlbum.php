@@ -1,17 +1,20 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Release Form - MELODISE</title>
+    <title>Add Album - MELODISE</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom Styling -->
     <style>
-        /* Background image for the whole page */
         body {
             background-image: url('../Resources/DesignElements/ProfileEditBack.jpg');
             background-size: cover;
@@ -23,7 +26,6 @@
             min-height: 100vh;
         }
 
-        /* Centered form card style */
         .form-card {
             background: rgba(255, 255, 255, 0.85);
             border-radius: 10px;
@@ -33,27 +35,23 @@
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
         }
 
-        /* Logo and title styling */
         .logo {
             font-size: 2rem;
             font-weight: bold;
             color: #1B8673;
         }
 
-        /* Input field styling */
-        .form-control, .form-select {
+        .form-control {
             border: none;
             border-bottom: 2px solid #1B8673;
             border-radius: 0;
-            box-shadow: none;
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus {
             box-shadow: none;
             border-color: #1B8673;
         }
 
-        /* Button styling */
         .btn-custom {
             border-radius: 50px;
             padding: 0.5rem 1.5rem;
@@ -71,54 +69,47 @@
 </head>
 
 <body>
-
     <div class="form-card text-center">
         <div class="logo mb-3">MELODISE</div>
-        <h2 class="mb-4">Music Release Form</h2>
+        <h2 class="mb-4">Add New Album</h2>
 
-        <!-- Music Release Form -->
-        <form>
-            <div class="mb-3">
-                <input type="text" class="form-control" id="songTitle" placeholder="Enter song title" required>
+        <!-- Display Messages -->
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success text-center">
+                <?php 
+                    echo $_SESSION['success']; 
+                    unset($_SESSION['success']);
+                ?>
             </div>
-            <div class="mb-3">
-                <input type="date" class="form-control" id="releaseDate" placeholder="Select release date" required>
-            </div>
-            <div class="mb-3">
-                <select id="genre" class="form-select" required>
-                    <option selected disabled>Select genre</option>
-                    <option value="Pop">Pop</option>
-                    <option value="Rock">Rock</option>
-                    <option value="Jazz">Jazz</option>
-                    <option value="Classical">Classical</option>
-                    <option value="Hip-Hop">Hip-Hop</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                    <label for="mp3File" class="form-label">Upload MP3 File</label>
-                    <input type="file" class="form-control" id="mp3File" accept=".mp3" required>
-            </div>
+        <?php endif; ?>
 
-            <button type="submit" class="btn btn-custom btn-submit w-100 mt-3">Submit</button>
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger text-center">
+                <?php 
+                    echo $_SESSION['error']; 
+                    unset($_SESSION['error']);
+                ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Album Add Form -->
+        <form action="artistActions.php" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <input type="text" class="form-control" name="albumName" placeholder="Enter Album Name" required>
+            </div>
+            <div class="mb-3">
+                <input type="date" class="form-control" name="releaseDate" required>
+            </div>
+            <div class="mb-3">
+                <label for="albumCover" class="form-label">Upload Album Cover</label>
+                <input type="file" class="form-control" name="albumCover" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-custom btn-submit w-100 mt-3" name="add-album">Add Album</button>
         </form>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- JavaScript for showing hex code -->
-    <script>
-        const colorCodeInput = document.getElementById('colorCode');
-        const colorHexInput = document.getElementById('colorHex');
-
-        // Set initial color hex value
-        colorHexInput.value = colorCodeInput.value;
-
-        // Update hex code display when color is changed
-        colorCodeInput.addEventListener('input', () => {
-            colorHexInput.value = colorCodeInput.value;
-        });
-    </script>
 </body>
 
 </html>

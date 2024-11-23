@@ -189,6 +189,61 @@ if (isset($_POST['profile-update-btn'])) {
 
 
 
+// Add Album Action
+
+
+// Add Album Action
+if (isset($_POST['add-album'])) {
+    // Check if ArtistID is set in the session
+    if (!isset($_SESSION['artistid'])) {
+        $_SESSION['error'] = "Artist not logged in!";
+        header("Location: dashboard.php");
+        exit();
+    }
+
+    // Get form data
+    $artistID = $_SESSION['artistid']; // Artist ID from session
+    $albumName = $_POST['albumName'];
+    $releaseDate = $_POST['releaseDate'];
+    $albumCover = $_FILES['albumCover'];
+
+    // Validate file upload
+    $targetDir = "uploads/albums/";
+    if (!is_dir($targetDir)) {
+        mkdir($targetDir, 0777, true); // Create directory if it doesn't exist
+    }
+    $targetFile = $targetDir . basename($albumCover['name']);
+    $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+    // Check for valid file types (JPG, JPEG, PNG)
+    if (!in_array($fileType, ['jpg', 'jpeg', 'png'])) {
+        $_SESSION['error'] = "Only JPG, JPEG, and PNG files are allowed.";
+        header("Location: addAlbum.php");
+        exit();
+    }
+
+    // Move the uploaded file
+    if (!move_uploaded_file($albumCover['tmp_name'], $targetFile)) {
+        $_SESSION['error'] = "Failed to upload album cover.";
+        header("Location: addAlbum.php");
+        exit();
+    }
+
+    // Insert album details into the database
+    $albumCoverName = basename($albumCover['name']); // Extract file name
+    $sql = "INSERT INTO `albums` (`AlbumID`, `Title`, `ReleaseDate`, `ArtistID`, `AlbumCover`) VALUES (NULL, '$albumName', '$releaseDate', '$artistID', '$albumCoverName')";
+    if (mysqli_query($conn, $sql)) {
+        $_SESSION['success'] = "Album added successfully!";
+        header("Location: dashboard.php"); // Redirect to dashboard or album list page
+    } else {
+        $_SESSION['error'] = "Error adding album: " . mysqli_error($conn);
+        header("Location: addAlbum.php"); // Redirect back to add album page
+    }
+}
+
+
+
+
 
    //  Log out btn action (user profile)
 
