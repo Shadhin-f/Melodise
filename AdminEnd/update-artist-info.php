@@ -1,6 +1,5 @@
 <?php 
 include('connect.php');
-session_start();
 ?>
 
 <!doctype html>
@@ -51,6 +50,11 @@ session_start();
 
 <body>
 
+    <!-- Navigation bar -->
+
+    <?php 
+        include('navbar.php')
+    ?>
     
     <!-- Main Search Section -->
     <section class="container container-custom">

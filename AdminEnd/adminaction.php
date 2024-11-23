@@ -198,18 +198,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         header('Location: ..\UserEnd\profileupdate.php');
     }
+
+    //add new genre button
+    if (isset($_POST['add_new_genre_btn'])) {
+  
+        $genreTitle = $_POST['genreTitle'];
+
+        $check_genre_exist = "SELECT Title from genres WHERE Title = '$genreTitle' ";
+        $result_check_genre = mysqli_query($conn, $check_genre_exist);
+
+        if ($result_check_genre) {
+            $genre_found = mysqli_num_rows($result_check_genre);
+            if ($genre_found > 0) {
+                echo '<script>
+                    alert("Genre Already Exists!!");
+                    window.location.href = "genre-update.php";
+                </script>';
+            }
+            else{
+                $add_new_genre_query = "INSERT INTO `genres`(`GenreID`, `Title`) VALUES (NULL, '$genreTitle')";
+                $result_add_new_genre = mysqli_query($conn, $add_new_genre_query);
+                header('Location: genre-update.php');
+            }
+            
+        }
+             
+    }
+
+
+    //edit genre button
+    if (isset($_POST['delete_genre_btn'])) {
+
+
+
+        $genreId = $_POST['GenreID'];
+
+
+        $delete_genre_query = "DELETE FROM `genres` WHERE GenreID = $genreId";
+        $result_delete_genre = mysqli_query($conn, $delete_genre_query);
+
+        header('Location: genre-update.php');
+    }
+
+
+
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    include('connect.php');
-
-
-
-
-    //user-profile-edit-btn
-    // if (isset($_GET['user-profile-edit-btn'])) {
-    //     $userEmail = $_GET['user_email'];
-    //     $_SESSION['email'] = $userEmail;
-    //     header('Location: Melodise\UserEnd\profileupdate.php');
-    // }
-}

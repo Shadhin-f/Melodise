@@ -267,7 +267,8 @@ include('connect.php')
         <tbody>';
 
         
-        $select_subscriped_users = "SELECT u.Name, u.UserID, s.SubscriptionID, s.SubscriptionType, t.PackageName, s.EndDate 
+
+        $select_subscriped_users = "SELECT u.Name, u.Image, u.UserID, s.SubscriptionID, s.SubscriptionType, t.PackageName, s.EndDate 
                                     FROM subscription_records s inner join subscription_types t on s.SubscriptionType = t.PackageCode 
                                     inner join users u on u.UserID = s.userID ORDER BY s.StartDate desc limit 10";                                            // query for selecting all songs
         $result_subscriped_users = mysqli_query($conn, $select_subscriped_users);
@@ -278,6 +279,7 @@ include('connect.php')
             $subscription_type = $row_data['SubscriptionType'];   
             $package_name = $row_data['PackageName'];                                          // Getting the package name
             $end_date = $row_data['EndDate'];                                            // Getting subscription end date
+
             /* User information */
             $select_user_name = "SELECT * FROM `users` WHERE UserID = $user_id";   // query for selecting user name
             $result_user_name = mysqli_query($conn, $select_user_name);
@@ -308,6 +310,7 @@ include('connect.php')
 ';
     }
 ?>
+
 
 <?php 
 if(isset($_SESSION['adminname'])) {
@@ -463,8 +466,9 @@ if(isset($_SESSION['adminname'])) {
         <h1 class='display-4 text-primary-custom'>Access Denied</h1>
         <hr class='bg-white' style='width: 100%;'>
         <h2 class='text-primary-custom'>You don't have permission to view this site.</h2>
-        <h3 class='text-primary-custom'>🚫🚫🚫🚫</h3>
-        <h4 class='text-primary-custom'>Error code: 403 forbidden</h4>
+        <h3 class='text-primary-custom'>Login to View this site</h3>
+        <h4 class='text-primary-custom'>🚫🚫🚫🚫</h3>
+        <h5 class='text-primary-custom'>Error code: 403 forbidden</h4>
         </div>
         </section>
         ";

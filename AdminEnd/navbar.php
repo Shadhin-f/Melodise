@@ -91,6 +91,11 @@ session_start();
         </button>
         
         <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 150px;">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="adminhome.php?unset_session=true">Home</a>
+                </li>
+            </ul>
             <div class="ml-auto ms-auto">
 
 
