@@ -85,6 +85,17 @@
                 <input type="date" class="form-control" id="releaseDate" placeholder="Select release date" required>
             </div>
             <div class="mb-3">
+                <input type="text" class="form-control" id="duration" placeholder="Enter duration (e.g., 3:45)" required>
+            </div>
+            <div class="mb-3">
+                <select id="album" class="form-select" required>
+                    <option selected disabled>Select album</option>
+                    <option value="Album 1">Album 1</option>
+                    <option value="Album 2">Album 2</option>
+                    <option value="Album 3">Album 3</option>
+                </select>
+            </div>
+            <div class="mb-3">
                 <select id="genre" class="form-select" required>
                     <option selected disabled>Select genre</option>
                     <option value="Pop">Pop</option>
@@ -97,6 +108,11 @@
             <div class="mb-3">
                     <label for="mp3File" class="form-label">Upload MP3 File</label>
                     <input type="file" class="form-control" id="mp3File" accept=".mp3" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="colorCode" class="form-label">Color Code</label>
+                <input type="color" class="form-control form-control-color" id="colorCode" value="#1B8673" required>
+                <input type="text" id="colorHex" class="form-control mt-2" readonly>
             </div>
 
             <button type="submit" class="btn btn-custom btn-submit w-100 mt-3">Submit</button>

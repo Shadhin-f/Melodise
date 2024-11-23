@@ -390,6 +390,7 @@ if (!isset($_SESSION['artistid'])) {
                         <button type="submit" class="btn btn-primary btn-lg shadow-lg px-2 py-1" name="view-all-album-btn">View All</button>
                     </form>
 
+<!--
                     <form action="addAlbum.php" method="get" class="d-inline-block">
                         <button type="submit" class="btn btn-success btn-lg shadow-lg px-4 py-1" name="add-album-btn">Add Album</button>
                     </form>
@@ -397,6 +398,8 @@ if (!isset($_SESSION['artistid'])) {
                     <form action="deleteAlbum.php" method="get" class="d-inline-block">
                         <button type="submit" class="btn btn-danger btn-lg shadow-lg px-4 py-1" name="delete-album-btn">Delete Album</button>
                     </form>
+-->
+
                 </div>
             </div>
         </div>
