@@ -19,7 +19,14 @@ include('connect.php');
         }
 
         .card {
+            position: relative;
             width: 17rem;
+            ox-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05); /* Slight zoom effect on hover */
         }
 
         .card img {
@@ -27,6 +34,24 @@ include('connect.php');
             height: 8rem;
             object-fit: cover;
         }
+
+        .card-body {
+            text-align: left; /* Align text to the left for better readability */
+            position: relative;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 1.2rem; /* Increase font size */
+            white-space: normal; /* Allow wrapping of text */
+            word-wrap: break-word; /* Break words if necessary */
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+            color: gray;
+        }
+
 
         .play-btn-back {
             bottom: 0.5rem;
@@ -37,6 +62,37 @@ include('connect.php');
             align-items: center;
             justify-content: center;
         }
+
+        #section-header {
+            background: linear-gradient(45deg, #ff6ec7, #ff9a8b); /* Change gradient here */
+            color: whitesmoke; /* Text color */
+            padding: 2rem 3rem; /* Adjust padding as needed */
+            border-radius: 10px; /* Optional: rounded corners */
+        }
+
+        #section-header h1 {
+            font-size: 2rem; /* Adjust size for "All Music" */
+            font-weight: bold;
+        }
+
+        body {
+    background: linear-gradient(45deg, #ff6ec7, #ff9a8b, #fca5a5, #ffb3d9);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+}
+
+@keyframes gradientBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
     </style>
 </head>
 

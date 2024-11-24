@@ -188,11 +188,6 @@ if (isset($_POST['profile-update-btn'])) {
 
 
 
-
-// Add Album Action
-
-
-// Add Album Action
 // Add Album Action
 if (isset($_POST['add-album'])) {
     // Check if ArtistID is set in the session
@@ -255,7 +250,7 @@ if (isset($_POST['add-album'])) {
 
 
 
-
+//Add Music
 
 if (isset($_POST['add-music-button'])) {
     $regTitle = trim($_POST['songTitle'] ?? '');

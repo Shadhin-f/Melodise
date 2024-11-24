@@ -1,98 +1,174 @@
 <?php
-// Include database connection
-include('connect.php');
-
-// Check if the album name is passed via GET
-if (isset($_GET['album']) && !empty($_GET['album'])) {
-    // Sanitize the album name from the GET request
-    $albumName = mysqli_real_escape_string($conn, $_GET['album']);
-
-    // Query to get the album ID based on the album name
-    $albumQuery = "SELECT AlbumID FROM albums WHERE Title = '$albumName' LIMIT 1";
-    $albumResult = mysqli_query($conn, $albumQuery);
-
-    // Check if the album exists
-    if (mysqli_num_rows($albumResult) > 0) {
-        // Fetch the album ID
-        $albumRow = mysqli_fetch_assoc($albumResult);
-        $albumID = $albumRow['AlbumID'];
-
-        // Query to get album details and its songs
-        $sql = "SELECT * 
-                FROM albums al
-                LEFT JOIN songs s ON s.AlbumID = al.AlbumID
-                WHERE al.AlbumID = $albumID";
-
-        // Execute the query
-        $result = mysqli_query($conn, $sql);
-
-        // Check if there are any results
-        if (mysqli_num_rows($result) > 0) {
-            echo "<table class='table table-bordered'>";
-            echo "<thead>
-                    <tr>
-                        <th>Album Title</th>
-                        <th>Release Date</th>
-                        <th>Song Title</th>
-                        <th>Duration</th>
-                        <th>Genre</th>
-                    </tr>
-                  </thead><tbody>";
-
-            // Loop through the result set and display each row
-            while ($row = mysqli_fetch_assoc($result)) {
-                // Display album details only once
-                if ($row['SongID'] == null) {
-                    echo "<tr><td rowspan='" . (mysqli_num_rows($result)) . "'>" . $row['Title'] . "</td><td rowspan='" . (mysqli_num_rows($result)) . "'>" . $row['ReleaseDate'] . "</td>";
-                }
-
-                // Display song details
-                if ($row['SongID'] !== null) {
-                    echo "<td>" . $row['Title'] . "</td>";
-                    echo "<td>" . $row['Duration'] . "</td>";
-                    echo "<td>" . $row['GenreID'] . "</td></tr>";
-                }
-            }
-
-            echo "</tbody></table>";
-        } else {
-            echo "No songs found for this album.";
-        }
-    } else {
-        echo "Album not found!";
-    }
-} else {
-    // If no album is passed in the GET request, show an access denied message
-    echo "Access Denied: No album specified.";
+session_start();
+if (!isset($_SESSION['artistname'])) {
+    header("Location: artistlogin.php");
+    exit;
 }
 
-// Close the database connection
-mysqli_close($conn);
+include('connect.php');
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Album Songs</title>
-    <!-- Include Bootstrap CSS for styling -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        #card-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            position: relative;
+            width: 17rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 12rem;
+            object-fit: cover;
+        }
+
+        .card-body {
+            text-align: left;
+            position: relative;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+            color: gray;
+        }
+
+        
+        #section-header {
+            background: linear-gradient(45deg, #ff6ec7, #ff9a8b); /* Change gradient here */
+            color: whitesmoke; /* Text color */
+            padding: 2rem 3rem; /* Adjust padding as needed */
+            border-radius: 10px; /* Optional: rounded corners */
+        }
+
+        #section-header h1 {
+            font-size: 2rem; /* Adjust size for "All Music" */
+            font-weight: bold;
+        }
+
+
+        body {
+    background: linear-gradient(45deg, #ff6ec7, #ff9a8b, #fca5a5, #ffb3d9);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+}
+
+@keyframes gradientBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+    </style>
 </head>
+
 <body>
-    <div class="container my-5">
-        <h1 class="mb-4">Album Songs</h1>
-        <div class="card p-4">
-            <!-- PHP code to display album details and songs goes here -->
-            <p>If the album details and songs are found, they will be displayed in the table above.</p>
+    <!-- Navigation Bar -->
+    <?php include('artistNavbar.php'); ?>
 
-            <!-- Button to go back to the album list or dashboard (you can adjust this link) -->
-            <a href="dashboard.php" class="btn btn-secondary">Back to Dashboard</a>
+    <!-- Page Header -->
+    <section id="section-header" class="px-5 my-5 d-flex justify-content-between align-items-center">
+    <form action="artistActions.php" method="get" class="d-inline-block">
+            <button type="submit" class="themed-btn bg-transparent border-0" name="back-to-dashboard-btn">
+                <i class="fa-solid fa-arrow-left h1"></i>
+            </button>
+        </form>
+        <h1 class="d-inline-block text-center mx-auto">Album Songs</h1>
+    </section>
+
+    <!-- Songs Section -->
+    <section>
+        <div id="card-container" class="d-flex flex-wrap gap-3 mt-4 px-3 mx-auto justify-content-center">
+            <?php
+
+            // Fetch the artist's name from the session
+            $artist_name = $_SESSION['artistname'];
+
+            // Check if the album name is passed via GET
+            if (isset($_GET['album']) && !empty($_GET['album'])) {
+                $albumName = mysqli_real_escape_string($conn, $_GET['album']);
+
+                // Query to get the album ID
+                $albumQuery = "SELECT AlbumID FROM albums WHERE Title = '$albumName' LIMIT 1";
+                $albumResult = mysqli_query($conn, $albumQuery);
+
+                if (mysqli_num_rows($albumResult) > 0) {
+                    $albumRow = mysqli_fetch_assoc($albumResult);
+                    $albumID = $albumRow['AlbumID'];
+
+                    // Fetch songs from the album
+                    $songsQuery = "SELECT SongID, Title, Audio 
+                                   FROM songs 
+                                   WHERE AlbumID = $albumID";
+                    $songsResult = mysqli_query($conn, $songsQuery);
+
+                    if (mysqli_num_rows($songsResult) > 0) {
+                        while ($song = mysqli_fetch_assoc($songsResult)) {
+                            $song_id = $song['SongID'];
+                            $song_title = $song['Title'];
+                            $audio_file = $song['Audio'];
+
+                            echo "
+                            <div class='card'>
+                                <img 
+                                    class='card-img-top' 
+                                    src='https://img.freepik.com/free-photo/vinyl-record-cassette-tape-design-resource_53876-105921.jpg?t=st=1730348087~exp=1730351687~hmac=6bda3f0924ff3161c42e359fbfe85beed3e78fccd83404824898ad19262ca2e4&w=996' 
+                                    alt='Album Art'>
+                                <div class='card-body'>
+                                    <h5 class='card-title'>$song_title</h5>
+                                    <p class='card-text'>$artist_name</p>
+                                </div>
+                            </div>";
+                        }
+                    } else {
+                        echo "<p class='text-center text-danger'>No songs found in this album.</p>";
+                    }
+                } else {
+                    echo "<p class='text-center text-danger'>Album not found.</p>";
+                }
+            } else {
+                echo "<p class='text-center text-danger'>Access Denied: No album specified.</p>";
+            }
+            ?>
         </div>
-    </div>
+    </section>
 
-    <!-- Include Bootstrap JS and Popper.js for any interactive elements -->
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>

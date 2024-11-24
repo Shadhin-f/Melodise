@@ -274,6 +274,8 @@ if (!isset($_SESSION['artistid'])) {
             color: #333;
             font-weight: 500;
         }
+
+
     </style>
 
     </styl>

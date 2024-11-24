@@ -18,6 +18,7 @@ include('connect.php');
             margin: 0 auto;    /* Center the container horizontally */
         }
 
+
         .delete-btn {
             background-color: #ff4d4d; /* Red background for delete */
             border: none;
@@ -76,6 +77,39 @@ include('connect.php');
             right: 10px; /* Move to the right */
             z-index: 1;
         }
+
+        #section-header {
+            background: linear-gradient(45deg, #ff6ec7, #ff9a8b); /* Change gradient here */
+            color: whitesmoke; /* Text color */
+            padding: 2rem 3rem; /* Adjust padding as needed */
+            border-radius: 10px; /* Optional: rounded corners */
+        }
+
+        #section-header h1 {
+            font-size: 2rem; /* Adjust size for "All Music" */
+            font-weight: bold;
+        }
+
+
+        body {
+    background: linear-gradient(45deg, #ff6ec7, #ff9a8b, #fca5a5, #ffb3d9);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+}
+
+@keyframes gradientBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
     </style>
 </head>
 
