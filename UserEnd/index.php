@@ -347,7 +347,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                 $result_artists = mysqli_query($conn, $select_artists);
 
                 while ($row_data = mysqli_fetch_assoc($result_artists)) {
-                    $artist_id = $row_data['ArtistID']; // Assuming your artist table has an 'ID' column
+                    $artist_id = $row_data['ArtistID'];
                     $artist_name = $row_data['Name'];
                     $artist_img = $row_data['Image'];
 
@@ -405,7 +405,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                 const artistName = card.getAttribute('data-artist-name');
                 const songUrl = card.getAttribute('data-song-url');
                 const albumArt = card.getAttribute('data-album-art');
-
+                
                 // Update the music player card
                 document.getElementById('songID').value = songID;
                 document.getElementById('favSongID').value = songID;
@@ -423,26 +423,6 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                 playPauseIcon.classList.add('fa-pause');
             });
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

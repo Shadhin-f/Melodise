@@ -160,20 +160,21 @@
         <h2>Setup Guidelines</h2>
         <div class="container">
             <div class="guideline-step">
-                <h5>Step 1: Clone the Repository</h5>
-                <p>Use <code>git clone [repository URL]</code> to clone the project.</p>
+                <h5>Step 1: Setup Database</h5>
+                <p>Import the database <code> [melodise_db]</code></p>
             </div>
             <div class="guideline-step">
-                <h5>Step 2: Install Dependencies</h5>
-                <p>Run <code>npm install</code> to install all necessary packages.</p>
+                <h5>Step 2: Start Server</h5>
+                <p>Start <code>Apache & MySQL</code> server</p>
             </div>
             <div class="guideline-step">
-                <h5>Step 3: Configure the Environment</h5>
-                <p>Set up your <code>.env</code> file with your database and API keys.</p>
+                <h5>Step 3: Copy Files</h5>
+                <p>Copy all the <code>Project files</code> in the correct folder <code> [ Xampp/htdocs/website ]</code> <i> (Create the website folder inside htdocs)</i></p>
+                <p>Paste the <code>Melodise</code> folder inside <code>website</code> folder</p>
             </div>
             <div class="guideline-step">
-                <h5>Step 4: Run the Project</h5>
-                <p>Use <code>npm start</code> to launch the project locally.</p>
+                <h5>Step 4: Explore Melodise</h5>
+                <p>User proper links to nevigate to <code>MELODISE</code> streamimg platform</p>
             </div>
         </div>
     </section>

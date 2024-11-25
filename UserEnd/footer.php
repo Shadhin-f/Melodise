@@ -13,81 +13,102 @@
 
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .footer {
+            font-size: 0.9rem;
+            border-top: 1px solid #444;
         }
 
+        .footer h6 {
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
 
-        .footer-link {
-            color: #1B8673;
+        .footer a {
             text-decoration: none;
-            transition: color 0.3s;
         }
 
-        .footer-link:hover {
-            color: #14594F;
-
-        }
-
-        /* Social Media Icons */
-        .footer-icon {
+        .footer a:hover {
             color: #1B8673;
-            font-size: 1.2rem;
-            transition: color 0.3s;
+            /* Highlight hover color matching your theme */
         }
 
-        .footer-icon:hover {
-            color: #14594F;
+        .footer .btn-outline-light {
+            border-color: #1B8673;
+            color: #1B8673;
+        }
 
+        .footer .btn-outline-light:hover {
+            background-color: #1B8673;
+            color: white;
+        }
+
+        .footer i {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 767px) {
+            .footer .row {
+                text-align: center;
+            }
+
+            .footer .col-md-2,
+            .footer .col-md-3 {
+                margin-bottom: 15px;
+            }
         }
     </style>
 </head>
 
 <body>
     <!--  Footer Section -->
-    <footer class="bg-light py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <!-- Logo and Brief Description -->
-                <div class="col-md-4 mb-3">
-                    <h4 class="logo mb-2">MELODISE</h4>
-                    <p class="small text-muted">Melody of the paradise</p>
+    <footer class="footer mt-auto mb-5">
+        <div class="container-fluid bg-dark text-white px-5 py-3">
+            <div class="row text-center text-md-left py-4">
+                <!-- Premium Features -->
+                <div class="col-md-2 mb-3">
+                    <h6 class="text-uppercase">Premium Features</h6>
+                    <a href="#" class="text-white-50">Learn More</a>
                 </div>
 
-                <!-- Quick Links -->
-                <div class="col-md-4 mb-3">
-                    <h5 class="mb-2">Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="index.php?unset_session=true" class="footer-link">Home</a></li>
-                        <li><a href="#" class="footer-link">Explore</a></li>
-                        <li><a href="#" class="footer-link">Favorite Artists</a></li>
-                        <li><a href="#" class="footer-link">Contact Us</a></li>
-                    </ul>
+                <!-- Melodise Center -->
+                <div class="col-md-2 mb-3">
+                    <h6 class="text-uppercase">Melodise Center</h6>
+                    <a href="#" class="text-white-50">Visit Center</a>
                 </div>
 
-                <!-- Contact & Social Media Links -->
-                <div class="col-md-4 mb-3">
-                    <h5 class="mb-2">Contact Us</h5>
-                    <p class="small text-muted">Email: support@melodise.com</p>
-                    <p class="small text-muted">Phone: +123 456 7890</p>
+                <!-- Favourites -->
+                <div class="col-md-2 mb-3">
+                    <h6 class="text-uppercase">Favourites</h6>
+                    <a href="view-playlist.php?playlistname=Favourite" class="text-white-50">View Playlist</a>
+                </div>
 
-                    <!-- Social Media Icons -->
-                    <div class="d-flex mt-2">
-                        <a href="#" class="footer-icon me-3"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="footer-icon me-3"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" class="footer-icon me-3"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="footer-icon"><i class="fa-brands fa-youtube"></i></a>
+                <!-- Social Media -->
+                <div class="col-md-3 mb-3">
+                    <h6 class="text-uppercase">Follow Us</h6>
+                    <div>
+                        <a href="#" class="text-white-50 me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white-50 me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white-50 me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white-50"><i class="fab fa-linkedin-in"></i></a>
                     </div>
+                </div>
+
+                <!-- Profile -->
+                <div class="col-md-3 mb-3">
+                    <h6 class="text-uppercase">Profile</h6>
+                    <a href="userprofile.php" class="btn btn-outline-light btn-sm">View Profile</a>
                 </div>
             </div>
 
-            <div class="text-center mt-4">
-                <p class="small text-muted mb-0">&copy; 2024 MELODISE. All rights reserved.</p>
+            <!-- Copyright -->
+            <div class="row">
+                <div class="col-12 text-center py-2">
+                    <p class="mb-0 text-white-50">&copy; 2024 MELODISE. All Rights Reserved.</p>
+                </div>
             </div>
         </div>
     </footer>
+
 
     <!-- Font Awesome Kit -->
     <script src="https://kit.fontawesome.com/1621a0cc57.js" crossorigin="anonymous"></script>

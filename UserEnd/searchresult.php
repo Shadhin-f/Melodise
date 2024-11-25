@@ -15,6 +15,7 @@
 
 
 <!-- page not in use -->
+ <!-- Search result use the index.php (home page) -->
 
 
 

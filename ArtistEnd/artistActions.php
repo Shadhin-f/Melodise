@@ -250,8 +250,7 @@ if (isset($_POST['add-album'])) {
 
 
 
-//Add Music
-
+// Add Music
 if (isset($_POST['add-music-button'])) {
     $regTitle = trim($_POST['songTitle'] ?? '');
     $regsDate = trim($_POST['releaseDate'] ?? '');
@@ -301,8 +300,8 @@ if (isset($_POST['add-music-button'])) {
     if (!is_dir($targetDir)) {
         mkdir($targetDir, 0777, true); // Create directory if it doesn't exist
     }
-    $newFileName = $newSongID;
-    $targetFile = $targetDir . $newFileName;
+    $newFileNameWithExtension = $newSongID . '.' . $fileType;
+    $targetFile = $targetDir . $newFileNameWithExtension;
 
     if (!move_uploaded_file($_FILES['mp3File']['tmp_name'], $targetFile)) {
         echo '<script>
@@ -312,9 +311,9 @@ if (isset($_POST['add-music-button'])) {
         exit();
     }
 
-    // Insert song details into the database
+    // Insert song details into the database (without the file extension)
     $sql = "INSERT INTO `songs` (`SongID`, `Title`, `Duration`, `ReleaseDate`, `AlbumID`, `GenreID`, `ArtistID`, `ColorCode`, `Audio`) 
-            VALUES ('$newSongID', '$regTitle', '$regDuration', '$regsDate', '$regAlbum', '$regGenre', '$artistID', '$regColorCode', '$newFileName')";
+            VALUES ('$newSongID', '$regTitle', '$regDuration', '$regsDate', '$regAlbum', '$regGenre', '$artistID', '$regColorCode', '$newSongID')";
 
     if (mysqli_query($conn, $sql)) {
         echo '<script>
