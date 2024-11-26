@@ -1,5 +1,44 @@
 <?php
 session_start();
+include('connect.php');
+
+if (isset($_POST['add-album'])) {
+    $albumName = mysqli_real_escape_string($conn, $_POST['albumName']);
+    $releaseDate = mysqli_real_escape_string($conn, $_POST['releaseDate']);
+    $artistID = $_SESSION['artistid'];
+
+    // Handle file upload
+    if (isset($_FILES['albumCover']) && $_FILES['albumCover']['error'] === UPLOAD_ERR_OK) {
+        $targetDir = "../Resources/AlbumCovers/";
+        $fileName = time() . "_" . basename($_FILES['albumCover']['name']); // Add timestamp to avoid name conflicts
+        $targetFilePath = $targetDir . $fileName;
+
+        // Ensure the directory exists
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        // Move the uploaded file to the target directory
+        if (move_uploaded_file($_FILES['albumCover']['tmp_name'], $targetFilePath)) {
+            // Insert album details into the database
+            $sql = "INSERT INTO albums (Title, ReleaseDate, AlbumCover, ArtistID) 
+                    VALUES ('$albumName', '$releaseDate', '$fileName', '$artistID')";
+
+            if (mysqli_query($conn, $sql)) {
+                $_SESSION['success'] = "Album added successfully!";
+            } else {
+                $_SESSION['error'] = "Error adding album: " . mysqli_error($conn);
+            }
+        } else {
+            $_SESSION['error'] = "Failed to upload album cover.";
+        }
+    } else {
+        $_SESSION['error'] = "No album cover uploaded.";
+    }
+
+    header("Location: addAlbum.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +52,6 @@ session_start();
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom Styling -->
     <style>
         body {
             background-image: url('../Resources/DesignElements/ProfileEditBack.jpg');
@@ -93,7 +131,7 @@ session_start();
         <?php endif; ?>
 
         <!-- Album Add Form -->
-        <form action="artistActions.php" method="post" enctype="multipart/form-data">
+        <form action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <input type="text" class="form-control" name="albumName" placeholder="Enter Album Name" required>
             </div>

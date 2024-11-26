@@ -240,11 +240,14 @@ if (isset($_POST['add-album'])) {
     
     if (mysqli_query($conn, $sql)) {
         $_SESSION['success'] = "Album added successfully!";
-        header("Location: dashboard.php"); // Redirect to dashboard or album list page
+        header("Location: dashboard.php"); // Redirect to dashboard
+        exit(); // Ensure script stops after redirection
     } else {
         $_SESSION['error'] = "Error adding album: " . mysqli_error($conn);
-        header("Location: addAlbum.php"); // Redirect back to add album page
+        header("Location: addAlbum.php");
+        exit(); // Ensure script stops after redirection
     }
+    
 }
 
 
