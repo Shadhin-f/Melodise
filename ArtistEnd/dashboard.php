@@ -408,14 +408,42 @@ if (!isset($_SESSION['artistid'])) {
 
        
 
-        <!-- Upcoming Events -->
-        <div class="section-card .upcoming-events-card">
-            <div class="section-title">Upcoming Events</div>
-            <div class="card-body">
-                <div class="plus-btn">+</div>
-                <a href="#" class="view-all-btn">View All</a>
-            </div>
+       <!-- Upcoming Events Section -->
+<div class="section-card upcoming-events-card">
+    <div class="section-title">Upcoming Events</div>
+    <div class="card-body">
+        <div class="event-list">
+            <?php
+            // Fetch upcoming events for the artist
+            $select_events = "SELECT EventTitle, EventDate, EventLocation FROM `upcoming_events` WHERE `ArtistID` = '$artistID' ORDER BY EventDate LIMIT 4";
+            $result_events = mysqli_query($conn, $select_events);
+
+            if ($result_events && mysqli_num_rows($result_events) > 0) {
+                while ($row_event = mysqli_fetch_assoc($result_events)) {
+                    $eventTitle = htmlspecialchars($row_event['EventTitle']);
+                    $eventDate = htmlspecialchars($row_event['EventDate']);
+                    $eventLocation = htmlspecialchars($row_event['EventLocation']);
+
+                    echo "
+                    <div class='event-item'>
+                        <div class='event-title'>$eventTitle</div>
+                        <div class='event-date'>$eventDate</div>
+                        <div class='event-location'>$eventLocation</div>
+                    </div>
+                    ";
+                }
+            } else {
+                echo "<div class='event-item'>No upcoming events found.</div>";
+            }
+            ?>
         </div>
+        <div class="button-group">
+            <a href="addEvent.php" class="btn btn-primary btn-lg shadow-lg px-4 py-1">Add Event</a>
+            <a href="viewEvents.php" class="btn btn-secondary btn-lg shadow-lg px-4 py-1">View All</a>
+        </div>
+    </div>
+</div>
+
     </div>
 
 </body>
