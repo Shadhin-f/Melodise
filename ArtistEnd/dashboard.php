@@ -415,7 +415,7 @@ if (!isset($_SESSION['artistid'])) {
         <div class="event-list">
             <?php
             // Fetch upcoming events for the artist
-            $select_events = "SELECT EventTitle, EventDate, EventLocation FROM `upcoming_events` WHERE `ArtistID` = '$artistID' ORDER BY EventDate LIMIT 4";
+            $select_events = "SELECT EventTitle, EventDate, EventLocation FROM `upcoming_events` WHERE `ArtistID` = '$artistID' ORDER BY EventDate LIMIT 3";
             $result_events = mysqli_query($conn, $select_events);
 
             if ($result_events && mysqli_num_rows($result_events) > 0) {
