@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 include('connect.php');
 
@@ -17,16 +17,24 @@ $artistID = $_SESSION['artistid'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Events</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-5">
-<div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-    <h1>Your Upcoming Events</h1>
-</div>
-    <div class="mb-3">
-        <a href="dashboard.php" class="btn btn-secondary">Back to Dashboard</a>
+    <!-- Header Section -->
+    <section id="section-header" class="px-5 my-5 d-flex justify-content-between align-items-center">
+        <!-- Back Button -->
+        <form action="artistActions.php" method="get" class="d-inline-block">
+            <button type="submit" class="themed-btn bg-transparent border-0" name="back-to-dashboard-btn">
+                <i class="fa-solid fa-arrow-left h1"></i>
+            </button>
+        </form>
+        <!-- Page Title -->
+        <h1 class="d-inline-block">Your Upcoming Events</h1>
+        <!-- Add New Event Button -->
         <a href="addEvent.php" class="btn btn-primary">Add New Event</a>
-    </div>
+    </section>
+    
     <?php
     // Fetch all events for the logged-in artist
     $fetch_events = "SELECT * FROM `upcoming_events` WHERE `ArtistID` = '$artistID' ORDER BY `EventDate`";
