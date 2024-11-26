@@ -96,6 +96,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: update-artist-info.php');
     }
 
+    //admin genre update button 
+    if (isset($_POST['update-genre-btn'])) {
+        header('Location: genre-update.php');
+    }
+
 
     //Confirm Update profile button
 
@@ -227,17 +232,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     //edit genre button
-    if (isset($_POST['delete_genre_btn'])) {
-
-
+    if (isset($_POST['save_button'])) {
 
         $genreId = $_POST['GenreID'];
+        $genreTitle = $_POST['genreTitle'];
 
+        $edit_genre_query = "UPDATE `genres` SET `Title`= $genreTitle WHERE GenreID = $genreId";
+        $result_edit_genre = mysqli_query($conn, $edit_genre_query);
 
-        $delete_genre_query = "DELETE FROM `genres` WHERE GenreID = $genreId";
-        $result_delete_genre = mysqli_query($conn, $delete_genre_query);
-
-        header('Location: genre-update.php');
+        
     }
 
 

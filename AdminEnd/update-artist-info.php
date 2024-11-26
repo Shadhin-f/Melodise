@@ -28,22 +28,22 @@ include('connect.php');
         }
 
         .btn-custom {
-            background-color: #1B8673;
-            color: white;
+            background-color: #1B8673 !important;
+            color: white !important;
             border-radius: 50px;
             padding: 0.4rem 1.2rem;
         }
 
         .edit-btn-custom{
-            background-color: #4DAE96;
-            border-color: #1B8673;
-            color: white;
+            background-color: #4DAE96 !important;
+            border-color: #1B8673 !important;
+            color: white !important;
             border-radius: 10px;
             padding: 0.4rem 1.2rem;
         }
 
         .btn-custom:hover {
-            background-color: #145a50;
+            background-color: #145a50 !important;
         }
     </style>
 </head>
