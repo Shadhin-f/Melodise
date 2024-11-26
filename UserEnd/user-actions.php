@@ -29,6 +29,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
 
+    // -- To update song count --
+    
+    if (isset($_GET['song_id'])) {
+        $song_id = intval($_GET['song_id']);
+        if(isset($_SESSION['userid'])){
+            $userID = $_SESSION['userid'];
+            $update_play_count = "INSERT INTO `music_play_record` (`UserID`, `SongID`, `TimeStamp`) VALUES ('23', '$song_id', current_timestamp());";
+        } else{
+            $update_play_count = "INSERT INTO `music_play_record` (`UserID`, `SongID`, `TimeStamp`) VALUES (NULL, '$song_id', current_timestamp());";
+        }
+        
+        // Query to update play count
+        if (mysqli_query($conn, $update_play_count)) {
+            http_response_code(200); // Success
+            echo "Play count updated successfully.";
+        } else {
+            http_response_code(500); // Server error
+            echo "Failed to update play count.";
+        }
+    } else {
+        http_response_code(400); // Bad request
+        echo "Invalid request.";
+    }
+
+
 
     //  Search button action (Nav bar)
 

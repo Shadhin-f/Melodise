@@ -164,7 +164,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
             $result_artists = mysqli_query($conn, $select_artists);
 
             while ($row_data = mysqli_fetch_assoc($result_artists)) {
-                $artist_id = $row_data['ArtistID']; // Assuming your artist table has an 'ID' column
+                $artist_id = $row_data['ArtistID'];
                 $artist_name = $row_data['Name'];
                 $artist_img = $row_data['Image'];
 
@@ -401,6 +401,10 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
             card.addEventListener('click', () => {
                 // Get song details from the data attributes
                 const songID = card.getAttribute('data-song-id');
+
+                
+                
+                
                 const songName = card.getAttribute('data-song-name');
                 const artistName = card.getAttribute('data-artist-name');
                 const songUrl = card.getAttribute('data-song-url');
@@ -412,17 +416,36 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                 document.getElementById('songTitle').textContent = songName;
                 document.getElementById('songArtist').textContent = artistName;
                 document.querySelector('.album-art').style.backgroundImage = `url(${albumArt})`;
-
+                
                 // Load the new song
                 audio.src = songUrl;
                 audio.play();
-
+                
                 // Update play/pause button icon
                 const playPauseIcon = document.getElementById('playPauseBtn').querySelector('i');
                 playPauseIcon.classList.remove('fa-play');
                 playPauseIcon.classList.add('fa-pause');
+                
+                // --- Update play count function call --- Working
+                updatePlayCount(songID);
+
+
             });
         });
+
+        //  --- Update playcount function --- Working
+        function updatePlayCount(songId) {
+            // Make a simple asynchronous request
+            fetch(`user-actions.php?song_id=${songId}`)
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Play count updated successfully!');
+                    } else {
+                        console.error('Failed to update play count.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
 
 

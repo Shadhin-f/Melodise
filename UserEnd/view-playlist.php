@@ -253,8 +253,25 @@ session_start();
                 const playPauseIcon = document.getElementById('playPauseBtn').querySelector('i');
                 playPauseIcon.classList.remove('fa-play');
                 playPauseIcon.classList.add('fa-pause');
+
+
+                // --- Update play count function call --- Working
+                updatePlayCount(songID);
             });
         });
+        //  --- Update playcount function --- Working
+        function updatePlayCount(songId) {
+            // Make a simple asynchronous request
+            fetch(`user-actions.php?song_id=${songId}`)
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Play count updated successfully!');
+                    } else {
+                        console.error('Failed to update play count.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
     </script>
 
     <!-- Bootstrap and FontAwesome Scripts -->
