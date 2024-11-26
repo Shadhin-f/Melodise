@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $song_id = intval($_GET['song_id']);
         if (isset($_SESSION['userid'])) {
             $userID = $_SESSION['userid'];
-            $update_play_count = "INSERT INTO `music_play_record` (`UserID`, `SongID`, `TimeStamp`) VALUES ('23', '$song_id', current_timestamp());";
+            $update_play_count = "INSERT INTO `music_play_record` (`UserID`, `SongID`, `TimeStamp`) VALUES ('$userID', '$song_id', current_timestamp());";
         } else {
             $update_play_count = "INSERT INTO `music_play_record` (`UserID`, `SongID`, `TimeStamp`) VALUES (NULL, '$song_id', current_timestamp());";
         }
