@@ -20,7 +20,9 @@ $artistID = $_SESSION['artistid'];
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Your Upcoming Events</h2>
+<div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <h1>Your Upcoming Events</h1>
+</div>
     <div class="mb-3">
         <a href="dashboard.php" class="btn btn-secondary">Back to Dashboard</a>
         <a href="addEvent.php" class="btn btn-primary">Add New Event</a>
