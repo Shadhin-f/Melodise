@@ -106,6 +106,16 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
             margin-bottom: 15px;
         }
 
+        .event-modal-professional .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .event-modal-professional #eventImage {
+            border: 1px solid #ddd;
+        }
+
+
         @media (min-width: 1030px) {
             .tables-container {
                 display: flex;
@@ -321,9 +331,13 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
 
                    </div>
 
+                   <!--
+
                    <form action='user-actions.php' method='get'>
                        <button type='submit' class='themed-btn bg-transparent border-0' name='all-playlist-btn'>All Playlists</button>
                    </form>
+
+                   -->
                </div>
 
                <!-- Section to display playlists created by user -->
@@ -339,14 +353,14 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                 if ($searchKey != '') {
                     // search key session with search key
 
-                    $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' AND playlists.Name LIKE '%" . $searchKey . "%' GROUP BY playlists.PlaylistID LIMIT 6";
+                    $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' AND playlists.Name LIKE '%" . $searchKey . "%' GROUP BY playlists.PlaylistID";
                 } else {
                     // Search key session active but no input
-                    $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' GROUP BY playlists.PlaylistID LIMIT 6";
+                    $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' GROUP BY playlists.PlaylistID ";
                 }
             } else {
                 // Search key not set case
-                $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' GROUP BY playlists.PlaylistID LIMIT 6";
+                $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' GROUP BY playlists.PlaylistID ";
             }
 
             $result_user_playlists = mysqli_query($conn, $select_user_playlists);
@@ -502,7 +516,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                             // Your database connection should already be included
                             // Query to fetch data
 
-                            
+
 
                             $query = "SELECT mr.SongID, s.Audio , s.Title AS SongTitle, a.Name AS ArtistName, g.Title AS Genre, 
                                     al.Title AS AlbumTitle, al.AlbumCover, COUNT(mr.SongID) AS TimesPlayed  
@@ -548,9 +562,9 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                                                     </button>
                                                 </td>
                                             </tr>
-                                    ";}
-                            }
-                            else {
+                                    ";
+                                }
+                            } else {
                                 echo "
                                     <tr>
                                         <td colspan='4' class='text-center'>No recent songs found.</td>
@@ -575,7 +589,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                             </tr>
                         </thead>
                         <tbody>
-                        <?php
+                            <?php
                             // Query to fetch upcoming events, ordered by event date in descending order
                             $query = "SELECT EventID, EventTitle, EventDescription, EventDate, EventLocation, EventTime, EventImage, artists.Name
                                       FROM upcoming_events
@@ -583,9 +597,9 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                                       WHERE EventDate >= CURDATE()
                                       ORDER BY EventDate ASC
                                       LIMIT 5;";
-                        
+
                             $result = mysqli_query($conn, $query);
-                                                
+
                             // Check if query execution was successful and if events are found
                             if ($result && mysqli_num_rows($result) > 0) {
                                 // Loop through the results and generate table rows
@@ -598,13 +612,13 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                                     $eventImage = htmlspecialchars($row['EventImage']);
                                     $eventTime = htmlspecialchars($row['EventTime']);
                                     $artistName = htmlspecialchars($row['Name']);
-                                
+
                                     // Check if the user is following the event
                                     if (isset($_SESSION['userid'])) {
                                         $userID = $_SESSION['userid'];
                                         $follow_check_query = "SELECT * FROM event_followers WHERE UserID = '$userID' AND EventID = '$eventID'";
                                         $follow_result = mysqli_query($conn, $follow_check_query);
-                                    
+
                                         if ($follow_result && mysqli_num_rows($follow_result) > 0) {
                                             // User is following the event
                                             $followButton = "<form action='user-actions.php' method='post' class='d-inline'>
@@ -620,7 +634,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                                         // User is not logged in
                                         $followButton = "<p><i>Login to follow the event</i></p>";
                                     }
-                                
+
                                     echo "
                                         <tr>
                                             <td>$eventTitle</td>
@@ -641,7 +655,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                                     </tr>
                                 ";
                             }
-                        ?>
+                            ?>
 
                         </tbody>
                     </table>
@@ -656,26 +670,44 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
     ?>
 
     <!-- Event Details Modal -->
-    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="eventModalLabel">Event Title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade event-modal-professional" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow-lg">
+                <!-- Modal Header -->
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold" id="eventModalLabel">Event Title</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <img src="" id="eventImage" alt="Event Cover Photo">
-                    <p><strong>Description:</strong> <span id="eventDescription"></span></p>
-                    <p><strong>Artist:</strong> <span id="eventArtist"></span></p>
-                    <p><strong>Date:</strong> <span id="eventDate"></span></p>
-                    <p><strong>Venue:</strong> <span id="eventVenue"></span></p>
+
+                <!-- Modal Body -->
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <img src="" id="eventImage" alt="Event Cover Photo" class="img-fluid rounded shadow" style="max-height: 300px; object-fit: cover;">
+                    </div>
+                    <p class="mb-3">
+                        <strong class="text-primary">Description:</strong> <span id="eventDescription"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Artist:</strong> <span id="eventArtist"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Date:</strong> <span id="eventDate"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Venue:</strong> <span id="eventVenue"></span>
+                    </p>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-round-danger" data-bs-dismiss="modal">Cancel</button>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer justify-content-end">
+                    <button class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-times me-2"></i>Cancel
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
 
 
 
