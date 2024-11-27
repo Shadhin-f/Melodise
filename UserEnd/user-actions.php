@@ -272,7 +272,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // If the query is successful, redirect the user back to the event page (or wherever appropriate)
         if ($result_follow_event_query) {
-            header('Location: index.php');  // Update the URL if necessary
+            if(isset($_SESSION['artistid'])){
+                header('Location: artist.php');
+
+            }else{
+                header('Location: index.php');
+
+            }
         }
     }
 
@@ -285,7 +291,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // If the query is successful, redirect the user back to the event page (or wherever appropriate)
         if ($result_unfollow_event_query) {
-            header('Location: index.php');  // Update the URL if necessary
+            if(isset($_SESSION['artistid'])){
+                header('Location: artist.php');
+
+            }else{
+                header('Location: index.php');
+
+            }
         }
     }
 

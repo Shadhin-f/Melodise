@@ -5,6 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
     unset($_SESSION['playlistid']);
     unset($_SESSION['playlistname']);
+    unset($_SESSION['artistid']);
 }
 
 if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
@@ -493,7 +494,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                                 <th scope="col">Song</th>
                                 <th scope="col">Artist</th>
                                 <th scope="col">Genre</th>
-                                <th scope="col">Action</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -563,14 +564,14 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
 
                 <!-- Followed Events Table -->
                 <div class="table-wrapper mb-5">
-                    <h3>Upcoming Events</h3>
+                    <h3>Upcoming events</h3>
                     <table class="table">
                         <thead>
                             <tr>
                                 <th scope="col">Event</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Location</th>
-                                <th scope="col">Action</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -580,7 +581,8 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                                       FROM upcoming_events
                                       LEFT JOIN artists ON artists.ArtistID = upcoming_events.ArtistID
                                       WHERE EventDate >= CURDATE()
-                                      ORDER BY EventDate ASC;";
+                                      ORDER BY EventDate ASC
+                                      LIMIT 5;";
                         
                             $result = mysqli_query($conn, $query);
                                                 
