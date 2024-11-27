@@ -314,6 +314,9 @@ if (isset($_POST['add-music-button'])) {
         exit();
     }
 
+    if($regAlbum=="NULL"){
+        $regAlbum=NULL;
+    }
     // Insert song details into the database (without the file extension)
     $sql = "INSERT INTO `songs` (`SongID`, `Title`, `Duration`, `ReleaseDate`, `AlbumID`, `GenreID`, `ArtistID`, `ColorCode`, `Audio`) 
             VALUES ('$newSongID', '$regTitle', '$regDuration', '$regsDate', '$regAlbum', '$regGenre', '$artistID', '$regColorCode', '$newSongID')";
