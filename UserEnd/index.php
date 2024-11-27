@@ -97,7 +97,12 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                 }
             } else {
                 // Search key not set case
-                $select_songs = "SELECT * FROM `songs` LIMIT 10";                                  // query for selecting all songs
+                //$select_songs = "SELECT * FROM `songs` LIMIT 10";                                  // query for selecting all songs
+                //  Updated query to display most played songs first (Trending songs)
+                $select_songs = "SELECT s.SongID, s.Title, s.ColorCode, s.ArtistID,s.Audio, (COUNT(s.SongID)-1) AS TimesPlayed 
+                                 FROM `songs` s 
+                                 LEFT JOIN music_play_record m ON m.SongID = s.SongID 
+                                 GROUP BY s.SongID ORDER BY `TimesPlayed` DESC LIMIT 10;";
             }
 
             $result_songs = mysqli_query($conn, $select_songs);
@@ -160,7 +165,14 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
         <div id="artist-card-container">
             <?php
             // Fetching artists data from the database
-            $select_artists = "SELECT * FROM `artists` WHERE Name LIKE '%" . (isset($_SESSION['searchKey']) && $_SESSION['searchKey'] !== '' ? $_SESSION['searchKey'] : '') . "%' LIMIT 10";
+            $select_artists = "SELECT a.ArtistID, a.Name, a.Image, COUNT(af.ArtistID) AS FollowerCount
+                                FROM `artists` a
+                                LEFT JOIN `artist_followers` af ON af.ArtistID = a.ArtistID
+                                WHERE a.Name LIKE '%" . (isset($_SESSION['searchKey']) && $_SESSION['searchKey'] !== '' ? $_SESSION['searchKey'] : '') . "%'
+                                GROUP BY a.ArtistID, a.Name
+                                ORDER BY FollowerCount DESC
+                                LIMIT 10;
+                            ;";
             $result_artists = mysqli_query($conn, $select_artists);
 
             while ($row_data = mysqli_fetch_assoc($result_artists)) {
@@ -402,30 +414,30 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                 // Get song details from the data attributes
                 const songID = card.getAttribute('data-song-id');
 
-                
-                
-                
+
+
+
                 const songName = card.getAttribute('data-song-name');
                 const artistName = card.getAttribute('data-artist-name');
                 const songUrl = card.getAttribute('data-song-url');
                 const albumArt = card.getAttribute('data-album-art');
-                
+
                 // Update the music player card
                 document.getElementById('songID').value = songID;
                 document.getElementById('favSongID').value = songID;
                 document.getElementById('songTitle').textContent = songName;
                 document.getElementById('songArtist').textContent = artistName;
                 document.querySelector('.album-art').style.backgroundImage = `url(${albumArt})`;
-                
+
                 // Load the new song
                 audio.src = songUrl;
                 audio.play();
-                
+
                 // Update play/pause button icon
                 const playPauseIcon = document.getElementById('playPauseBtn').querySelector('i');
                 playPauseIcon.classList.remove('fa-play');
                 playPauseIcon.classList.add('fa-pause');
-                
+
                 // --- Update play count function call --- Working
                 updatePlayCount(songID);
 

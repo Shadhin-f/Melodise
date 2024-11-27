@@ -88,6 +88,7 @@ include('connect.php');
 
             <!-- Song information -->
             <div class="song-info">
+                
                 <input type="hidden" id="songID"> <!-- Passing song ID using js -->
                 <p class="song-title mb-0" id="songTitle">No track</p>
                 <p class="song-artist mb-0" id="songArtist">Unknown</p>

@@ -67,10 +67,37 @@ if (isset($_POST['update-event'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Event</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
-    <h2 class="text-center">Edit Event</h2>
+    <h2>Edit Event</h2>
 
     <?php if (isset($error)) { ?>
         <div class="alert alert-danger"><?php echo $error; ?></div>
@@ -79,21 +106,25 @@ if (isset($_POST['update-event'])) {
     <form action="editEvent.php?event_id=<?php echo $eventId; ?>" method="POST">
         <div class="form-group">
             <label for="event_name">Event Name</label>
-            <input type="text" name="event_name" id="event_name" class="form-control" value="<?php echo htmlspecialchars($event['EventTitle']); ?>" required>
+            <input type="text" name="event_name" id="event_name" class="form-control" 
+                   value="<?php echo htmlspecialchars($event['EventTitle']); ?>" placeholder="Enter event name" required>
         </div>
         <div class="form-group">
             <label for="event_date">Event Date</label>
-            <input type="date" name="event_date" id="event_date" class="form-control" value="<?php echo htmlspecialchars($event['EventDate']); ?>" required>
+            <input type="date" name="event_date" id="event_date" class="form-control" 
+                   value="<?php echo htmlspecialchars($event['EventDate']); ?>" required>
         </div>
         <div class="form-group">
             <label for="event_location">Event Location</label>
-            <input type="text" name="event_location" id="event_location" class="form-control" value="<?php echo htmlspecialchars($event['EventLocation']); ?>" required>
+            <input type="text" name="event_location" id="event_location" class="form-control" 
+                   value="<?php echo htmlspecialchars($event['EventLocation']); ?>" placeholder="Enter event location" required>
         </div>
         <div class="form-group">
             <label for="event_description">Event Description</label>
-            <textarea name="event_description" id="event_description" class="form-control" rows="5"><?php echo htmlspecialchars($event['EventDescription']); ?></textarea>
+            <textarea name="event_description" id="event_description" class="form-control" rows="4" 
+                      placeholder="Enter event description"><?php echo htmlspecialchars($event['EventDescription']); ?></textarea>
         </div>
-        <button type="submit" name="update-event" class="btn btn-success">Update Event</button>
+        <button type="submit" name="update-event" class="btn btn-primary">Update Event</button>
         <a href="viewEvents.php" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

@@ -10,36 +10,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     //  -------------  Home page  --------------
     include('connect.php');
-    if (isset($_GET['all-music-btn'])) {
-        header('Location: allmusic.php');
-    }
-    if (isset($_GET['back-to-home-btn'])) {
-        header('Location: index.php');
-    }
-    if (isset($_GET['all-artist-btn'])) {
-        header('Location: allartist.php');
-    }
-
-    // View artist profile btn
-
-    if (isset($_GET['view-artist-profile-btn'])) {
-        $artistID = $_GET['artist_id'];
-        $_SESSION['artistid'] = $artistID;
-        header('Location: artist.php');
-    }
-
-
     // -- To update song count --
-    
+
     if (isset($_GET['song_id'])) {
         $song_id = intval($_GET['song_id']);
-        if(isset($_SESSION['userid'])){
+        if (isset($_SESSION['userid'])) {
             $userID = $_SESSION['userid'];
-            $update_play_count = "INSERT INTO `music_play_record` (`UserID`, `SongID`, `TimeStamp`) VALUES ('23', '$song_id', current_timestamp());";
-        } else{
+            $update_play_count = "INSERT INTO `music_play_record` (`UserID`, `SongID`, `TimeStamp`) VALUES ('$userID', '$song_id', current_timestamp());";
+        } else {
             $update_play_count = "INSERT INTO `music_play_record` (`UserID`, `SongID`, `TimeStamp`) VALUES (NULL, '$song_id', current_timestamp());";
         }
-        
+
         // Query to update play count
         if (mysqli_query($conn, $update_play_count)) {
             http_response_code(200); // Success
@@ -52,6 +33,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         http_response_code(400); // Bad request
         echo "Invalid request.";
     }
+
+
+    if (isset($_GET['all-music-btn'])) {
+        header('Location: allmusic.php');
+    }
+    if (isset($_GET['back-to-home-btn'])) {
+        header('Location: index.php');
+    }
+    if (isset($_GET['all-artist-btn'])) {
+        header('Location: allartist.php');
+    }
+
+    // View artist profile btn
+
+    if ( isset($_GET['view-artist-profile-btn'])) {
+        $artistID = $_GET['artist_id'];
+        $_SESSION['artistid'] = $artistID;
+        header('Location: artist.php');
+    }
+
+
 
 
 
