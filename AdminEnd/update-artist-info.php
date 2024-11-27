@@ -13,6 +13,11 @@ include('connect.php');
     <!-- FontAwesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
+        body {
+            background: radial-gradient(circle, rgba(232,247,244,1) 0%, rgba(211,231,228,1) 100%);
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
         .container-custom {
             background-color: white;
             border: 2px solid #1B8673;

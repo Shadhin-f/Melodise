@@ -237,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $genreId = $_POST['GenreID'];
         $genreTitle = $_POST['genreTitle'];
 
-        $edit_genre_query = "UPDATE `genres` SET `Title`= $genreTitle WHERE GenreID = $genreId";
+        $edit_genre_query = "UPDATE `genres` SET `Title` = '$genreTitle' WHERE `GenreID` = $genreId";
         $result_edit_genre = mysqli_query($conn, $edit_genre_query);
 
         
