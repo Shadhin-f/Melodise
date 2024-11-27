@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     // View artist profile btn
 
-    if ( isset($_GET['view-artist-profile-btn'])) {
+    if (isset($_GET['view-artist-profile-btn'])) {
         $artistID = $_GET['artist_id'];
         $_SESSION['artistid'] = $artistID;
         header('Location: artist.php');
@@ -257,6 +257,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['user-login-btn']) || isset($_POST['user-register-btn'])) {
         header('Location: login.php');
     }
+
+
+    // -------------------------------Index Page --------------------------------
+
+
+    // Check if the 'Follow Event' button is clicked
+    if (isset($_POST['follow-event'])) {
+        $userID = $_SESSION['userid'];
+        $eventID = $_POST['follow-event']; // Get the event ID from the form
+        $follow_event_query = "INSERT INTO `event_followers` (`UserID`, `EventID`, `FollowTime`) 
+                           VALUES ('$userID', '$eventID', current_timestamp());";
+        $result_follow_event_query = mysqli_query($conn, $follow_event_query);
+
+        // If the query is successful, redirect the user back to the event page (or wherever appropriate)
+        if ($result_follow_event_query) {
+            header('Location: index.php');  // Update the URL if necessary
+        }
+    }
+
+    // Check if the 'Unfollow Event' button is clicked
+    if (isset($_POST['unfollow-event'])) {
+        $userID = $_SESSION['userid'];
+        $eventID = $_POST['unfollow-event']; // Get the event ID from the form
+        $unfollow_event_query = "DELETE FROM `event_followers` WHERE UserID = '$userID' AND EventID = '$eventID';";
+        $result_unfollow_event_query = mysqli_query($conn, $unfollow_event_query);
+
+        // If the query is successful, redirect the user back to the event page (or wherever appropriate)
+        if ($result_unfollow_event_query) {
+            header('Location: index.php');  // Update the URL if necessary
+        }
+    }
+
+
+
 
 
 
