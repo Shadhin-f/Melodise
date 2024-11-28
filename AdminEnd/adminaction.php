@@ -60,6 +60,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: adminlogin.php');
     }
 
+
+    //card buttons to go to the respective page
+
+    //admin user profile update button
+
+    if (isset($_POST['update-userInfo-btn'])) {
+        header('Location: user-update.php');
+    }
+
+    //admin artist info update button
+    if (isset($_POST['update-artistInfo-btn'])) {
+        header('Location: update-artist-info.php');
+    }
+
+    //admin genre update button 
+    if (isset($_POST['update-genre-btn'])) {
+        header('Location: genre-update.php');
+    }
+    //card buttons ends here 
+    
+
+
+    //user profile edit button
+    if (isset($_POST['user-profile-edit-btn'])) {
+        $userEmail = $_POST['user_email'];
+        $_SESSION['email'] = $userEmail;
+
+        header('Location: ..\UserEnd\profileupdate.php');
+    }
+
+    //artist profile edit button
+    if (isset($_POST['artist-profile-edit-btn'])) {
+        $artistName =  $_POST['artist_name'];
+        $_SESSION['artistname'] = $artistName;
+
+        header('Location: ..\ArtistEnd\editProfile.php');
+    }
+
     // user Search Button action
 
     if (isset($_POST['user-search-btn'])) {
@@ -79,130 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-
-    //admin user profile update button
-
-    if (isset($_POST['update-userInfo-btn'])) {
-        header('Location: user-update.php');
-    }
-
-    //admin artist followers tracking button
-    if (isset($_POST['update-artistFollower-btn'])) {
-        header('Location: artist-followers.php');
-    }
-
-    //admin artist info update button
-    if (isset($_POST['update-artistInfo-btn'])) {
-        header('Location: update-artist-info.php');
-    }
-
-    //admin genre update button 
-    if (isset($_POST['update-genre-btn'])) {
-        header('Location: genre-update.php');
-    }
-
-
-    //Confirm Update profile button
-
-    if (isset($_POST['profile-update-btn'])) {
-        // session_start();
-
-        $userEmail = $_SESSION['email'];
-
-        $upName = $_POST['updated-name'];
-        $upEmail = $_POST['updated-email'];
-        $upDOB = $_POST['updated-dob'];
-        $upCountry = $_POST['updated-country'];
-        $upGender = $_POST['updated-gender'];
-
-        // Empty field check
-
-        if ($upName == '' || $upDOB == '' || $upCountry == '' || $upEmail == '') {
-            echo '<script>
-                        alert("Please fillout all the necessary field!!!");
-                        window.location.href = "profileupdate.php";
-                    </script>';
-        } else {
-
-
-
-            // Checking if email is already in use and fetch the user ID
-
-            $select_user_credentials = "SELECT * FROM `users` WHERE Email = '$upEmail'";                    // Query to search for login email in data base
-            $result_user_credentials = mysqli_query($conn, $select_user_credentials);
-
-            if ($result_user_credentials) {
-                $user_found = mysqli_num_rows($result_user_credentials);
-
-
-                // Collecting the image name from the database ##
-                $user_data = mysqli_fetch_assoc($result_user_credentials);
-                $userImage = $user_data['Image'];
-
-
-                if ($user_found > 0 && $upEmail != $userEmail) {
-                    echo '<script>
-                            alert("Email Already in use!!");
-                            window.location.href = "profileupdate.php";
-                        </script>';
-                }
-
-                // All the cases passed
-
-                else {
-
-                    // checking if profile image is selected or not ##
-                    if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] != 4) {
-
-                        // Getting the file extension of the uploaded file
-                        // $originalExtension = pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION);
-
-                        $uploadDirectory = 'C:/xampp/htdocs/website/Melodise/Resources/UserImages/';
-                        $oldImagePath = $uploadDirectory . $userImage;
-                        // $newImageName = $upEmail . '.' . $originalExtension;                                                   // New image name
-                        $newImageName = $upEmail;                                              // New image name
-                        $newImagePath = $uploadDirectory . $newImageName;
-
-                        // Delete the old image 
-                        if (file_exists($oldImagePath) && $userImage != 'unknown.jpg') {
-                            unlink($oldImagePath);
-                        }
-
-
-                        // Moving file to the resources folder
-                        if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $newImagePath)) {
-
-
-                            // Update query with image
-                            $update_user_credentials = "UPDATE `users` SET `Name` = '$upName', `Email` = '$upEmail', `DateOfBirth` = '$upDOB', `Gender` = '$upGender', `Country` = '$upCountry', `Image` = '$newImageName' WHERE `users`.`Email` = '$userEmail';";
-                        }
-                    } else {
-
-
-                        // update query without image
-                        $update_user_credentials = "UPDATE `users` SET `Name` = '$upName', `Email` = '$upEmail', `DateOfBirth` = '$upDOB', `Gender` = '$upGender', `Country` = '$upCountry' WHERE `users`.`Email` = '$userEmail';";
-                    }
-
-                    $result_user_credentials = mysqli_query($conn, $update_user_credentials);
-                    if ($result_user_credentials) {
-                        echo '<script>
-                                alert("Profile Updated. Login to view updated profile!");
-                                window.location.href = "login.php";
-                                </script>';
-                    }
-                }
-            }
-        }
-    }
-
-
-    //user-profile-edit-btn
-    if (isset($_POST['user-profile-edit-btn'])) {
-        $userEmail = $_POST['user_email'];
-        $_SESSION['email'] = $userEmail;
-
-        header('Location: ..\UserEnd\profileupdate.php');
-    }
 
     //add new genre button
     if (isset($_POST['add_new_genre_btn'])) {
@@ -230,20 +144,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
              
     }
 
-
-    //edit genre button
+    //edit genre save button 
     if (isset($_POST['save_button'])) {
-
-        $genreId = $_POST['GenreID'];
-        $genreTitle = $_POST['genreTitle'];
-
-        $edit_genre_query = "UPDATE `genres` SET `Title` = '$genreTitle' WHERE `GenreID` = $genreId";
+        $genreId = $_POST['GenreID'];  // Get GenreID
+        $genreTitle = $_POST['genreTitle'];  // Get the new title
+    
+        // Update query
+        $edit_genre_query = "UPDATE genres SET Title = '$genreTitle' WHERE GenreID = '$genreId'";
         $result_edit_genre = mysqli_query($conn, $edit_genre_query);
-
-        
+        header('Location: genre-update.php');
     }
-
-
-
 }
+
+    
+
+
 

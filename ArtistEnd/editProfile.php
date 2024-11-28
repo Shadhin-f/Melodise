@@ -86,14 +86,14 @@ session_start();                 // Start session
             </script>';
     } else {
         // Get the artist's email from session
-        $artistEmail = $_SESSION['artistemail'];
+        $artistName = $_SESSION['artistname'];
 
         // Fetch artist information from the database
-        $select_artist = "SELECT * FROM artists WHERE Email = '$artistEmail'";
+        $select_artist = "SELECT * FROM artists WHERE Name = '$artistName'";
         $result_artist = mysqli_query($conn, $select_artist);
         $artist_data = mysqli_fetch_assoc($result_artist);
 
-        $artistName = $artist_data['Name'];
+        $artistEmail = $artist_data['Email'];
         $artistDOB = $artist_data['Dob'];
         $artistGender = $artist_data['Gender'];
         $artistBio = $artist_data['Bio'];

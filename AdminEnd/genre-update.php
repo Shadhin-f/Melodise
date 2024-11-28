@@ -214,25 +214,27 @@ if(isset($_SESSION['adminname'])){
     <a href='#' onclick='closeForm()' class="close-form-btn"></a>
 </div>
 
-<!-- Edit Genre Form -->
 <div id="editGenre" class="genre-form">
     <div class="form-content">
         <div class="form-header">
             <h4>Edit Genre</h4>
         </div>
         <form action="adminaction.php" method="POST">
+            <input type="hidden" name="GenreID" value="<?php echo $genre_id; ?>">
+            
             <div class="form-body">
                 <label for="genreTitle">Genre Title</label>
-                <input type="text" id="genreTitle" name="genreTitle" class="form-control" placeholder="Title" value="<?php echo htmlspecialchars($title); ?>" required>
+                <input type="text" id="genreTitle" name="genreTitle" class="form-control" placeholder="Title" required>
             </div>
             <div class="form-footer">
-                <button type="submit" class="btn btn-primary" name='save_button'>Save Genre Title</button>
+                <button type="submit" class="btn btn-primary" name="save_button">Save Genre Title</button>
                 <button type="button" class="btn btn-secondary close-form-btn">Cancel</button>
             </div>
         </form>
     </div>
-    <a href='#' onclick='closeForm()' class="close-form-btn"></a>
+    <a href="#" onclick="closeForm()" class="close-form-btn"></a>
 </div>
+
 
 <script type="text/javascript">
     function addForm_toggle() {
