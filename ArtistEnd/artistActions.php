@@ -254,6 +254,74 @@ if (isset($_POST['add-album'])) {
 
 
 
+//Edit Album
+
+
+if (isset($_POST['edit-album'])) {
+    // Validate session
+    if (!isset($_SESSION['artistid'])) {
+        $_SESSION['error'] = "Artist not logged in!";
+        header("Location: dashboard.php");
+        exit();
+    }
+
+    $artistID = $_SESSION['artistid'];
+    $albumID = $_POST['albumID'];
+    $albumName = mysqli_real_escape_string($conn, $_POST['albumName']);
+    $releaseDate = mysqli_real_escape_string($conn, $_POST['releaseDate']);
+
+    // Fetch existing album
+    $sql = "SELECT AlbumCover FROM albums WHERE AlbumID = '$albumID' AND ArtistID = '$artistID'";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result || mysqli_num_rows($result) == 0) {
+        $_SESSION['error'] = "Album not found or access denied.";
+        header("Location: dashboard.php");
+        exit();
+    }
+
+    $album = mysqli_fetch_assoc($result);
+    $albumCoverName = $album['AlbumCover'];
+
+    // Handle file upload
+    if (isset($_FILES['albumCover']) && $_FILES['albumCover']['error'] === UPLOAD_ERR_OK) {
+        $targetDir = "C:/xampp/htdocs/website/Melodise/Resources/AlbumCovers/";
+        $fileExtension = strtolower(pathinfo($_FILES['albumCover']['name'], PATHINFO_EXTENSION));
+
+        // Validate file type
+        if (!in_array($fileExtension, ['jpg', 'jpeg', 'png'])) {
+            $_SESSION['error'] = "Only JPG, JPEG, and PNG files are allowed.";
+            header("Location: editAlbum.php?albumID=$albumID");
+            exit();
+        }
+
+        // Generate new file name and move the file
+        $newFileName = $albumID . "." . $fileExtension;
+        $targetFile = $targetDir . $newFileName;
+
+        if (move_uploaded_file($_FILES['albumCover']['tmp_name'], $targetFile)) {
+            $albumCoverName = $newFileName; // Update album cover name
+        } else {
+            $_SESSION['error'] = "Failed to upload new album cover.";
+            header("Location: editAlbum.php?albumID=$albumID");
+            exit();
+        }
+    }
+
+    // Update album details
+    $sql = "UPDATE albums SET Title = '$albumName', ReleaseDate = '$releaseDate', AlbumCover = '$albumCoverName' WHERE AlbumID = '$albumID' AND ArtistID = '$artistID'";
+
+    if (mysqli_query($conn, $sql)) {
+        $_SESSION['success'] = "Album updated successfully!";
+        header("Location: dashboard.php");
+    } else {
+        $_SESSION['error'] = "Error updating album: " . mysqli_error($conn);
+        header("Location: editAlbum.php?albumID=$albumID");
+    }
+    exit();
+}
+
+
 
 // Add Music
 if (isset($_POST['add-music-button'])) {
