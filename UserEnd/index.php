@@ -796,7 +796,11 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
         function showEventDetails(title, description, image, artist, date, venue) {
             document.getElementById("eventModalLabel").textContent = title;
             document.getElementById("eventDescription").textContent = description;
-            document.getElementById("eventImage").src = "../Resources/EventImages/" + image;
+            if(image == 'unknown.jpg'){
+                document.getElementById("eventImage").src = "../Resources/DesignElements/ProfileBack.jpg";
+            }else{
+                document.getElementById("eventImage").src = "../Resources/EventImages/" + image;
+            }
             document.getElementById("eventArtist").textContent = artist;
             document.getElementById("eventDate").textContent = date;
             document.getElementById("eventVenue").textContent = venue;

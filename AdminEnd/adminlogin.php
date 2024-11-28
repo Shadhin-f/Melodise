@@ -71,17 +71,6 @@
             background-color: #145a50;
         }
 
-        .toggle-btn {
-            cursor: pointer;
-            font-weight:500 ;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .toggle-btn:hover {
-            /* Change to desired hover background color */
-            color: #1B8673;
-            /* Change to desired hover text color */
-        }
     </style>
 </head>
 
@@ -106,23 +95,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Javascript to toggle register and login btn -->
-    <script>
-        document.getElementById('toggle-btn').addEventListener('click', function() {
-            const loginForm = document.getElementById('login-form');
-            const regForm = document.getElementById('registration-form');
-            const formTitle = document.getElementById('form-title');
-            const toggleText = document.getElementById('toggle-text');
-            const toggleBtn = document.getElementById('toggle-btn');
-
-            if (loginForm.classList.contains('d-none')) {
-                loginForm.classList.remove('d-none');
-                regForm.classList.add('d-none');
-                formTitle.textContent = 'Login';
-                
-            } 
-        });
-    </script>
+    
 </body>
 
 </html>

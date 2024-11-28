@@ -109,6 +109,7 @@ if (isset($_POST['edit-artist-btn'])){
 //Edit profile confirm
 
 if (isset($_POST['profile-update-btn'])) {
+    //$artistName = $_SESSION['artistname'];
     $artistEmail = $_SESSION['artistemail'];
     $artistID = $_SESSION['artistid'];
 
@@ -166,11 +167,23 @@ if (isset($_POST['profile-update-btn'])) {
                 // Execute update query
                 $result_update = mysqli_query($conn, $update_artist);
                 if ($result_update) {
-                    echo '<script>
+                    // If admin logged in the after updating redirected to artist-update page in admin end
+                    if (isset($_SESSION['adminname']) && !isset($_SESSION['artistid'])) {
+                        echo '<script>
+                            alert("Profile Updated!");
+                            window.location.href = "../AdminEnd/update-artist-info.php";
+                            </script>';
+                    }
+                    else{
+                        //$_SESSION['artistemail'] = $upEmail;
+                        //$_SESSION['artistname'] = $upName;
+                        echo '<script>
                             alert("Profile Updated! Log in again to view updated profile.");
                             window.location.href = "artistlogin.php";
                           </script>';
+                    }
                 } else {
+                
                     echo '<script>
                             alert("Failed to update profile. Please try again.");
                             window.location.href = "editprofile.php";

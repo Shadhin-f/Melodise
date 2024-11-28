@@ -107,7 +107,7 @@ include('connect.php');
                     <tr>
                         <td>$artistID</td>
                         <td>$artistName</td>
-                        <form action='adminaction.php' method='get'>
+                        <form action='adminaction.php' method='post'>
                             <input type='hidden' name='artist_name' value='$artistName'>
                             <td><button type='submit' class='btn edit-btn-custom' name='artist-profile-edit-btn'>Edit</button></td>
                         </form>
@@ -127,9 +127,7 @@ include('connect.php');
                 echo "No search key";
             }
         ?>
-
-
-        
+    
     </section>
 
     <!-- FontAwesome & Bootstrap JS -->

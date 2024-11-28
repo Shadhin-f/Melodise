@@ -120,6 +120,13 @@ nav .nav-link:hover {
     color: #B6E5D6;
 }
 
+.access {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
 footer {
     background-color: #1B8673;
     color: white;
@@ -290,13 +297,20 @@ footer a:hover {
     
     }
 
+   
+
     // Artist followers chart
 
-    include('artist-followers.php')
+    include('graphs.php')
 
-    ?>
+?>
 
 <?php
+include('revenueGraph.php')
+?>
+
+<?php
+
     if(isset($_SESSION['adminname'])){
 
     // latest subscribed users table
