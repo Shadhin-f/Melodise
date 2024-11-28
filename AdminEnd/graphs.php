@@ -57,13 +57,13 @@ if (isset($_SESSION['adminname'])) {
     echo 'var MusicPlayedData = ' . json_encode($music_played_data) . ';';
     echo 'var ArtistFollowersData = ' . json_encode($artist_followers_data) . ';';
     echo '</script>';
-}
-?>
-<div class="chart-container">
-    <canvas id="MusicCountChart"></canvas>
+
+    echo"
+<div class='chart-container'>
+    <canvas id='MusicCountChart'></canvas>
 </div>
-<div class="chart-container">
-    <canvas id="ArtistChart"></canvas>
+<div class='chart-container'>
+    <canvas id='ArtistChart'></canvas>
 </div>
 
 <script>
@@ -121,6 +121,9 @@ renderChart(
     '#1B8673'
 );
 
-</script>
+</script>";
+
+}
+?>
 </body>
 </html>
