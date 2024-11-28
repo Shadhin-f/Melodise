@@ -154,8 +154,7 @@ session_start();
             width: 180px;
             height: 180px;
             border-radius: 8px;
-            overflow: hidden;
-            background-image: url('../Resources/DesignElements/ProfileEditBack.jpg');
+            overflow: hidden;        
             background-size: cover;
             background-position: center;
             position: relative;
@@ -254,6 +253,15 @@ session_start();
             height: auto;
             border-radius: 10px;
             margin-bottom: 15px;
+        }
+
+        .event-modal-professional .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .event-modal-professional #eventImage {
+            border: 1px solid #ddd;
         }
     </style>
 </head>
@@ -410,8 +418,13 @@ session_start();
             $result_artist_albums = mysqli_query($conn, $select_artist_albums);
             while ($albumData = mysqli_fetch_assoc($result_artist_albums)) {
                 $albumName = $albumData['Title'];
+                $albumCover = $albumData['AlbumCover'];
+                $url = "../Resources/AlbumCovers/{$albumCover}";
+                if($albumCover == 'unknown.jpg'){
+                    $url = "../Resources/DesignElements/ProfileBack.jpg";
+                }
                 echo "
-                    <div class='album-card'>
+                    <div class='album-card' style='background-image: url(\"{$url}\");'>
                         <div class='album-name'>$albumName</div>
                     </div>
                     ";
@@ -560,22 +573,39 @@ session_start();
 
 
     <!-- Event Details Modal -->
-    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="eventModalLabel">Event Title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade event-modal-professional" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow-lg">
+                <!-- Modal Header -->
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold" id="eventModalLabel">Event Title</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <img src="" id="eventImage" alt="Event Cover Photo">
-                    <p><strong>Description:</strong> <span id="eventDescription"></span></p>
-                    <p><strong>Artist:</strong> <span id="eventArtist"></span></p>
-                    <p><strong>Date:</strong> <span id="eventDate"></span></p>
-                    <p><strong>Venue:</strong> <span id="eventVenue"></span></p>
+
+                <!-- Modal Body -->
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <img src="" id="eventImage" alt="Event Cover Photo" class="img-fluid rounded shadow" style="max-height: 300px; object-fit: cover;">
+                    </div>
+                    <p class="mb-3">
+                        <strong class="text-primary">Description:</strong> <span id="eventDescription"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Artist:</strong> <span id="eventArtist"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Date:</strong> <span id="eventDate"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Venue:</strong> <span id="eventVenue"></span>
+                    </p>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-round-danger" data-bs-dismiss="modal">Cancel</button>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer justify-content-end">
+                    <button class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-times me-2"></i>Cancel
+                    </button>
                 </div>
             </div>
         </div>
@@ -604,7 +634,11 @@ session_start();
         function showEventDetails(title, description, image, artist, date, venue) {
             document.getElementById("eventModalLabel").textContent = title;
             document.getElementById("eventDescription").textContent = description;
-            document.getElementById("eventImage").src = "../Resources/EventImages/" + image;
+            if(image == 'unknown.jpg'){
+                document.getElementById("eventImage").src = "../Resources/DesignElements/ProfileBack.jpg";
+            }else{
+                document.getElementById("eventImage").src = "../Resources/EventImages/" + image;
+            }
             document.getElementById("eventArtist").textContent = artist;
             document.getElementById("eventDate").textContent = date;
             document.getElementById("eventVenue").textContent = venue;
