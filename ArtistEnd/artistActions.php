@@ -229,15 +229,17 @@ if (isset($_POST['add-album'])) {
     }
 
     // Validate album cover file
-    $targetFile = $targetDir . $newAlbumID . "." . strtolower(pathinfo($albumCover['name'], PATHINFO_EXTENSION));
-    $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+    $fileExtension = strtolower(pathinfo($albumCover['name'], PATHINFO_EXTENSION));
 
     // Check for valid file types (JPG, JPEG, PNG)
-    if (!in_array($fileType, ['jpg', 'jpeg', 'png'])) {
+    if (!in_array($fileExtension, ['jpg', 'jpeg', 'png'])) {
         $_SESSION['error'] = "Only JPG, JPEG, and PNG files are allowed.";
         header("Location: addAlbum.php");
         exit();
     }
+
+    // Generate the new file name using the AlbumID (rename the file)
+    $targetFile = $targetDir . $newAlbumID . "." . $fileExtension; // Rename using AlbumID
 
     // Move the uploaded file
     if (!move_uploaded_file($albumCover['tmp_name'], $targetFile)) {
@@ -247,10 +249,10 @@ if (isset($_POST['add-album'])) {
     }
 
     // Insert album details into the database
-    $albumCoverName = basename($targetFile); // Use the new file name
+    $albumCoverName = basename($targetFile); // Use the new file name for the album cover
     $sql = "INSERT INTO `albums` (`AlbumID`, `Title`, `ReleaseDate`, `ArtistID`, `AlbumCover`) 
             VALUES ('$newAlbumID', '$albumName', '$releaseDate', '$artistID', '$albumCoverName')";
-    
+
     if (mysqli_query($conn, $sql)) {
         $_SESSION['success'] = "Album added successfully!";
         header("Location: dashboard.php"); // Redirect to dashboard
@@ -260,8 +262,8 @@ if (isset($_POST['add-album'])) {
         header("Location: addAlbum.php");
         exit(); // Ensure script stops after redirection
     }
-    
 }
+
 
 
 

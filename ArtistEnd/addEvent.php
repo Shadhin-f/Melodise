@@ -16,15 +16,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $eventTime = $_POST['event_time'];
     $eventLocation = mysqli_real_escape_string($conn, $_POST['event_location']);
 
+    // Fetch the latest EventID and generate new EventID
+    $query = "SELECT MAX(EventID) AS LatestEventID FROM upcoming_events";
+    $result = mysqli_query($conn, $query);
+    $latestEventID = mysqli_fetch_assoc($result)['LatestEventID'] ?? 0;
+    $newEventID = $latestEventID + 1;  // Increment EventID
+
     // Handle event image upload
     if (!empty($_FILES['event_image']['name'])) {
         $eventImage = $_FILES['event_image']['name'];
         $targetDir = "../Resources/EventImages/"; // Correct path for the event images directory
-        $targetFile = $targetDir . basename($eventImage);
+        $targetFile = $targetDir . $newEventID . "." . strtolower(pathinfo($eventImage, PATHINFO_EXTENSION)); // Rename image to EventID
 
         // Move uploaded file to the correct directory
         if (move_uploaded_file($_FILES['event_image']['tmp_name'], $targetFile)) {
-            // Image uploaded successfully
+            // Image uploaded and renamed successfully
         } else {
             echo "<script>alert('Error uploading image!');</script>";
         }
@@ -34,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Insert event into the database
     $insert_event = "INSERT INTO upcoming_events (ArtistID, EventTitle, EventDescription, EventDate, EventTime, EventLocation, EventImage)
-                     VALUES ('$artistID', '$eventTitle', '$eventDescription', '$eventDate', '$eventTime', '$eventLocation', '$eventImage')";
+                     VALUES ('$artistID', '$eventTitle', '$eventDescription', '$eventDate', '$eventTime', '$eventLocation', '$newEventID." . strtolower(pathinfo($eventImage, PATHINFO_EXTENSION)) . "')";
 
     if (mysqli_query($conn, $insert_event)) {
         echo "<script>alert('Event added successfully!'); window.location = 'viewEvents.php';</script>";

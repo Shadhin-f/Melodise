@@ -5,6 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
     unset($_SESSION['playlistid']);
     unset($_SESSION['playlistname']);
+    unset($_SESSION['artistid']);
 }
 
 if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
@@ -32,6 +33,103 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
 
     <!-- CSS File Link -->
     <link rel="stylesheet" href="style.css">
+
+
+    <style>
+        .table {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th {
+            background-color: #1B8673 !important;
+            color: white !important;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn-play,
+        .follow-btn,
+        .unfollow-btn,
+        .event-details-btn {
+            border: none;
+            padding: 5px 12px;
+            font-size: 0.9rem;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .unfollow-btn {
+            background-color: #1B8673;
+            color: white;
+        }
+
+        .btn-play:hover {
+            background-color: #1B8673;
+        }
+
+        .event-details-btn:hover {
+            background-color: #13664c;
+            color: white;
+
+        }
+
+        .follow-btn:hover {
+            background-color: #13664c;
+            color: white;
+        }
+
+        .unfollow-btn:hover {
+            background-color: #000;
+        }
+
+        .modal-header {
+            background-color: #1B8673;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .modal-content {
+            border-radius: 10px;
+        }
+
+        .modal-body img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .event-modal-professional .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .event-modal-professional #eventImage {
+            border: 1px solid #ddd;
+        }
+
+
+        @media (min-width: 1030px) {
+            .tables-container {
+                display: flex;
+                gap: 20px;
+            }
+
+            .table-wrapper {
+                flex: 1;
+            }
+        }
+    </style>
+
+
+
 </head>
 
 <body>
@@ -233,9 +331,13 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
 
                    </div>
 
+                   <!--
+
                    <form action='user-actions.php' method='get'>
                        <button type='submit' class='themed-btn bg-transparent border-0' name='all-playlist-btn'>All Playlists</button>
                    </form>
+
+                   -->
                </div>
 
                <!-- Section to display playlists created by user -->
@@ -251,14 +353,14 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                 if ($searchKey != '') {
                     // search key session with search key
 
-                    $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' AND playlists.Name LIKE '%" . $searchKey . "%' GROUP BY playlists.PlaylistID LIMIT 6";
+                    $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' AND playlists.Name LIKE '%" . $searchKey . "%' GROUP BY playlists.PlaylistID";
                 } else {
                     // Search key session active but no input
-                    $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' GROUP BY playlists.PlaylistID LIMIT 6";
+                    $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' GROUP BY playlists.PlaylistID ";
                 }
             } else {
                 // Search key not set case
-                $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' GROUP BY playlists.PlaylistID LIMIT 6";
+                $select_user_playlists = "SELECT playlists.Name, playlists.PlaylistID, COUNT(playlist_songs.SongID) as NumOFSongs FROM `playlists` LEFT JOIN `playlist_songs` ON playlists.PlaylistID = playlist_songs.PlaylistID WHERE playlists.UserID = '$userID' GROUP BY playlists.PlaylistID ";
             }
 
             $result_user_playlists = mysqli_query($conn, $select_user_playlists);
@@ -333,7 +435,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
     ?>
 
 
-        <section id="fav-artist" class="p-3 mb-5">
+        <section id="fav-artist" class="p-3">
             <div id="fav-artist-title-container" class="d-flex flex-row justify-content-between align-items-center">
                 <h1>
                     <?php
@@ -347,7 +449,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
             </div>
 
             <!-- Artist Cards container div -->
-            <div id="fav-artist-card-container" class="mb-5">
+            <div id="fav-artist-card-container" class="">
                 <?php
                 // Fetching artists data from the database
                 $select_artists = "SELECT * 
@@ -385,6 +487,226 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
     ?>
 
 
+    <?php
+    // Php Block to prevent the bottom sections to display while searching
+    if (!isset($_SESSION['searchKey']) && isset($_SESSION['userid'])):
+    ?>
+
+
+
+
+        <!-- Recent Played & Event section -->
+        <div class="container-fluid mb-5">
+            <!-- Tables Container -->
+            <div class="tables-container">
+                <!-- Recent Played Music Table -->
+                <div class="table-wrapper mb-5">
+                    <h3>Most played by you</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Song</th>
+                                <th scope="col">Artist</th>
+                                <th scope="col">Genre</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            // Your database connection should already be included
+                            // Query to fetch data
+
+
+
+                            $query = "SELECT mr.SongID, s.Audio , s.Title AS SongTitle, a.Name AS ArtistName, g.Title AS Genre, 
+                                    al.Title AS AlbumTitle, al.AlbumCover, COUNT(mr.SongID) AS TimesPlayed  
+                                    FROM `music_play_record` mr
+                                    LEFT JOIN songs s ON s.SongID = mr.SongID
+                                    LEFT JOIN genres g ON g.GenreID = s.SongID
+                                    LEFT JOIN artists a ON a.ArtistID = s.ArtistID
+                                    LEFT JOIN albums al ON al.AlbumID = s.AlbumID
+                                    WHERE mr.UserID = '$userID'
+                                    GROUP BY mr.SongID
+                                    ORDER BY TimesPlayed DESC
+                                    LIMIT 5;";
+
+                            $result = mysqli_query($conn, $query);
+
+                            // Check if query execution was successful
+                            if ($result && mysqli_num_rows($result) > 0) {
+                                // Loop through the results and generate table rows
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $songID = $row['SongID'];
+                                    $songTitle = htmlspecialchars($row['SongTitle']);
+                                    $artistName = htmlspecialchars($row['ArtistName']);
+                                    $genre = htmlspecialchars($row['Genre']);
+                                    $albumCover = htmlspecialchars($row['AlbumCover']);
+                                    $timesPlayed = $row['TimesPlayed'];
+                                    $audio = $row['Audio'];
+
+                                    echo "
+                                            <tr>
+                                                <td>$songTitle</td>
+                                                <td>$artistName</td>
+                                                <td>$genre</td>
+                                                <td>
+                                                    <button class='btn-play' 
+
+
+                                                            data-song-id='$songID'
+                                                            data-song-name='$songTitle' 
+                                                            data-artist-name='$artistName' 
+                                                            data-song-url='../Resources/Songs/$audio.mp3' 
+                                                            data-album-art='../Resources/DesignElements/ProfileBack.jpg'>
+                                                        <i class='fas fa-play'></i> Play
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                    ";
+                                }
+                            } else {
+                                echo "
+                                    <tr>
+                                        <td colspan='4' class='text-center'>No recent songs found.</td>
+                                    </tr>
+                                ";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Followed Events Table -->
+                <div class="table-wrapper mb-5">
+                    <h3>Upcoming events</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Event</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Location</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            // Query to fetch upcoming events, ordered by event date in descending order
+                            $query = "SELECT EventID, EventTitle, EventDescription, EventDate, EventLocation, EventTime, EventImage, artists.Name
+                                      FROM upcoming_events
+                                      LEFT JOIN artists ON artists.ArtistID = upcoming_events.ArtistID
+                                      WHERE EventDate >= CURDATE()
+                                      ORDER BY EventDate ASC
+                                      LIMIT 5;";
+
+                            $result = mysqli_query($conn, $query);
+
+                            // Check if query execution was successful and if events are found
+                            if ($result && mysqli_num_rows($result) > 0) {
+                                // Loop through the results and generate table rows
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $eventID = $row['EventID'];
+                                    $eventTitle = htmlspecialchars($row['EventTitle']);
+                                    $eventDescription = htmlspecialchars($row['EventDescription']);
+                                    $eventDate = htmlspecialchars($row['EventDate']);
+                                    $eventLocation = htmlspecialchars($row['EventLocation']);
+                                    $eventImage = htmlspecialchars($row['EventImage']);
+                                    $eventTime = htmlspecialchars($row['EventTime']);
+                                    $artistName = htmlspecialchars($row['Name']);
+
+                                    // Check if the user is following the event
+                                    if (isset($_SESSION['userid'])) {
+                                        $userID = $_SESSION['userid'];
+                                        $follow_check_query = "SELECT * FROM event_followers WHERE UserID = '$userID' AND EventID = '$eventID'";
+                                        $follow_result = mysqli_query($conn, $follow_check_query);
+
+                                        if ($follow_result && mysqli_num_rows($follow_result) > 0) {
+                                            // User is following the event
+                                            $followButton = "<form action='user-actions.php' method='post' class='d-inline'>
+                                                                <button class='unfollow-btn' name='unfollow-event' value='$eventID'>Following</button>
+                                                              </form>";
+                                        } else {
+                                            // User is not following the event
+                                            $followButton = "<form action='user-actions.php' method='post' class='d-inline'>
+                                                                <button class='follow-btn' name='follow-event' value='$eventID'>Follow</button>
+                                                              </form>";
+                                        }
+                                    } else {
+                                        // User is not logged in
+                                        $followButton = "<p><i>Login to follow the event</i></p>";
+                                    }
+
+                                    echo "
+                                        <tr>
+                                            <td>$eventTitle</td>
+                                            <td>$eventDate</td>
+                                            <td>$eventLocation</td>
+                                            <td>
+                                                <button class='event-details-btn' data-bs-toggle='modal' data-bs-target='#eventModal'
+                                                    onclick=\"showEventDetails('$eventTitle', '$eventDescription', '$eventImage', '$artistName', '$eventDate', '$eventLocation')\">View Details</button>
+                                                $followButton
+                                            </td>
+                                        </tr>
+                                    ";
+                                }
+                            } else {
+                                echo "
+                                    <tr>
+                                        <td colspan='4' class='text-center'>No upcoming events</td>
+                                    </tr>
+                                ";
+                            }
+                            ?>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+    <?php
+    endif;
+    ?>
+
+    <!-- Event Details Modal -->
+    <div class="modal fade event-modal-professional" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow-lg">
+                <!-- Modal Header -->
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold" id="eventModalLabel">Event Title</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <img src="" id="eventImage" alt="Event Cover Photo" class="img-fluid rounded shadow" style="max-height: 300px; object-fit: cover;">
+                    </div>
+                    <p class="mb-3">
+                        <strong class="text-primary">Description:</strong> <span id="eventDescription"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Artist:</strong> <span id="eventArtist"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Date:</strong> <span id="eventDate"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Venue:</strong> <span id="eventVenue"></span>
+                    </p>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer justify-content-end">
+                    <button class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-times me-2"></i>Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -409,7 +731,7 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
     <script>
         // Select all play-card elements ------------- v1 -----------------------
 
-        document.querySelectorAll('.play-card').forEach(card => {
+        document.querySelectorAll('.play-card, .btn-play').forEach(card => {
             card.addEventListener('click', () => {
                 // Get song details from the data attributes
                 const songID = card.getAttribute('data-song-id');
@@ -468,6 +790,20 @@ if (isset($_GET['unset_session']) && $_GET['unset_session'] === 'true') {
                 container.scrollLeft += event.deltaY; // Scroll horizontally based on the wheel movement
                 event.preventDefault(); // Prevent default scrolling behavior
             });
+        }
+
+        // Event details modal
+        function showEventDetails(title, description, image, artist, date, venue) {
+            document.getElementById("eventModalLabel").textContent = title;
+            document.getElementById("eventDescription").textContent = description;
+            if(image == 'unknown.jpg'){
+                document.getElementById("eventImage").src = "../Resources/DesignElements/ProfileBack.jpg";
+            }else{
+                document.getElementById("eventImage").src = "../Resources/EventImages/" + image;
+            }
+            document.getElementById("eventArtist").textContent = artist;
+            document.getElementById("eventDate").textContent = date;
+            document.getElementById("eventVenue").textContent = venue;
         }
 
         // Apply to both card containers (Music, Artist, Playlist)
