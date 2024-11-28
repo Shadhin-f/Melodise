@@ -102,6 +102,7 @@ include('connect.php');
                 while ($row_data = mysqli_fetch_assoc($result_artists)){
                     $artistID = $row_data['ArtistID'];
                     $artistName = $row_data['Name'];
+                    $artistEmail = $row_data['Email'];
 
                     echo "
                     <tr>
@@ -109,6 +110,7 @@ include('connect.php');
                         <td>$artistName</td>
                         <form action='adminaction.php' method='post'>
                             <input type='hidden' name='artist_name' value='$artistName'>
+                            <input type='hidden' name='artist_email' value='$artistEmail'>
                             <td><button type='submit' class='btn edit-btn-custom' name='artist-profile-edit-btn'>Edit</button></td>
                         </form>
                     </tr>

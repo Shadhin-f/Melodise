@@ -98,7 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //artist profile edit button
     if (isset($_POST['artist-profile-edit-btn'])) {
         $artistName =  $_POST['artist_name'];
+        $artistEmail = $_POST['artist_email'];
         $_SESSION['artistname'] = $artistName;
+        $_SESSION['artistemail'] = $artistEmail;
 
         header('Location: ..\ArtistEnd\editProfile.php');
     }
