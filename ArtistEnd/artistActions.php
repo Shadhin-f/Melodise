@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (isset($_SESSION['userid'])) {
                         unset($_SESSION['userid']);
                         unset($_SESSION['username']);
-                        unset($_SESSION['email']);
+                        
                     }
                     
                     header('Location: dashboard.php');

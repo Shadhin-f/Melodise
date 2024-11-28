@@ -165,7 +165,7 @@ session_start();                 // Start session
 
             <!-- Buttons -->
             <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-custom btn-cancel" onclick="window.location.href='artistprofile.php'">Cancel</button>
+                <button type="button" class="btn btn-custom btn-cancel" onclick="window.location.href='history.back()'">Cancel</button>
                 <button type="submit" class="btn btn-custom btn-update" name="profile-update-btn">Update</button>
             </div>
         </form>

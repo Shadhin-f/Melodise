@@ -29,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (isset($_SESSION['userid'])) {
                         unset($_SESSION['userid']);
                         unset($_SESSION['username']);
-                        unset($_SESSION['email']);
+                        
                     }
                     if (isset($_SESSION['artistid'])) {
                         unset($_SESSION['artistid']);
                         unset($_SESSION['artistname']);
-                        unset($_SESSION['artistemail']);
+                        
                     }
 
 
