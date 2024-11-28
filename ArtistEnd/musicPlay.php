@@ -110,28 +110,30 @@ $conn->close();
                 }]
             },
             options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Songs'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Play Count'
-                        },
-                        beginAtZero: true
-                    }
-                }
+    responsive: true,
+    plugins: {
+        legend: {
+            display: true, // Enable the legend to show the label
+            position: 'top', // Optionally, set the position of the legend (e.g., 'top', 'bottom')
+        }
+    },
+    scales: {
+        x: {
+            title: {
+                display: true,
+                text: 'Songs'
             }
+        },
+        y: {
+            title: {
+                display: true,
+                text: 'Play Count'
+            },
+            beginAtZero: true
+        }
+    }
+}
+
         });
     </script>
 </body>
