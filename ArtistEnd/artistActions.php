@@ -26,6 +26,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $_SESSION['artistid'] = $artist_data['ArtistID'];
                     $_SESSION['artistname'] = $artist_data['Name'];
                     $_SESSION['artistemail'] = $artist_data['Email'];
+
+                    session_start();
+                    if (isset($_SESSION['adminname'])) {
+                        unset($_SESSION['adminname']);
+                    }
+
+                    if (isset($_SESSION['userid'])) {
+                        unset($_SESSION['userid']);
+                        unset($_SESSION['username']);
+                        unset($_SESSION['email']);
+                    }
                     
                     header('Location: dashboard.php');
                     exit();
@@ -168,7 +179,7 @@ if (isset($_POST['profile-update-btn'])) {
                 $result_update = mysqli_query($conn, $update_artist);
                 if ($result_update) {
                     // If admin logged in the after updating redirected to artist-update page in admin end
-                    if (isset($_SESSION['adminname']) && !isset($_SESSION['artistid'])) {
+                    if (isset($_SESSION['adminname'])) {
                         echo '<script>
                             alert("Profile Updated!");
                             window.location.href = "../AdminEnd/update-artist-info.php";

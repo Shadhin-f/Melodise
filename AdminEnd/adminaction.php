@@ -31,6 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         unset($_SESSION['username']);
                         unset($_SESSION['email']);
                     }
+                    if (isset($_SESSION['artistid'])) {
+                        unset($_SESSION['artistid']);
+                        unset($_SESSION['artistname']);
+                        unset($_SESSION['artistemail']);
+                    }
 
 
                     header('Location: adminhome.php');
