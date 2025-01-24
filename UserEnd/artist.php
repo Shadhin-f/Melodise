@@ -154,8 +154,7 @@ session_start();
             width: 180px;
             height: 180px;
             border-radius: 8px;
-            overflow: hidden;
-            background-image: url('../Resources/DesignElements/ProfileEditBack.jpg');
+            overflow: hidden;        
             background-size: cover;
             background-position: center;
             position: relative;
@@ -186,6 +185,83 @@ session_start();
 
         .album-name:hover {
             color: #1B8673;
+        }
+
+
+
+        /*  ------------------Styling Event Table -----------*/
+        .table {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th {
+            background-color: #1B8673 !important;
+            color: white !important;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .follow-btn,
+        .unfollow-btn,
+        .event-details-btn {
+            border: none;
+            padding: 5px 12px;
+            font-size: 0.9rem;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .unfollow-btn {
+            background-color: #1B8673;
+            color: white;
+        }
+
+        .event-details-btn:hover {
+            background-color: #13664c;
+            color: white;
+
+        }
+
+        .follow-btn:hover {
+            background-color: #13664c;
+            color: white;
+        }
+
+        .unfollow-btn:hover {
+            background-color: #000;
+        }
+
+        .modal-header {
+            background-color: #1B8673;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .modal-content {
+            border-radius: 10px;
+        }
+
+        .modal-body img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .event-modal-professional .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .event-modal-professional #eventImage {
+            border: 1px solid #ddd;
         }
     </style>
 </head>
@@ -342,8 +418,13 @@ session_start();
             $result_artist_albums = mysqli_query($conn, $select_artist_albums);
             while ($albumData = mysqli_fetch_assoc($result_artist_albums)) {
                 $albumName = $albumData['Title'];
+                $albumCover = $albumData['AlbumCover'];
+                $url = "../Resources/AlbumCovers/{$albumCover}";
+                if($albumCover == 'unknown.jpg'){
+                    $url = "../Resources/DesignElements/ProfileBack.jpg";
+                }
                 echo "
-                    <div class='album-card'>
+                    <div class='album-card' style='background-image: url(\"{$url}\");'>
                         <div class='album-name'>$albumName</div>
                     </div>
                     ";
@@ -352,9 +433,103 @@ session_start();
         </div>
     </div>
 
+    <!---------------  Artists Events  ---------------->
+
+    <div class="container-fluid mb-5 px-5">
+        <!-- Tables Container -->
+        <div class="tables-container">
+            <!-- Followed Events Table -->
+            <div class="table-wrapper mb-5">
+                <h3>Upcoming events</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Event</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Location</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // Query to fetch upcoming events, ordered by event date in descending order
+                        $query = "SELECT EventID, EventTitle, EventDescription, EventDate, EventLocation, EventTime, EventImage, artists.Name
+                                      FROM upcoming_events
+                                      LEFT JOIN artists ON artists.ArtistID = upcoming_events.ArtistID
+                                      WHERE EventDate >= CURDATE() AND artists.ArtistID = '$artistID'
+                                      ORDER BY EventDate ASC
+                                      LIMIT 5;";
+
+                        $result = mysqli_query($conn, $query);
+
+                        // Check if query execution was successful and if events are found
+                        if ($result && mysqli_num_rows($result) > 0) {
+                            // Loop through the results and generate table rows
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $eventID = $row['EventID'];
+                                $eventTitle = htmlspecialchars($row['EventTitle']);
+                                $eventDescription = htmlspecialchars($row['EventDescription']);
+                                $eventDate = htmlspecialchars($row['EventDate']);
+                                $eventLocation = htmlspecialchars($row['EventLocation']);
+                                $eventImage = htmlspecialchars($row['EventImage']);
+                                $eventTime = htmlspecialchars($row['EventTime']);
+                                $artistName = htmlspecialchars($row['Name']);
+
+                                // Check if the user is following the event
+                                if (isset($_SESSION['userid'])) {
+                                    $userID = $_SESSION['userid'];
+                                    $follow_check_query = "SELECT * FROM event_followers WHERE UserID = '$userID' AND EventID = '$eventID'";
+                                    $follow_result = mysqli_query($conn, $follow_check_query);
+
+                                    if ($follow_result && mysqli_num_rows($follow_result) > 0) {
+                                        // User is following the event
+                                        $followButton = "<form action='user-actions.php' method='post' class='d-inline'>
+                                                                <button class='unfollow-btn' name='unfollow-event' value='$eventID'>Following</button>
+                                                              </form>";
+                                    } else {
+                                        // User is not following the event
+                                        $followButton = "<form action='user-actions.php' method='post' class='d-inline'>
+                                                                <button class='follow-btn' name='follow-event' value='$eventID'>Follow</button>
+                                                              </form>";
+                                    }
+                                } else {
+                                    // User is not logged in
+                                    $followButton = "<p><i>Login to follow the event</i></p>";
+                                }
+
+                                echo "
+                                        <tr>
+                                            <td>$eventTitle</td>
+                                            <td>$eventDate</td>
+                                            <td>$eventLocation</td>
+                                            <td>
+                                                <button class='event-details-btn' data-bs-toggle='modal' data-bs-target='#eventModal'
+                                                    onclick=\"showEventDetails('$eventTitle', '$eventDescription', '$eventImage', '$artistName', '$eventDate', '$eventLocation')\">View Details</button>
+                                                $followButton
+                                            </td>
+                                        </tr>
+                                    ";
+                            }
+                        } else {
+                            echo "
+                                    <tr>
+                                        <td colspan='4' class='text-center'>No upcoming events</td>
+                                    </tr>
+                                ";
+                        }
+                        ?>
+
+                    </tbody>
+                </table>
+            </div>
 
 
-    <!-- ------------------ Footer sections-------------------------------- -->
+
+        </div>
+    </div>
+
+
+    <!-- ------------------ Footer sections (Not included)-------------------------------- -->
     <?php
     // include('footer.php');
     ?>
@@ -395,6 +570,47 @@ session_start();
         </div>
     </div>
 
+
+
+    <!-- Event Details Modal -->
+    <div class="modal fade event-modal-professional" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow-lg">
+                <!-- Modal Header -->
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold" id="eventModalLabel">Event Title</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <img src="" id="eventImage" alt="Event Cover Photo" class="img-fluid rounded shadow" style="max-height: 300px; object-fit: cover;">
+                    </div>
+                    <p class="mb-3">
+                        <strong class="text-primary">Description:</strong> <span id="eventDescription"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Artist:</strong> <span id="eventArtist"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Date:</strong> <span id="eventDate"></span>
+                    </p>
+                    <p class="mb-3">
+                        <strong class="text-primary">Venue:</strong> <span id="eventVenue"></span>
+                    </p>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer justify-content-end">
+                    <button class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-times me-2"></i>Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -412,6 +628,21 @@ session_start();
                 document.getElementById('artistName').value = artistName;
             });
         });
+
+
+        // Event details modal
+        function showEventDetails(title, description, image, artist, date, venue) {
+            document.getElementById("eventModalLabel").textContent = title;
+            document.getElementById("eventDescription").textContent = description;
+            if(image == 'unknown.jpg'){
+                document.getElementById("eventImage").src = "../Resources/DesignElements/ProfileBack.jpg";
+            }else{
+                document.getElementById("eventImage").src = "../Resources/EventImages/" + image;
+            }
+            document.getElementById("eventArtist").textContent = artist;
+            document.getElementById("eventDate").textContent = date;
+            document.getElementById("eventVenue").textContent = venue;
+        }
     </script>
 </body>
 

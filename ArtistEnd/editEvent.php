@@ -49,7 +49,7 @@ if (isset($_POST['update-event'])) {
 
         if ($stmt->execute()) {
             $_SESSION['message'] = "Event updated successfully!";
-            header("Location: viewEvents.php"); // Redirect back to the events page
+            header("Location: viewEvents.php"); 
             exit();
         } else {
             $error = "Failed to update event. Please try again.";

@@ -1,6 +1,8 @@
-<?php 
-// session_start();
-include('connect.php')
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include('connect.php'); 
 ?>
 
 <!doctype html>
@@ -16,81 +18,136 @@ include('connect.php')
     <link rel="stylesheet" href="style.css">
 
     <style>
-        .access {
+        
+body {
+    background: radial-gradient(circle, rgba(232,247,244,1) 0%, rgba(211,231,228,1) 100%);
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.container-custom, .table-container {
+    background: rgba(255, 255, 255, 0.95);
+    border: 3px solid #1B8673;
+    border-radius: 10px;
+    padding: 3rem;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.container-custom h1, .container-custom h2, .container-custom h3, .container-custom h4, .text-primary-custom, section h1, section h2 {
+    color: #1B8673;
+    text-align: center;
+}
+
+.text-primary-custom {
+    font-weight: bold;
+}
+
+.btn-custom, .btn-light-custom {
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-custom {
+    background-color: #1B8673;
+    color: white;
+}
+
+.btn-custom:hover {
+    background-color: #145a50;
+    transform: scale(1.05);
+}
+
+.btn-light-custom {
+    background-color: #B6E5D6;
+    color: #1B8673;
+}
+
+.btn-light-custom:hover {
+    background-color: #A2D7C3;
+    color: white;
+    transform: scale(1.05);
+}
+
+.card, .card-body, .table-custom thead th, .table-custom tbody tr td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.card {
+    border: 1px solid #1B8673;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card .card-title {
+    color: #1B8673;
+    font-weight: bold;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.table-custom thead th {
+    background-color: #1B8673;
+    color: white;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.table-custom tbody tr:nth-child(odd) {
+    background-color: rgba(27, 134, 115, 0.1);
+}
+
+.table-custom tbody tr:nth-child(even) {
+    background-color: rgba(27, 134, 115, 0.2);
+}
+
+nav {
+    background-color: #1B8673;
+    color: white;
+}
+
+nav .nav-link {
+    color: white;
+    transition: color 0.3s ease;
+}
+
+nav .nav-link:hover {
+    color: #B6E5D6;
+}
+
+.access {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 80vh;
         }
-        .container {
-            background: rgba(255, 255, 255, 0.85);
-            border: 2px solid #1B8673;
-            border-radius: 10px;
-            padding: 2rem;
-            max-width: 300px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-        .container h1{
-            color: red;
-        }
-        .text-primary-custom {
-            color: #1B8673;
-        }
-        .btn-custom {
-            background-color: #1B8673;
-            color: white;
-            border-radius: 50px;
-        }
-        .btn-custom:hover {
-            background-color: #145a50;
-        }
 
-        /* Table container styling */
-        .table-container {
-            background: rgba(255, 255, 255, 0.85);
-            border: 2px solid #1B8673;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-        }
-                /* Table header styling */
-        .table-custom thead th {
-            background-color: #1B8673 ;
-            color: white;
-        }
+footer {
+    background-color: #1B8673;
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+}
 
-        /* Alternate row colors */
-        .table-custom tbody tr:nth-child(odd) {
-            background-color: rgba(27, 134, 115, 0.1) !important;
-        }
-        .table-custom tbody tr:nth-child(even) {
-            background-color: rgba(27, 134, 115, 0.2) !important;
-        }
+footer a {
+    color: #B6E5D6;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-                
-        /* Header and Title Styling */
-        .text-primary-custom {
-            color: #1B8673;
-        }
+footer a:hover {
+    color: #A2D7C3;
+}
 
-        .btn-light-custom {
-            background-color: #B6E5D6; 
-            color: #1B8673; 
-            border-radius: 50px;
-            padding: 0.4rem 1.2rem;
-        }
-        .btn-light-custom:hover {
-            background-color: #A2D7C3; 
-            color: white;
-        }
+</style>
 
-    </style>
 
 </head>
-
-
-
 
 <body>
     <!-- Navigation bar -->
@@ -240,13 +297,20 @@ include('connect.php')
     
     }
 
+   
+
     // Artist followers chart
 
-    include('artist-followers.php')
+    include('graphs.php')
 
-    ?>
+?>
 
 <?php
+include('revenueGraph.php')
+?>
+
+<?php
+
     if(isset($_SESSION['adminname'])){
 
     // latest subscribed users table
@@ -411,47 +475,6 @@ if(isset($_SESSION['adminname'])) {
                 </div>
             </div>
 
-            
-        </div>
-        
-    </section>
-
-
-    <!-- Subsription Control Section -->
-
-
-    <section id='subscription-control' class='p-3'>
-        <!-- Title -->
-        <div id='subscription-control-title-container' class='d-flex flex-row flex-wrap justify-content-between align-items-center'>
-            <h1>Subscription Controls</h1>  
-        </div>
-        
-        
-        <!-- Subsription Control Cards -->
-        <div id='control-card-container' class='d-flex flex-row justify-content-start flex-wrap align-items-center gap-5'>
-            <!-- Update Subsription Card -->
-            <div class='card' style='width: 18rem;'>
-                <img class='card-img-top' src='https://plus.unsplash.com/premium_photo-1661963515041-661b417c0b45?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' style='width: 18rem; height: 12rem;' alt='Card image cap'>
-                <div class='card-body'>
-                    <h5 class='card-title'>Update Subsription</h5>
-                    <p class='card-text'>Adjust subscription plans, pricing, and benefits.</p>
-                    <form action='adminaction.php' method='post'>
-                        <button type='submit' class='themed-btn btn btn-light border-0' name='update-subscription-btn'>Update Subscription</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Subsription Analytics Card -->
-            <div class='card' style='width: 18rem;'>
-                <img class='card-img-top' src='https://plus.unsplash.com/premium_photo-1664303403877-7f079e34aec9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' style='width: 18rem; height: 12rem;' alt='Card image cap'>
-                <div class='card-body'>
-                    <h5 class='card-title'>Subsription Analytics</h5>
-                    <p class='card-text'>View detailed insights on subscription metrics and trends.</p>
-                    <form action='adminaction.php' method='post'>
-                        <button type='submit' class='themed-btn btn btn-light border-0' name='analyze-btn'>Analyze</button>
-                    </form>
-                </div>
-            </div>
             
         </div>
         

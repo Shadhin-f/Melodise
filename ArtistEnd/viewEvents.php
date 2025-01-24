@@ -18,6 +18,17 @@ $artistID = $_SESSION['artistid'];
     <title>View Events</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .card {
+            position: relative;
+            width: 25rem;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
@@ -36,8 +47,31 @@ $artistID = $_SESSION['artistid'];
     </section>
     
     <?php
-    // Fetch all events for the logged-in artist
-    $fetch_events = "SELECT * FROM `upcoming_events` WHERE `ArtistID` = '$artistID' ORDER BY `EventDate`";
+    // Map of city names to PHP timezones
+    $cityToTimezone = [
+        'Dhaka' => 'Asia/Dhaka',
+        'New York' => 'America/New_York',
+        'London' => 'Europe/London',
+        'Tokyo' => 'Asia/Tokyo',
+        'Sydney' => 'Australia/Sydney',
+    ];
+
+    // Input city (you can replace this with dynamic user input if needed)
+    $city = 'Dhaka';
+    $timezone = isset($cityToTimezone[$city]) ? $cityToTimezone[$city] : 'UTC';
+    date_default_timezone_set($timezone);
+
+    // Get today's date
+    $today = date('Y-m-d');
+
+    // Fetch events along with follower counts for the logged-in artist
+    $fetch_events = "SELECT e.*, IFNULL(COUNT(f.userid), 0) AS FollowerCount
+    FROM `upcoming_events` e
+    LEFT JOIN `event_followers` f ON e.EventID = f.EventID
+    WHERE e.ArtistID = '$artistID'
+    GROUP BY e.EventID
+    ORDER BY e.EventDate";
+
     $result_events = mysqli_query($conn, $fetch_events);
 
     if ($result_events && mysqli_num_rows($result_events) > 0) {
@@ -50,19 +84,27 @@ $artistID = $_SESSION['artistid'];
             $eventTime = htmlspecialchars($row_event['EventTime']);
             $eventLocation = htmlspecialchars($row_event['EventLocation']);
             $eventImage = !empty($row_event['EventImage']) ? $row_event['EventImage'] : 'default-event.jpg';
+            $followerCount = $row_event['FollowerCount'];
 
             // Correct path for displaying the image
             $eventImagePath = "../Resources/EventImages/" . $eventImage;
+
+            // Check if the event date has expired
+            $isExpired = $eventDate < $today;
+            $expiryLabel = $isExpired ? "<span class='text-danger'>Expired</span>" : "";
 
             echo "
             <div class='col-md-4 mb-4'>
                 <div class='card shadow-sm'>
                     <img src='$eventImagePath' class='card-img-top' alt='Event Image' style='height: 200px; object-fit: cover;'>
                     <div class='card-body'>
-                        <h5 class='card-title'>$eventTitle</h5>
-                        <p class='card-text'><strong>Date:</strong> $eventDate<br>
-                        <strong>Time:</strong> $eventTime<br>
-                        <strong>Location:</strong> $eventLocation</p>
+                        <h5 class='card-title'>$eventTitle $expiryLabel</h5>
+                        <p class='card-text'>
+                            <strong>Date:</strong> $eventDate<br>
+                            <strong>Time:</strong> $eventTime<br>
+                            <strong>Location:</strong> $eventLocation<br>
+                            <strong>Event Followers:</strong> $followerCount
+                        </p>
                         <p class='card-text'>$eventDescription</p>
                         <a href='editEvent.php?event_id=$eventID' class='btn btn-primary btn-sm'>Edit</a>
                         <a href='deleteEvent.php?event_id=$eventID' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this event?\");'>Delete</a>

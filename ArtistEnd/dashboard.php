@@ -119,8 +119,8 @@ if (!isset($_SESSION['artistid'])) {
         /* Logout button styling */
         .logout-btn {
             position: absolute;
-            right: 80px;
-            top: 20px;
+            right: 110px;
+            top: 60px;
             color: #ff4d4d;
             font-weight: bold;
             text-decoration: none;
@@ -256,19 +256,6 @@ if (!isset($_SESSION['artistid'])) {
             font-weight: 500;
         }
 
-        .play-btn {
-            background: transparent;
-            border: none;
-            font-size: 1.5em;
-            color: #007bff;
-            cursor: pointer;
-        }
-
-        .play-btn:hover {
-            color: #0056b3;
-        }
-
-
         .album-title {
             font-size: 1.1em;
             color: #333;
@@ -330,10 +317,6 @@ if (!isset($_SESSION['artistid'])) {
                             echo "
                         <div class='song-item'>
                             <span class='song-title'>$song_name</span>
-                            <!-- Play button (No functionality yet) -->
-                            <button class='play-btn'>
-                                <i class='fa-solid fa-play'></i>
-                            </button>
                         </div>
                     ";
                         }
@@ -444,8 +427,21 @@ if (!isset($_SESSION['artistid'])) {
     </div>
 </div>
 
-    </div>
 
+
+
+
+        </div>
+
+
+        <!-- Music Play graph -->
+
+
+<?php 
+
+include('musicPlay.php')
+
+?>
 </body>
 
 </html>

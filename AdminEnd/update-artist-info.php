@@ -13,6 +13,11 @@ include('connect.php');
     <!-- FontAwesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
+        body {
+            background: radial-gradient(circle, rgba(232,247,244,1) 0%, rgba(211,231,228,1) 100%);
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
         .container-custom {
             background-color: white;
             border: 2px solid #1B8673;
@@ -97,13 +102,15 @@ include('connect.php');
                 while ($row_data = mysqli_fetch_assoc($result_artists)){
                     $artistID = $row_data['ArtistID'];
                     $artistName = $row_data['Name'];
+                    $artistEmail = $row_data['Email'];
 
                     echo "
                     <tr>
                         <td>$artistID</td>
                         <td>$artistName</td>
-                        <form action='adminaction.php' method='get'>
+                        <form action='adminaction.php' method='post'>
                             <input type='hidden' name='artist_name' value='$artistName'>
+                            <input type='hidden' name='artist_email' value='$artistEmail'>
                             <td><button type='submit' class='btn edit-btn-custom' name='artist-profile-edit-btn'>Edit</button></td>
                         </form>
                     </tr>
@@ -122,9 +129,7 @@ include('connect.php');
                 echo "No search key";
             }
         ?>
-
-
-        
+    
     </section>
 
     <!-- FontAwesome & Bootstrap JS -->

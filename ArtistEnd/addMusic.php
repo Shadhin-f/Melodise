@@ -112,6 +112,7 @@ mysqli_close($conn);
                 <select id="album" name="album" class="form-select" required>
                     <option selected disabled>Select album</option>
                     <?php
+                    echo "<option value='NULL'>None</option>";
                     // Check if there are albums for the logged-in artist
                     if (mysqli_num_rows($albumResult) > 0) {
                         // Loop through each album and create an option

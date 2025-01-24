@@ -13,9 +13,10 @@ include('connect.php');
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+    
     body {
-        font-family: 'Varela Round', sans-serif;
-        background-color: #f4f7f6;
+        background: radial-gradient(circle, rgba(232,247,244,1) 0%, rgba(211,231,228,1) 100%);
+        font-family: Arial, sans-serif;
         color: #333;
     }
 
@@ -176,7 +177,7 @@ if(isset($_SESSION['adminname'])){
                 <td>$title</td>
                 <td>
                     <form action='adminaction.php' method='POST'>
-                        <input type='hidden' name='GenreID'>
+                        <input type='hidden' name='GenreID' value='<?php echo $genre_id; ?>'>
                         <button type='button' class='btn btn-primary' onclick='editForm_toggle()'>
                            <i class='bi bi-pencil-square'></i>
                         </button>
@@ -213,25 +214,27 @@ if(isset($_SESSION['adminname'])){
     <a href='#' onclick='closeForm()' class="close-form-btn"></a>
 </div>
 
-<!-- Edit Genre Form -->
 <div id="editGenre" class="genre-form">
     <div class="form-content">
         <div class="form-header">
             <h4>Edit Genre</h4>
         </div>
         <form action="adminaction.php" method="POST">
+            <input type="hidden" name="GenreID" value="<?php echo $genre_id; ?>">
+            
             <div class="form-body">
                 <label for="genreTitle">Genre Title</label>
-                <input type="text" id="genreTitle" name="genreTitle" class="form-control" placeholder="Title" value="<?php echo htmlspecialchars($title); ?>" required>
+                <input type="text" id="genreTitle" name="genreTitle" class="form-control" placeholder="Title" required>
             </div>
             <div class="form-footer">
-                <button type="submit" class="btn btn-primary" name='save_button'>Save Genre Title</button>
+                <button type="submit" class="btn btn-primary" name="save_button">Save Genre Title</button>
                 <button type="button" class="btn btn-secondary close-form-btn">Cancel</button>
             </div>
         </form>
     </div>
-    <a href='#' onclick='closeForm()' class="close-form-btn"></a>
+    <a href="#" onclick="closeForm()" class="close-form-btn"></a>
 </div>
+
 
 <script type="text/javascript">
     function addForm_toggle() {
